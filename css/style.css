@@ -381,7 +381,7 @@ header .navbar a:hover{
 
 .social-links {
     text-align: center;
-    padding-top: 20%;
+    margin-top: 25%;
 }
 
 
@@ -390,7 +390,7 @@ header .navbar a:hover{
 }
 
 .social-links img {
-    vertical-align: middle;
+    vertical-align: bottom;
 }
 
 .contact .row{
