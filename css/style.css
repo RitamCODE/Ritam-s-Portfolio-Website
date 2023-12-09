@@ -330,6 +330,47 @@ header .navbar a:hover{
     padding:.5rem 0;
 }
 
+.profiles .box-container{
+    display: flex;
+    flex-wrap: wrap;
+    gap:1.5rem;
+    margin: 4rem;
+}
+
+.profiles .box-container .box{
+    flex:1 1 0.000000001rem;
+    border-radius: 1500rem;
+    border:2rem solid #fff;
+    border-left: 45rem solid #fff;
+    border-right: 45rem solid #fff;
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.1);
+    position: relative;
+    overflow:hidden;
+    width: 20rem;
+    height:20rem;
+}
+
+.profiles .box-container .box img{
+    height: 100%;
+    width:100%;
+    /* object-fit: cover; */
+}
+
+.profiles .box-container .box .content{
+    height: 100%;
+    width:100%;
+    position: absolute;
+    top:0; left:-100%;
+    background:#fff9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profiles .box-container .box:hover .content{
+    left:0;
+}
+
 .contact .row{
     display:flex;
     align-items: center;
