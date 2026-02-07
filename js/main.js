@@ -67,9 +67,12 @@ window.onscroll = () => {
 };
 
 var typed = new Typed('.typing-text', {
-    strings: ['Developer', 'A problem solver', 'A python developer', 'Bit of a web developer', 'AI developer', 'currently a cse undergrad', 'Student of Indian Classical Music', 'I play the Bansuri', 'I am also a Painter'],
+    strings: ['<span class="typing-hi">Hi I am</span> Ritam Mukherjee'],
+    contentType: 'html',
     loop: true,
-    typeSpeed: 200
+    typeSpeed: 120,
+    backSpeed: 60,
+    backDelay: 2400
 });
 
 VanillaTilt.init(document.querySelectorAll('.tilt'), {

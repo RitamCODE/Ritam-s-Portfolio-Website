@@ -3,6 +3,7 @@
 
 :root{
     --green:#27ae60;
+    --header-height:8rem;
     --bg-color:#eee;
     --surface-color:#fff;
     --surface-overlay:#fff9;
@@ -59,7 +60,7 @@ html::-webkit-scrollbar-thumb{
 body{
     background:var(--bg-color);
     color:var(--text-color);
-    padding-top: 8rem;
+    padding-top: var(--header-height);
 }
 
 section{
@@ -68,8 +69,9 @@ section{
     scroll-margin-top: 9rem;
 }
 #home{
-    padding: 0%;
-    max-height: 20%;
+    min-height: calc(100vh - var(--header-height));
+    padding:0 9%;
+    max-height: none;
 }
 #about{
     height: -100%;
@@ -80,7 +82,7 @@ section{
 }
 
 .heading{
-    text-align: center;
+    text-align: left;
     padding-bottom: 2rem;
     font-size: 6rem;
     text-transform: uppercase;
@@ -111,7 +113,7 @@ header{
     position: fixed;
     top:0; left:0; right:0;
     width: 100%;
-    min-height: 7rem;
+    min-height: var(--header-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -203,9 +205,30 @@ header .navbar a:hover{
 }
 
 .home .content{
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4rem;
+    width: 100%;
+    max-width: 105rem;
+    margin: 0 auto;
+    text-align: left;
     position: relative;
     z-index: 1;
+}
+
+.home .content .home-intro-panel{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.home .content .home-actions{
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: flex-start;
 }
 
 .home .content img{
@@ -216,16 +239,51 @@ header .navbar a:hover{
     border:1rem solid var(--green);
 }
 
+.home .content .home-intro{
+    color: var(--green);
+    font-size: 2.2rem;
+    letter-spacing: .08rem;
+    margin-top: 1.5rem;
+    margin-bottom: .4rem;
+    text-transform: none;
+    line-height: 1.2;
+}
+
 .home .content h3{
     font-size: 4rem;
     color:var(--text-color);
-    text-transform: uppercase;
-    padding-top: 8%;
+    text-transform: none;
+    padding-top: 0;
+    margin: 0;
 }
 
 .home .content h3 span{
     color:var(--green);
-    text-transform: uppercase;
+    text-transform: none;
+}
+
+.home .content h3 .typing-text{
+    color:var(--text-color);
+}
+
+.home .content h3 .typing-text .typing-hi{
+    color:var(--green);
+}
+
+.home .content .home-actions .resume-btn{
+    color:var(--green);
+}
+
+.home .content .home-actions .resume-btn:hover{
+    color:var(--button-text);
+}
+
+.home .content .home-actions .about-btn{
+    color:var(--green);
+}
+
+.home .content .home-actions .about-btn:hover{
+    color:var(--button-text);
 }
 
 .home .content p{
@@ -242,7 +300,7 @@ header .navbar a:hover{
 }
 
 .about .row .image{
-    text-align: center;
+    text-align: left;
     flex:1 1 25rem;
 }
 
@@ -309,7 +367,7 @@ header .navbar a:hover{
     background:var(--surface-color);
     box-shadow: 0 .5rem 1rem var(--shadow-color);
     padding:2rem;
-    text-align: center;
+    text-align: left;
 }
 
 .skills .box-container .box i{
@@ -445,7 +503,7 @@ header .navbar a:hover{
 }
 
 .social-links {
-    text-align: center;
+    text-align: left;
     margin-top: 25%;
 }
 
@@ -564,6 +622,21 @@ header .navbar a:hover{
     header .navbar a{
         font-size: 1.6rem;
         padding:.6rem .9rem;
+    }
+
+    .home .content{
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .home .content .home-intro-panel{
+        align-items: center;
+    }
+
+    .home .content .home-actions{
+        justify-content: center;
     }
 
 }
