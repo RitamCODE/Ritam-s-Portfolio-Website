@@ -1,6 +1,6 @@
 export const profile = {
   name: 'Ritam Mukherjee',
-  role: 'ML Engineer and Software Developer',
+  role: 'Your friendly neighborhood developer🕸️',
   summary:
     'I build production-ready AI systems with a strong software engineering backbone. My work focuses on RAG pipelines, document intelligence, and scalable ML deployment on cloud platforms.',
   about:
