@@ -35,6 +35,7 @@ function getPreferredTheme() {
 
 function applyTheme(theme) {
     let isDark = theme === 'dark';
+    document.documentElement.classList.toggle('dark-theme', isDark);
     document.body.classList.toggle('dark-theme', isDark);
 
     if (themeToggle) {
