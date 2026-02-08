@@ -79,3 +79,23 @@ var typed = new Typed('.typing-text', {
 VanillaTilt.init(document.querySelectorAll('.tilt'), {
     max: 25
 });
+
+let experienceTabs = document.querySelectorAll('[data-exp-tab]');
+let experiencePanels = document.querySelectorAll('[data-exp-panel]');
+
+if (experienceTabs.length > 0 && experiencePanels.length > 0) {
+    experienceTabs.forEach((tab) => {
+        tab.onclick = () => {
+            let target = tab.getAttribute('data-exp-tab');
+
+            experienceTabs.forEach((item) => {
+                item.classList.toggle('active', item === tab);
+            });
+
+            experiencePanels.forEach((panel) => {
+                let isActive = panel.getAttribute('data-exp-panel') === target;
+                panel.classList.toggle('active', isActive);
+            });
+        };
+    });
+}
