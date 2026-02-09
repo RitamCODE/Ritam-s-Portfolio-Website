@@ -57,6 +57,10 @@ body {
   min-height: 100vh;
 }
 
+body.intro-active {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -66,6 +70,166 @@ main,
 footer {
   width: min(114rem, calc(100% - 4rem));
   margin: 0 auto;
+}
+
+.landing-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--brand) 24%, transparent), transparent 52%),
+    radial-gradient(circle at 82% 30%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 50%),
+    linear-gradient(155deg, #04130e, #071d15 42%, #04110d);
+}
+
+.landing-noise {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image:
+    radial-gradient(circle at 25% 20%, #fff 0.08rem, transparent 0.09rem),
+    radial-gradient(circle at 75% 75%, #fff 0.08rem, transparent 0.09rem);
+  background-size: 2.8rem 2.8rem;
+  animation: intro-noise-shift 6s linear infinite;
+}
+
+.landing-radial {
+  position: absolute;
+  width: 40rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  filter: blur(70px);
+  opacity: 0.5;
+  background: color-mix(in srgb, var(--brand) 60%, transparent);
+}
+
+.landing-radial-left {
+  top: -12rem;
+  left: -10rem;
+}
+
+.landing-radial-right {
+  right: -8rem;
+  bottom: -10rem;
+}
+
+.landing-content {
+  position: relative;
+  z-index: 2;
+  width: min(72rem, calc(100% - 4rem));
+}
+
+.landing-label {
+  margin: 0;
+  color: color-mix(in srgb, var(--brand) 80%, #9bf4c6);
+  font-size: 1.3rem;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: intro-fade-up 0.65s ease forwards;
+}
+
+.landing-content h1 {
+  margin: 1.1rem 0 0;
+  display: grid;
+  gap: 0.3rem;
+  font-size: clamp(4.2rem, 10vw, 11rem);
+  line-height: 0.9;
+  letter-spacing: -0.02em;
+  color: #e9fcef;
+}
+
+.landing-content h1 span {
+  display: block;
+  opacity: 0;
+  transform: translateY(2.4rem);
+}
+
+.landing-content h1 span:first-child {
+  animation: intro-fade-up 0.85s cubic-bezier(0.17, 0.67, 0.2, 0.98) 0.15s forwards;
+}
+
+.landing-content h1 span:last-child {
+  animation: intro-fade-up 0.85s cubic-bezier(0.17, 0.67, 0.2, 0.98) 0.3s forwards;
+}
+
+.landing-progress {
+  margin-top: 2.8rem;
+  height: 0.2rem;
+  width: min(42rem, 80%);
+  background: color-mix(in srgb, #fff 12%, transparent);
+  overflow: hidden;
+}
+
+.landing-progress span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform-origin: left center;
+  background: linear-gradient(90deg, var(--brand), #9bf4c6);
+  animation: intro-progress 1.45s cubic-bezier(0.25, 1, 0.3, 1) 0.2s forwards;
+}
+
+.landing-intro.is-exiting {
+  animation: intro-exit 0.75s cubic-bezier(0.7, 0.05, 0.28, 0.98) forwards;
+}
+
+.landing-intro.is-exiting .landing-content {
+  animation: intro-content-exit 0.4s ease forwards;
+}
+
+.app-shell .site-header {
+  opacity: 0;
+  transform: translate(-50%, 2.4rem);
+  filter: blur(0.8rem);
+  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+}
+
+.app-shell main,
+.app-shell .contact {
+  opacity: 0;
+  transform: translateY(2.4rem);
+  filter: blur(0.8rem);
+  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+}
+
+.app-shell.ready .site-header {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  filter: blur(0);
+}
+
+.app-shell.ready main,
+.app-shell.ready .contact {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+}
+
+.app-shell.ready .hero-content > * {
+  opacity: 0;
+  transform: translateY(1.6rem);
+  animation: hero-rise 0.65s ease forwards;
+}
+
+.app-shell.ready .hero-content > :nth-child(1) {
+  animation-delay: 0.16s;
+}
+
+.app-shell.ready .hero-content > :nth-child(2) {
+  animation-delay: 0.26s;
+}
+
+.app-shell.ready .hero-content > :nth-child(3) {
+  animation-delay: 0.36s;
+}
+
+.app-shell.ready .hero-content > :nth-child(4) {
+  animation-delay: 0.46s;
 }
 
 .site-header {
@@ -630,7 +794,94 @@ footer {
     font-size: 56.25%;
   }
 
+  .landing-content h1 {
+    line-height: 0.95;
+  }
+
   .project-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-intro {
+    display: none;
+  }
+
+  .app-shell .site-header {
+    opacity: 1;
+    transform: translateX(-50%);
+    filter: none;
+    transition: none;
+    animation: none;
+  }
+
+  .app-shell main,
+  .app-shell .contact,
+  .app-shell.ready .hero-content > * {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+    animation: none;
+  }
+}
+
+@keyframes intro-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(2.4rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes intro-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes intro-exit {
+  from {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+
+  to {
+    opacity: 0;
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+  }
+}
+
+@keyframes intro-content-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-2rem);
+  }
+}
+
+@keyframes intro-noise-shift {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(-2.8rem, -2.8rem);
+  }
+}
+
+@keyframes hero-rise {
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
