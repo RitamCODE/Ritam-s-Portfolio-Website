@@ -660,8 +660,13 @@ footer {
   gap: 1.4rem;
 }
 
+.contact-section {
+  margin: 5rem auto 2.2rem;
+  text-align: center;
+}
+
 .contact {
-  margin: 8rem auto 5rem;
+  margin: 0 auto;
   padding: 4rem;
   text-align: center;
 }
@@ -722,6 +727,14 @@ footer {
 
 .back-to-top:hover {
   color: var(--brand);
+}
+
+.footer-credit {
+  margin: 1.8rem 0 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 980px) {
