@@ -1,7 +1,6 @@
 function ContactSection({ profile }) {
   return (
     <footer className="section contact" id="contact">
-      <p className="section-kicker">04. Contact</p>
       <h2 className="section-title">Let&apos;s Build Something Useful</h2>
       <p className="contact-copy">
         I am open to software engineering and machine learning opportunities where I can ship practical systems and

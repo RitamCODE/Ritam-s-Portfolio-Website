@@ -1,11 +1,9 @@
 function AboutSection({ about, techStack, education }) {
   return (
     <section className="section" id="about">
-      <p className="section-kicker">01. About</p>
-      <h2 className="section-title">About Me</h2>
-
       <div className="about-layout">
         <article className="about-card">
+          <h2 className="about-card-title">About Me</h2>
           <p>{about}</p>
         </article>
 

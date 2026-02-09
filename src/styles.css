@@ -33,6 +33,12 @@
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 45%),
+    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 38%),
+    linear-gradient(165deg, var(--bg), var(--bg-2));
+  overscroll-behavior-y: none;
 }
 
 body {
@@ -43,6 +49,11 @@ body {
     radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 45%),
     radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 38%),
     linear-gradient(165deg, var(--bg), var(--bg-2));
+  min-height: 100vh;
+  overscroll-behavior-y: none;
+}
+
+#root {
   min-height: 100vh;
 }
 
@@ -271,6 +282,12 @@ footer {
 
 .about-card {
   padding: 3rem;
+}
+
+.about-card-title {
+  margin: 0 0 1.8rem;
+  font-size: clamp(3rem, 4.5vw, 4.4rem);
+  line-height: 1.05;
 }
 
 .about-card p {

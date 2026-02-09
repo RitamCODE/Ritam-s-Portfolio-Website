@@ -4,7 +4,6 @@ function ProjectsSection({ projects }) {
 
   return (
     <section className="section" id="projects">
-      <p className="section-kicker">03. Projects</p>
       <h2 className="section-title">Fun Projects and Research</h2>
 
       <div className="project-featured-grid">

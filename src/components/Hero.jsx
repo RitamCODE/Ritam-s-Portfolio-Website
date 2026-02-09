@@ -2,7 +2,6 @@ function Hero({ profile }) {
   return (
     <section className="hero" id="home">
       <div className="hero-content">
-        <p className="hero-kicker">Building reliable AI products</p>
         <h1>{profile.name}</h1>
         <h2>{profile.role}</h2>
         <p>{profile.summary}</p>

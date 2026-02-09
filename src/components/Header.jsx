@@ -1,8 +1,8 @@
 const navItems = [
-  { href: '#about', label: '01. About' },
-  { href: '#experience', label: '02. Experience' },
-  { href: '#projects', label: '03. Projects' },
-  { href: '#contact', label: '04. Contact' }
+  { href: '#about', label: 'About' },
+  { href: '#experience', label: 'Experience' },
+  { href: '#projects', label: 'Projects' },
+  { href: '#contact', label: 'Contact' }
 ];
 
 function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, resumeLink }) {

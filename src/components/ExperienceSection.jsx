@@ -3,7 +3,6 @@ function ExperienceSection({ experiences, activeId, onSelect }) {
 
   return (
     <section className="section" id="experience">
-      <p className="section-kicker">02. Experience</p>
       <h2 className="section-title">Where I Have Worked</h2>
 
       <div className="experience-layout">

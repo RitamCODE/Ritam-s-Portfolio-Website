@@ -19,9 +19,11 @@ export const techStack = [
   'Python',
   'Java',
   'C/C++',
+  'HTML/CSS',
   'JavaScript',
   'React',
   '.NET / C#',
+  'Azure',
   'Azure ML',
   'LangChain',
   'PyTorch',
@@ -30,10 +32,11 @@ export const techStack = [
   'OpenCV',
   'Oracle SQL',
   'SQLite',
-  'CosmosDB',
   'AWS',
+  'HPC (Ohio Supercomputer Center - OSC)',
+  'Postman',
   'GitHub',
-  'Linux'
+  'Linux',
 ];
 
 export const education = [
