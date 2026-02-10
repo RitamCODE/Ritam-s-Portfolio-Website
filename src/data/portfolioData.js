@@ -5,7 +5,7 @@ export const profile = {
     'I build production-ready AI systems with a strong software engineering backbone. My work focuses on RAG pipelines, document intelligence, and scalable ML deployment on cloud platforms.',
   about:
     'I am an engineer who likes turning ML ideas into working software. I have built and deployed RAG-based GenAI workflows on Azure ML, packaged LangChain pipelines into MLflow models, and improved large-scale document processing for QA, summarization, and translation. I am currently pursuing my M.S. in Computer Science at The Ohio State University (May 2026) and researching retinal OCT analysis for early disease detection.',
-  image: '/assets/my_pics/anime_image_ritam.png',
+  image: '/assets/my_pics/Ritam_web.png',
   resume: '/assets/Resume/RM_Resume_2026.pdf',
   email: 'mukherjee.ritam27@gmail.com',
   social: {

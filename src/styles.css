@@ -1,26 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  --bg: #f5f7f4;
-  --bg-2: #dce8df;
-  --surface: rgba(255, 255, 255, 0.85);
-  --surface-strong: #ffffff;
-  --text: #1f2a24;
-  --muted: #46544c;
-  --line: rgba(31, 42, 36, 0.14);
+  --bg: #0b1b33;
+  --bg-2: #12294a;
+  --surface: rgba(13, 27, 52, 0.84);
+  --surface-strong: #17315a;
+  --text: #e8f0ff;
+  --muted: #afc1dd;
+  --line: rgba(145, 174, 226, 0.22);
+  --base-glow: #295abf;
+  --base-glow-strong: #1a438f;
   --brand: #117b4f;
   --brand-strong: #0c5f3d;
-  --shadow: 0 16px 40px rgba(17, 36, 25, 0.14);
+  --shadow: 0 16px 40px rgba(2, 8, 24, 0.5);
 }
 
 :root[data-theme='dark'] {
-  --bg: #07140f;
-  --bg-2: #0f281e;
-  --surface: rgba(14, 27, 22, 0.82);
-  --surface-strong: #11231c;
-  --text: #e4f2ea;
-  --muted: #a5c0b0;
-  --line: rgba(188, 227, 204, 0.2);
+  --bg: #060f20;
+  --bg-2: #0a1833;
+  --surface: rgba(10, 21, 44, 0.86);
+  --surface-strong: #12284f;
+  --text: #e4edff;
+  --muted: #9fb4d9;
+  --line: rgba(132, 162, 218, 0.24);
+  --base-glow: #2f67d3;
+  --base-glow-strong: #1f4ca7;
   --brand: #2ac178;
   --brand-strong: #8ef2bf;
   --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
@@ -35,8 +39,8 @@ html {
   scroll-behavior: smooth;
   min-height: 100%;
   background:
-    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 45%),
-    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 38%),
+    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--base-glow) 26%, transparent), transparent 45%),
+    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--base-glow-strong) 22%, transparent), transparent 38%),
     linear-gradient(165deg, var(--bg), var(--bg-2));
   overscroll-behavior-y: none;
 }
@@ -46,8 +50,8 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   color: var(--text);
   background:
-    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--brand) 16%, transparent), transparent 45%),
-    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 38%),
+    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--base-glow) 26%, transparent), transparent 45%),
+    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--base-glow-strong) 22%, transparent), transparent 38%),
     linear-gradient(165deg, var(--bg), var(--bg-2));
   min-height: 100vh;
   overscroll-behavior-y: none;
@@ -80,9 +84,9 @@ footer {
   place-items: center;
   overflow: hidden;
   background:
-    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--brand) 24%, transparent), transparent 52%),
-    radial-gradient(circle at 82% 30%, color-mix(in srgb, var(--brand) 18%, transparent), transparent 50%),
-    linear-gradient(155deg, #04130e, #071d15 42%, #04110d);
+    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--base-glow) 28%, transparent), transparent 52%),
+    radial-gradient(circle at 82% 30%, color-mix(in srgb, var(--base-glow-strong) 24%, transparent), transparent 50%),
+    linear-gradient(155deg, #050f24, #0b1d48 42%, #060f2a);
 }
 
 .landing-noise {
@@ -103,7 +107,7 @@ footer {
   border-radius: 50%;
   filter: blur(70px);
   opacity: 0.5;
-  background: color-mix(in srgb, var(--brand) 60%, transparent);
+  background: color-mix(in srgb, var(--base-glow) 70%, transparent);
 }
 
 .landing-radial-left {
@@ -140,7 +144,7 @@ footer {
   font-size: clamp(4.2rem, 10vw, 11rem);
   line-height: 0.9;
   letter-spacing: -0.02em;
-  color: #e9fcef;
+  color: #e9f1ff;
 }
 
 .landing-content h1 span {
@@ -336,6 +340,22 @@ footer {
   grid-template-columns: 1.2fr 1fr;
   gap: 4rem;
   align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-particles {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.9;
+}
+
+.hero-content,
+.hero-art {
+  position: relative;
+  z-index: 1;
 }
 
 .hero-kicker,
