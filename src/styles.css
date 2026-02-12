@@ -612,6 +612,20 @@ footer {
   font-size: 1.5rem;
 }
 
+.experience-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0 0 1.5rem;
+  color: var(--brand);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.3rem;
+}
+
+.experience-link:hover {
+  color: var(--brand-strong);
+}
+
 .experience-panel ul {
   list-style: none;
   padding: 0;
@@ -678,6 +692,105 @@ footer {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.4rem;
+}
+
+.course-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.6rem;
+}
+
+.course-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1.8rem;
+  box-shadow: var(--shadow);
+  padding: 2.6rem;
+}
+
+.course-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+
+.course-head h3 {
+  margin: 0;
+  font-size: 2.4rem;
+}
+
+.course-head p {
+  margin: 0;
+  color: var(--brand);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.3rem;
+}
+
+.course-provider {
+  margin: 1rem 0 1.2rem;
+  color: var(--text);
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+
+.course-text {
+  margin: 0.8rem 0 0;
+  color: var(--muted);
+  font-size: 1.5rem;
+  line-height: 1.65;
+}
+
+.course-link {
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--brand);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.3rem;
+}
+
+.course-link:hover {
+  color: var(--brand-strong);
+}
+
+.patent-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+.patent-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 1.8rem;
+  box-shadow: var(--shadow);
+  padding: 2.2rem;
+}
+
+.patent-tag {
+  margin: 0 0 1rem;
+  color: var(--brand);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.25rem;
+}
+
+.patent-card h3 {
+  margin: 0;
+  font-size: 2.2rem;
+  line-height: 1.35;
+}
+
+.patent-card a {
+  margin-top: 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: var(--brand);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.3rem;
 }
 
 .contact-section {
@@ -779,6 +892,10 @@ footer {
 
   .project-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .patent-grid {
+    grid-template-columns: 1fr;
   }
 }
 

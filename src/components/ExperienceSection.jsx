@@ -27,6 +27,16 @@ function ExperienceSection({ experiences, activeId, onSelect }) {
             <p>{activeExperience.duration}</p>
           </div>
           <p className="experience-location">{activeExperience.location}</p>
+          {activeExperience.certificate && (
+            <a
+              className="experience-link"
+              href={activeExperience.certificate}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View Certificate <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+            </a>
+          )}
           <ul>
             {activeExperience.points.map((point) => (
               <li key={point}>{point}</li>

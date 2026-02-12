@@ -4,9 +4,11 @@ import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
 import ExperienceSection from './components/ExperienceSection';
 import ProjectsSection from './components/ProjectsSection';
+import CoursesSection from './components/CoursesSection';
+import PatentsSection from './components/PatentsSection';
 import ContactSection from './components/ContactSection';
 import LandingIntro from './components/LandingIntro';
-import { education, experienceItems, profile, projectItems, techStack } from './data/portfolioData';
+import { courseItems, education, experienceItems, patentItems, profile, projectItems, techStack } from './data/portfolioData';
 
 function getInitialTheme() {
   const stored = window.localStorage.getItem('portfolio-theme');
@@ -97,6 +99,8 @@ function App() {
           onSelect={setActiveExperience}
         />
         <ProjectsSection projects={sortedProjects} />
+        <CoursesSection courses={courseItems} />
+        <PatentsSection patents={patentItems} />
       </main>
 
       <ContactSection profile={profile} />

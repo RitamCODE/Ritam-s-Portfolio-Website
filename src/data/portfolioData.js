@@ -61,6 +61,7 @@ export const experienceItems = [
     role: 'Software Engineer Intern',
     duration: 'May 2023 - Jul 2023',
     location: 'Bangalore, India',
+    certificate: '/assets/Certifcates/Microsoft_Internship_Certificate.jpg',
     points: [
       'Converted LangChain Retrieval QA chains into MLflow models for seamless Azure ML deployment.',
       'Ensured correct load and store behavior of retriever components in the MLflow model structure.',
@@ -74,6 +75,7 @@ export const experienceItems = [
     role: 'Junior Data Scientist',
     duration: 'Feb 2024 - May 2024',
     location: 'Remote, India',
+    certificate: '/assets/Certifcates/Ritam%20Internship%20Certificate_Deltacube.pdf',
     points: [
       'Built AI modules for document summarization, question answering, and translation workflows.',
       'Scaled document processing from 5-10 pages to 400-500 pages for large dataset operations.',
@@ -115,5 +117,29 @@ export const projectItems = [
     stack: ['Java', 'Cellular Automata'],
     repo: 'https://github.com/RitamCODE',
     featured: true
+  }
+];
+
+export const courseItems = [
+  {
+    title: 'WSDL (Winter School on Deep Learning 2024)',
+    provider: 'Indian Statistical Institute, Kolkata',
+    duration: 'Jan 2024 - Mar 2024',
+    certificate: '/assets/Certifcates/CoP_Ritam%20Mukherjee_WSDL24REGSTUIND0105.pdf',
+    overview:
+      'Completed an advanced AI bootcamp with lectures from faculty and researchers from Princeton, CMU, MIT, and OpenAI.',
+    topics:
+      'Matrix Calculus, Linear Algebra, PyTorch, Gradient-Based Optimization, ANNs, CNNs, GNNs, Transformers, GANs, Diffusion, LLMs, Deep Reinforcement Learning, Topological Deep Learning, Prompt Engineering'
+  }
+];
+
+export const patentItems = [
+  {
+    title: 'Wearable Belt with Accident Deployable Airbags (Internal Structure design)',
+    certificate: '/assets/Certifcates/CERTIFICATE%20373846-001.pdf'
+  },
+  {
+    title: 'Wearable Belt with Accident Deployable Airbags (Airbag Structure design)',
+    certificate: '/assets/Certifcates/certificate%20373847-001.pdf'
   }
 ];
