@@ -555,6 +555,29 @@ footer {
   gap: 2rem;
 }
 
+.experience-group-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.experience-group-toggle button {
+  border: 1px solid var(--line);
+  color: var(--muted);
+  background: var(--surface);
+  border-radius: 999px;
+  padding: 0.8rem 1.4rem;
+  cursor: pointer;
+  font-size: 1.4rem;
+}
+
+.experience-group-toggle button.active {
+  border-color: var(--brand);
+  color: var(--brand);
+  background: color-mix(in srgb, var(--brand) 10%, var(--surface-strong));
+}
+
 .experience-tabs {
   display: grid;
   gap: 0.8rem;

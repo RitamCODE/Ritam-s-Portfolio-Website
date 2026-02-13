@@ -57,6 +57,7 @@ export const education = [
 export const experienceItems = [
   {
     id: 'microsoft',
+    category: 'industry',
     company: 'Microsoft',
     role: 'Software Engineer Intern',
     duration: 'May 2023 - Jul 2023',
@@ -71,6 +72,7 @@ export const experienceItems = [
   },
   {
     id: 'deltacube',
+    category: 'industry',
     company: 'TheDeltaCube.ai',
     role: 'Junior Data Scientist',
     duration: 'Feb 2024 - May 2024',
@@ -81,6 +83,19 @@ export const experienceItems = [
       'Scaled document processing from 5-10 pages to 400-500 pages for large dataset operations.',
       'Implemented RAG and advanced chunking to reduce token overflow and improve LLM response accuracy.',
       'Refactored code into modular components with robust exception handling to reduce debugging overhead.'
+    ]
+  },
+  {
+    id: 'osu-teaching',
+    category: 'academia',
+    company: 'The Ohio State University',
+    role: 'Teaching Assistant - Full Stack Application Development',
+    duration: 'Aug 2025 - Present',
+    location: 'Columbus, OH',
+    points: [
+      'Guided students in building and deploying web applications and APIs in a project-based classroom environment.',
+      'Supported JavaScript and TypeScript fundamentals, React application development, and .NET/C# backend concepts.',
+      'Provided technical mentoring during labs, debugging sessions, and deployment workflows.'
     ]
   }
 ];

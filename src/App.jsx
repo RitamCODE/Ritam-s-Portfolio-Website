@@ -34,7 +34,6 @@ function getInitialIntroState() {
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [theme, setTheme] = useState(getInitialTheme);
-  const [activeExperience, setActiveExperience] = useState(experienceItems[0]?.id);
   const [introState, setIntroState] = useState(getInitialIntroState);
 
   useEffect(() => {
@@ -93,11 +92,7 @@ function App() {
       <main>
         <Hero profile={profile} />
         <AboutSection about={profile.about} techStack={techStack} education={education} />
-        <ExperienceSection
-          experiences={experienceItems}
-          activeId={activeExperience}
-          onSelect={setActiveExperience}
-        />
+        <ExperienceSection experiences={experienceItems} />
         <ProjectsSection projects={sortedProjects} />
         <CoursesSection courses={courseItems} />
         <PatentsSection patents={patentItems} />
