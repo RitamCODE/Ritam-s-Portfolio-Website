@@ -55,7 +55,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - Standalone Courses and Design Patents sections — the content moved into About
   rather than being dropped.
 - Pre-React site leftovers: `css/style.css`, `js/main.js`, `js/particles-config.js`,
-  and the unused `CodeRain` component. — committed (ee588d3)
+  and the unused `CodeRain` component.
 
 ## 2026-02-12
 

@@ -25,26 +25,6 @@ page in the dev server.
 - Skip entries only for things with no effect on the built site — a typo in a
   comment, a reformat. When in doubt, add the line.
 
-**Mark the commit point.** Entries pile up under `[Unreleased]` while the work sits
-in the working tree. When a change is actually committed, append ` — committed
-(<short sha>)` to that change's entry — the newest one, the line just written. It is
-a watermark, not a per-entry label: everything listed above the marker is in git,
-everything added below it is not yet. So if ten entries accumulate uncommitted and
-the eleventh change is committed, only the eleventh line carries the marker, and it
-covers all eleven.
-
-```markdown
-### Added
-
-- Research section replacing standalone Courses and Patents.
-- Reusable project card shared by both project lists. — committed (a1b2c3d)
-- Hero tagline rewritten.          <- added after that commit, still uncommitted
-```
-
-Move the marker forward on the next commit rather than adding a second one; drop
-stale markers when the section is cut into a dated release, since a released
-section is committed by definition.
-
 ## Architecture
 
 Vite + React 18 single-page app. One page, no router — navigation is `#hash` anchors
