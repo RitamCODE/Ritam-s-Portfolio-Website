@@ -1,10 +1,20 @@
 export const profile = {
   name: 'Ritam Mukherjee',
-  role: 'Your friendly neighborhood developer🕸️',
+  role: 'Your friendly neighborhood AI Engineer🕸️',
   summary:
     'I build production-ready AI systems with a strong software engineering backbone. My work focuses on RAG pipelines, document intelligence, and scalable ML deployment on cloud platforms.',
-  about:
-    'I am an engineer who likes turning ML ideas into working software. I have built and deployed RAG-based GenAI workflows on Azure ML, packaged LangChain pipelines into MLflow models, and improved large-scale document processing for QA, summarization, and translation. I am currently pursuing my M.S. in Computer Science at The Ohio State University (May 2026) and researching retinal OCT analysis for early disease detection.',
+  // Paragraphs. An array entry may itself be an array of parts, where { text, href }
+  // renders as an inline link.
+  about: [
+    'I build things. A day only counts for me if something got made by the end of it. Coffee, a hard problem, and a long uninterrupted stretch is my idea of a good time.',
+    "What pulls me in is NLP and agentic AI, and beyond that, anything hands-on where I can see the value land on an actual person. If a problem is real and I can tell what contributing would be worth, I'm in.",
+    [
+      "I'm also stubborn about measurement. Building ",
+      { text: 'AdaptMATH', href: 'https://github.com/RitamCODE/Adaptive-Math-Tutor' },
+      ", a K-5 adaptive math tutor, I kept the LLM out of the decision loop entirely and ran grading, mastery tracking, and curriculum selection as a deterministic LangGraph state machine, so the app can't hallucinate a wrong answer into a right one. Then I wrote a synthetic-student harness to test whether the adaptive engine actually beat a fixed baseline, and published the cases where it didn't."
+    ],
+    "Right now I'm going deeper on multi-agent systems in LangGraph and on applied AI research in medical imaging at OSU's College of Optometry."
+  ],
   image: '/assets/my_pics/Ritam_web.png',
   resume: '/assets/Resume/RM_Resume_2026.pdf',
   email: 'mukherjee.ritam27@gmail.com',
@@ -16,34 +26,63 @@ export const profile = {
 };
 
 export const techStack = [
-  'Python',
-  'Java',
-  'C/C++',
-  'HTML/CSS',
-  'JavaScript',
-  'React',
-  '.NET / C#',
-  'Azure',
-  'Azure ML',
-  'LangChain',
-  'PyTorch',
-  'HuggingFace',
-  'Flask',
-  'OpenCV',
-  'Oracle SQL',
-  'SQLite',
-  'AWS',
-  'HPC (Ohio Supercomputer Center - OSC)',
-  'Postman',
-  'GitHub',
-  'Linux',
+  {
+    label: 'AI & ML',
+    items: [
+      'PyTorch',
+      'Transformers',
+      'PEFT / LoRA',
+      'Fine-tuning (Qwen, DeepSeek)',
+      'Semantic segmentation (SegFormer)',
+      'scikit-learn',
+      'OpenCV'
+    ]
+  },
+  {
+    label: 'LLM Systems & Agents',
+    items: [
+      'LangGraph',
+      'LangChain',
+      'RAG pipelines',
+      'Vector retrieval (FAISS, ChromaDB)',
+      'LLM-as-judge evaluation',
+      'Synthetic eval harnesses',
+      'LangSmith',
+      'Pydantic structured outputs'
+    ]
+  },
+  {
+    label: 'Languages',
+    items: ['Python', 'TypeScript / JavaScript', 'C/C++', 'Java', 'C# / .NET', 'SQL']
+  },
+  {
+    label: 'Backend & Web',
+    items: ['FastAPI', 'Flask', 'Django', 'React', 'Vite', 'pytest']
+  },
+  {
+    label: 'Cloud & Infrastructure',
+    items: [
+      'Docker',
+      'Azure ML',
+      'MLflow',
+      'AWS',
+      'Linux',
+      'HPC / SLURM (Ohio Supercomputer Center)',
+      'Git',
+      'GitHub Actions'
+    ]
+  },
+  {
+    label: 'Data',
+    items: ['SQLite', 'Oracle SQL', 'pandas', 'NumPy']
+  }
 ];
 
 export const education = [
   {
     degree: 'Master of Science, Computer Science and Engineering',
     school: 'The Ohio State University',
-    duration: 'Expected May 2026',
+    duration: 'Aug 2024 - May 2026',
     details: 'Coursework: Algorithms, Neural Networks, AI, Natural Language Processing'
   },
   {
@@ -93,20 +132,23 @@ export const experienceItems = [
     duration: 'Aug 2025 - Present',
     location: 'Columbus, OH',
     points: [
-      'Guided students in building and deploying web applications and APIs in a project-based classroom environment.',
-      'Supported JavaScript and TypeScript fundamentals, React application development, and .NET/C# backend concepts.',
-      'Provided technical mentoring during labs, debugging sessions, and deployment workflows.'
+      'Maintained the reference implementation and lab curriculum for a semester-long team build: ASP.NET Web API with EF Core, a React/TypeScript frontend, Auth0 JWT authorization, and GitHub Actions CI/CD to Azure.',
+      'Modernized labs written against .NET 6 onto .NET 8, diagnosing broken dependency resolution, JWT scope-claim handling, and deprecated namespace references before students hit them.',
+      'Authored the grading rubrics for the lab series and ran office hours and one-on-one debugging on CORS, EF Core migrations, React state and routing, and branch-protected PR workflows.'
     ]
   }
 ];
 
 export const projectItems = [
   {
-    title: 'Disease Detection from AO-OCT Retinal Scans',
+    title: 'AdaptMATH',
     summary:
-      'Developing computational methods to analyze high-resolution retinal scans, with focus on segmentation and quantification of microscopic structures for early disease monitoring.',
-    stack: ['Python', 'PyTorch', 'AO-OCT', 'Medical Imaging'],
-    repo: 'https://github.com/RitamCODE',
+      'K-5 adaptive math tutor built for the Nerdy AI Hackathon. Bayesian Knowledge Tracing drives mastery tracking and problem selection as a deterministic state machine; the LLM, orchestrated with LangGraph, only narrates after the fact and never touches grading. Includes a synthetic-student evaluation harness comparing adaptive pacing against a fixed baseline.',
+    stack: ['LangGraph', 'FastAPI', 'React', 'Bayesian Knowledge Tracing', 'LangSmith'],
+    links: [
+      { label: 'View Code', href: 'https://github.com/RitamCODE/Adaptive-Math-Tutor' },
+      { label: 'Watch Demo', href: 'https://youtu.be/lPKNvPYhSEY' }
+    ],
     featured: true
   },
   {
@@ -114,7 +156,12 @@ export const projectItems = [
     summary:
       'Fine-tuned Qwen 0.5B with LoRA on the QASPER dataset and compared answer quality with and without full-document context.',
     stack: ['Python', 'PyTorch', 'HuggingFace Transformers', 'LoRA'],
-    repo: 'https://github.com/RitamCODE/Comparing-Small-LLMs-for-Scientific-Question-Answering',
+    links: [
+      {
+        label: 'View Code',
+        href: 'https://github.com/RitamCODE/Comparing-Small-LLMs-for-Scientific-Question-Answering'
+      }
+    ],
     featured: true
   },
   {
@@ -122,7 +169,7 @@ export const projectItems = [
     summary:
       'Built a multimodal bird-species classifier that fuses visual and auditory features using ResNet18-based encoders and Mel-spectrogram audio representations.',
     stack: ['Torchvision', 'TorchAudio', 'NumPy', 'Pandas'],
-    repo: 'https://github.com/RitamCODE',
+    links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
     featured: true
   },
   {
@@ -130,7 +177,18 @@ export const projectItems = [
     summary:
       'Simulated the Abelian Sandpile model in Java using cellular automata with robust cascading-avalanche logic to study self-organized criticality.',
     stack: ['Java', 'Cellular Automata'],
-    repo: 'https://github.com/RitamCODE',
+    links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
+    featured: true
+  }
+];
+
+export const researchItems = [
+  {
+    title: 'Disease Detection from AO-OCT Retinal Scans',
+    summary:
+      'Developing computational methods to analyze high-resolution retinal scans, with focus on segmentation and quantification of microscopic structures for early disease monitoring.',
+    stack: ['Python', 'PyTorch', 'AO-OCT', 'Medical Imaging'],
+    links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
     featured: true
   }
 ];

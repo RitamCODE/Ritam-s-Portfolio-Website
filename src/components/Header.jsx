@@ -2,15 +2,19 @@ const navItems = [
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
   { href: '#projects', label: 'Projects' },
-  { href: '#courses', label: 'Courses' },
-  { href: '#patents', label: 'Design Patents' },
+  { href: '#research', label: 'Research' },
   { href: '#contact', label: 'Contact' }
 ];
 
-function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, resumeLink }) {
+function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resumeLink }) {
+  const handleNavClick = () => {
+    setMenuOpen(false);
+    onNavigate();
+  };
+
   return (
     <header className="site-header">
-      <a className="brand" href="#home" onClick={() => setMenuOpen(false)}>
+      <a className="brand" href="#home" onClick={handleNavClick}>
         RM
       </a>
 
@@ -27,7 +31,7 @@ function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, resumeLink }) {
 
       <nav className={`site-nav ${menuOpen ? 'open' : ''}`}>
         {navItems.map((item) => (
-          <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}>
+          <a key={item.href} href={item.href} onClick={handleNavClick}>
             {item.label}
           </a>
         ))}

@@ -214,6 +214,19 @@ footer {
   filter: blur(0);
 }
 
+.app-shell.revealed .site-header {
+  filter: none;
+  transform: translateX(-50%);
+  transition: none;
+}
+
+.app-shell.revealed main,
+.app-shell.revealed .contact {
+  filter: none;
+  transform: none;
+  transition: none;
+}
+
 .app-shell.ready .hero-content > * {
   opacity: 0;
   transform: translateY(1.6rem);
@@ -440,6 +453,11 @@ footer {
 
 .section {
   padding: 8rem 0;
+  scroll-margin-top: 9rem;
+}
+
+.hero {
+  scroll-margin-top: 9rem;
 }
 
 .section-title {
@@ -481,9 +499,20 @@ footer {
   color: var(--muted);
 }
 
-.about-grid {
-  display: grid;
-  gap: 2rem;
+.about-card p + p {
+  margin-top: 1.6rem;
+}
+
+/* Global `a` is color: inherit / no underline, so state both here. */
+.about-card a {
+  color: var(--brand);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.about-card a:hover {
+  color: var(--brand-strong);
+  border-color: currentColor;
 }
 
 .panel {
@@ -511,12 +540,34 @@ footer {
   background: var(--surface-strong);
 }
 
+.tech-groups {
+  margin-top: 1.6rem;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.tech-group-label {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* .chip-list's default 1.6rem top margin is the panel-level gap; inside a group the
+   label should sit closer to its own pills. */
+.tech-group .chip-list {
+  margin-top: 0.8rem;
+}
+
 .education-list {
   list-style: none;
   padding: 0;
   margin: 1.8rem 0 0;
   display: grid;
-  gap: 1.8rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.8rem 2rem;
 }
 
 .education-list li {
@@ -703,6 +754,13 @@ footer {
   font-size: 1.3rem;
 }
 
+.project-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.8rem;
+}
+
 .project-tag {
   margin: 0 0 1rem;
   color: var(--brand);
@@ -717,103 +775,61 @@ footer {
   gap: 1.4rem;
 }
 
-.course-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.6rem;
-}
-
-.course-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 1.8rem;
-  box-shadow: var(--shadow);
-  padding: 2.6rem;
-}
-
-.course-head {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: baseline;
-  flex-wrap: wrap;
-}
-
-.course-head h3 {
-  margin: 0;
-  font-size: 2.4rem;
-}
-
-.course-head p {
-  margin: 0;
-  color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.3rem;
-}
-
-.course-provider {
-  margin: 1rem 0 1.2rem;
-  color: var(--text);
-  font-size: 1.6rem;
-  font-weight: 600;
-}
-
-.course-text {
-  margin: 0.8rem 0 0;
+.education-subhead {
+  margin: 2.4rem 0 0;
+  font-size: 1.35rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--muted);
-  font-size: 1.5rem;
-  line-height: 1.65;
+  font-family: 'IBM Plex Mono', monospace;
 }
 
-.course-link {
-  margin-top: 1.5rem;
+.education-extra {
+  margin-top: 1.2rem;
+}
+
+.education-extra .education-header h4 {
+  font-size: 1.6rem;
+}
+
+.inline-link {
+  margin-top: 0.8rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
-  color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.3rem;
-}
-
-.course-link:hover {
-  color: var(--brand-strong);
-}
-
-.patent-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.6rem;
-}
-
-.patent-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 1.8rem;
-  box-shadow: var(--shadow);
-  padding: 2.2rem;
-}
-
-.patent-tag {
-  margin: 0 0 1rem;
+  gap: 0.7rem;
   color: var(--brand);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 1.25rem;
 }
 
-.patent-card h3 {
-  margin: 0;
-  font-size: 2.2rem;
-  line-height: 1.35;
+.inline-link:hover {
+  color: var(--brand-strong);
 }
 
-.patent-card a {
-  margin-top: 1.6rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.8rem;
-  color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.3rem;
+.about-education,
+.about-patents {
+  grid-column: 1 / -1;
+}
+
+.patent-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.6rem 0 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem 2rem;
+}
+
+.patent-list li {
+  border-left: 2px solid color-mix(in srgb, var(--brand) 50%, transparent);
+  padding-left: 1.2rem;
+}
+
+.patent-list p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.45rem;
+  line-height: 1.6;
 }
 
 .contact-section {
@@ -917,7 +933,11 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .patent-grid {
+  .education-list {
+    grid-template-columns: 1fr;
+  }
+
+  .patent-list {
     grid-template-columns: 1fr;
   }
 }
