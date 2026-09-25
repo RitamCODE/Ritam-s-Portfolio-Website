@@ -1,40 +1,69 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg: #faf8fb;
-  --bg-2: #f4f0f7;
-  --surface: #ffffff;
-  --surface-strong: #f3e9f7;
-  --text: #1d1626;
-  /* Long-form copy. Sits between --text and --muted: --muted is reserved for metadata,
-     and pure --text is heavier than needed for multi-paragraph reading. */
-  --text-body: #2b2433;
-  --muted: #605568;
-  --line: rgba(0, 0, 0, 0.1);
-  --line-strong: rgba(0, 0, 0, 0.2);
+  /* Warm stone light palette. Every value below comes from the approved table except
+     --bg-2, which is derived (70% --bg / 30% --line) to keep the alternating section
+     bands legible — the table has no tone between the page and a reading panel. */
+  --bg: #eeece7;
+  --bg-2: #e9e7e1;
+  --surface: #f7f5f0;
+  --surface-elevated: #fcfaf6;
+  --surface-inset: #f2efe9;
 
-  /* Text-on-page accent (links, icons, active states) — tuned per theme for
-     contrast against --bg. Kept separate from --accent below, which stays
-     the same purple in both themes for solid button fills. */
-  --brand: #813d9c;
-  --brand-strong: #613583;
+  --text: #29272d;
+  /* Long-form copy. Deliberately the same as --text in light: the reading panels are
+     already off-white, and softening body copy on top of that costs contrast for
+     nothing. Dark keeps its own lighter value below. */
+  --text-body: #29272d;
+  --muted: #625f68;
+  /* Muted metadata *inside* reading panels only (4.7:1 on --surface). Do not put it on
+     --bg-2 or a translucent surface without rechecking contrast. */
+  --muted-panel: #716d76;
 
-  --accent: #9141ac;
-  --accent-hover: #813d9c;
+  --line: #d7d2ca;
+  --line-strong: #8c858f;
+
+  /* Text-on-page accent (links, icons, active states). Kept separate from --accent
+     below, which is the solid button fill and stays its own value per theme. */
+  --brand: #76518f;
+  --brand-hover: #65417c;
+  --brand-pressed: #543567;
+
+  --accent: #76518f;
+  --accent-hover: #65417c;
+  --accent-pressed: #543567;
   --accent-fg: #ffffff;
 
-  /* Chip fills sit ~1.15:1 against their card in BOTH themes — they differ in hue,
-     not luminance — so the border is what makes a chip readable as a separate object.
-     Light needs a heavier mix than dark to clear 3:1. */
-  --chip-border: color-mix(in srgb, var(--accent) 70%, transparent);
+  /* Selected tabs and nav items: pale plum fill, dark plum label. */
+  --selected-bg: #e8dfee;
+  --selected-fg: #65417c;
 
-  --shadow: 0 1px 2px rgba(20, 20, 25, 0.04), 0 10px 28px rgba(20, 20, 25, 0.08);
-  --shadow-sm: 0 1px 2px rgba(20, 20, 25, 0.06);
+  /* Technology badges are passive <span>s, so they read as neutral chips rather than
+     as outlined controls. */
+  --chip-bg: #f2efe9;
+  --chip-fg: #625f68;
+  --chip-border: #d7d2ca;
+
+  /* Status colours. Defined for completeness; the site has no success/warning/error
+     state today, so nothing references them yet. */
+  --success-fg: #2d694f;
+  --success-bg: #e2eee5;
+  --warning-fg: #805715;
+  --warning-bg: #f3e8d1;
+  --error-fg: #a13941;
+  --error-bg: #f5e3e2;
+
+  /* Ordinary cards stay quieter than anything that floats. */
+  --shadow-sm: 0 1px 2px rgba(41, 39, 45, 0.04);
+  --shadow: 0 4px 16px rgba(41, 39, 45, 0.06);
 
   --radius-sm: 0.8rem;
   --radius-md: 1rem;
-  --radius-lg: 1.4rem;
-  --radius-xl: 2rem;
+  --radius-nav: 1.2rem;
+  --radius-lg: 1.6rem;
+
+  /* One step for every heading-to-content gap, so panels breathe identically. */
+  --space-heading: 1.6rem;
 
   /* Page geometry. The width cap lives on each section rather than on <main>, so section
      backgrounds can paint edge to edge while their content stays contained. */
@@ -42,13 +71,15 @@
   --rail: 26rem;
   --page-gutter: clamp(2rem, 5vw, 6rem);
 
-  --header-surface: rgba(255, 255, 255, 0.78);
-  --overlay-surface: rgba(255, 255, 255, 0.97);
+  --header-surface: rgba(252, 250, 246, 0.92);
 
-  --focus-ring: 0 0 0 0.3rem color-mix(in srgb, var(--accent) 45%, transparent);
+  /* Two layers: a thin page-coloured gap, then a solid plum ring. The gap is what keeps
+     the indicator visible on the primary button, whose fill is the same plum; a single
+     translucent ring measured only ~2:1 against a reading panel. */
+  --focus-ring: 0 0 0 0.2rem var(--bg), 0 0 0 0.45rem var(--brand);
 
-  --duration-fast: 240ms;
-  --duration-base: 360ms;
+  --duration-fast: 140ms;
+  --duration-base: 200ms;
   --duration-reveal: 900ms;
   --ease-standard: cubic-bezier(0.2, 0, 0, 1);
   /* Deep decelerating ease for entrances — the slow settle Apple's pages use. */
@@ -59,31 +90,47 @@
   --bg: #1b1622;
   --bg-2: #15111b;
   --surface: #262030;
-  --surface-strong: #3a2547;
+  --surface-elevated: #2e2739;
+  --surface-inset: #1f1a28;
   --text: #ffffff;
   /* Deliberately not #ffffff — pure white paragraphs on a dark surface halate. */
   --text-body: #e7e2ed;
   --muted: #b8b0c4;
+  --muted-panel: #b8b0c4;
   --line: rgba(255, 255, 255, 0.12);
   --line-strong: rgba(255, 255, 255, 0.22);
 
   --brand: #dc8add;
-  --brand-strong: #e9b8e9;
+  --brand-hover: #e9b8e9;
+  --brand-pressed: #e9b8e9;
 
   --accent: #9141ac;
   --accent-hover: #a84fc2;
+  --accent-pressed: #813d9c;
   --accent-fg: #ffffff;
 
-  /* On dark the lighter --brand carries the edge better than the deeper --accent. */
+  --selected-bg: color-mix(in srgb, var(--accent) 18%, var(--surface));
+  --selected-fg: var(--brand);
+
+  /* The dark chip fill sits ~1.15:1 against its card — it differs in hue, not luminance —
+     so the border is what makes a chip readable as a separate object. */
+  --chip-bg: #3a2547;
+  --chip-fg: var(--brand);
   --chip-border: color-mix(in srgb, var(--brand) 60%, transparent);
 
-  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
+  --success-fg: #8ddaa8;
+  --success-bg: #1f3a2c;
+  --warning-fg: #e5c07b;
+  --warning-bg: #3a2e18;
+  --error-fg: #f0928f;
+  --error-bg: #3d2224;
+
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
 
   --header-surface: rgba(30, 24, 38, 0.72);
-  --overlay-surface: rgba(38, 32, 48, 0.97);
 
-  --focus-ring: 0 0 0 0.3rem color-mix(in srgb, var(--accent) 55%, transparent);
+  --focus-ring: 0 0 0 0.2rem var(--bg), 0 0 0 0.45rem var(--brand);
 }
 
 * {
@@ -167,8 +214,8 @@ footer {
   aspect-ratio: 1;
   border-radius: 50%;
   filter: blur(90px);
-  opacity: 0.28;
-  background: var(--accent);
+  opacity: 0.14;
+  background: var(--brand);
 }
 
 .landing-radial-left {
@@ -338,15 +385,23 @@ footer {
   width: min(var(--page-max), calc(100% - 2.4rem));
   z-index: 20;
   background: var(--header-surface);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
   border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-nav);
+  box-shadow: var(--shadow);
   padding: 1.2rem 1.6rem;
   display: flex;
   align-items: center;
   gap: 1.6rem;
+}
+
+/* Without backdrop-filter the 92% tint would let body text show through the bar, so the
+   surface goes fully opaque instead. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header {
+    background: var(--surface-elevated);
+  }
 }
 
 .brand {
@@ -366,11 +421,14 @@ footer {
 /* Same feedback as the hero buttons — lift on hover, compress on press — rather than
    the wiping underline the inline body links use. */
 .site-nav a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3.4rem;
   font-size: 1.4rem;
   font-weight: 500;
   color: var(--muted);
-  padding: 0.7rem 1.1rem;
-  border-radius: 999px;
+  padding: 0 1.2rem;
+  border-radius: var(--radius-md);
   transition: color var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard),
     transform var(--duration-fast) var(--ease-standard);
@@ -378,7 +436,7 @@ footer {
 
 .site-nav a:hover {
   color: var(--text);
-  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  background: var(--surface-inset);
   transform: translateY(-0.1rem);
 }
 
@@ -395,9 +453,9 @@ footer {
 .theme-toggle,
 .resume-link {
   border: 1px solid var(--line-strong);
-  background: transparent;
+  background: var(--surface);
   color: var(--text);
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   min-height: 4rem;
   padding: 0 1.4rem;
   display: inline-flex;
@@ -410,9 +468,12 @@ footer {
     color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
 }
 
+/* The one purposeful circular control in the toolbar: an icon-only toggle. */
 .theme-toggle {
   width: 4rem;
+  border-radius: 999px;
   padding: 0;
+  font-size: 1.5rem;
 }
 
 .resume-link {
@@ -425,11 +486,13 @@ footer {
 .resume-link:hover {
   border-color: var(--brand);
   color: var(--brand);
+  background: var(--surface-elevated);
   transform: translateY(-0.1rem);
 }
 
 .theme-toggle:active,
 .resume-link:active {
+  color: var(--brand-pressed);
   transform: scale(0.97);
 }
 
@@ -438,9 +501,16 @@ footer {
   width: 4rem;
   height: 4rem;
   border: 1px solid var(--line-strong);
-  border-radius: var(--radius-sm);
-  background: transparent;
+  border-radius: var(--radius-md);
+  background: var(--surface);
   cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.menu-toggle:hover {
+  border-color: var(--brand);
+  background: var(--surface-elevated);
 }
 
 .menu-toggle span {
@@ -476,18 +546,6 @@ footer {
 
 .hero-art {
   grid-column: text-end / art-end;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  right: -10%;
-  width: 60rem;
-  aspect-ratio: 1;
-  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
-  z-index: 0;
-  pointer-events: none;
 }
 
 .hero-content,
@@ -559,6 +617,10 @@ footer {
   background: var(--accent-hover);
 }
 
+.btn-primary:active {
+  background: var(--accent-pressed);
+}
+
 .btn-secondary {
   border-color: var(--line-strong);
   color: var(--text);
@@ -568,6 +630,12 @@ footer {
 .btn-secondary:hover {
   border-color: var(--brand);
   color: var(--brand);
+  background: var(--surface-elevated);
+}
+
+.btn-secondary:active {
+  color: var(--brand-pressed);
+  border-color: var(--brand-pressed);
 }
 
 .hero-art {
@@ -691,7 +759,7 @@ footer {
 
 .about-card:hover,
 .panel:hover {
-  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
+  border-color: var(--line-strong);
 }
 
 .about-card {
@@ -715,12 +783,12 @@ footer {
 /* Global `a` is color: inherit / no underline, so state both here. */
 .about-card a {
   color: var(--brand);
-  border-bottom: 1px solid color-mix(in srgb, var(--brand) 45%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--brand) 50%, transparent);
   transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 
 .about-card a:hover {
-  color: var(--brand-strong);
+  color: var(--brand-hover);
   border-color: currentColor;
 }
 
@@ -735,31 +803,26 @@ footer {
 }
 
 .chip-list {
-  margin-top: 1.6rem;
+  margin-top: var(--space-heading);
   display: flex;
   flex-wrap: wrap;
   gap: 0.8rem;
 }
 
+/* Passive badges, not controls — no hover state, no accent outline competing with the
+   real interactive elements around them. */
 .chip-list span {
   font-size: 1.25rem;
   font-weight: 500;
   border: 1px solid var(--chip-border);
-  color: var(--brand);
-  border-radius: 999px;
-  padding: 0.55rem 1.1rem;
-  background: var(--surface-strong);
-  transition: background-color var(--duration-fast) var(--ease-standard),
-    border-color var(--duration-fast) var(--ease-standard);
-}
-
-.chip-list span:hover {
-  background: color-mix(in srgb, var(--accent) 22%, var(--surface-strong));
-  border-color: var(--brand);
+  color: var(--chip-fg);
+  border-radius: var(--radius-md);
+  padding: 0.5rem 1rem;
+  background: var(--chip-bg);
 }
 
 .tech-groups {
-  margin-top: 1.6rem;
+  margin-top: var(--space-heading);
   display: grid;
   gap: 1.2rem;
 }
@@ -770,7 +833,7 @@ footer {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--muted-panel);
 }
 
 /* .chip-list's default 1.6rem top margin is the panel-level gap; inside a group the
@@ -782,14 +845,14 @@ footer {
 .education-list {
   list-style: none;
   padding: 0;
-  margin: 1.8rem 0 0;
+  margin: var(--space-heading) 0 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.8rem 2rem;
 }
 
 .education-list li {
-  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-left: 2px solid var(--brand);
   padding-left: 1.2rem;
 }
 
@@ -809,12 +872,12 @@ footer {
 .education-header span {
   font-size: 1.25rem;
   font-weight: 500;
-  color: var(--muted);
+  color: var(--muted-panel);
 }
 
 .education-list p {
   margin: 0.6rem 0 0;
-  color: var(--muted);
+  color: var(--muted-panel);
   font-size: 1.4rem;
   line-height: 1.6;
 }
@@ -825,30 +888,54 @@ footer {
   gap: 2rem;
 }
 
+/* Segmented control: the wrapper is the track, the buttons are the segments, and the
+   active one is the raised thumb. ~42rem/10 tall overall, so it lines up with the other
+   toolbar-scale controls rather than reading as two oversized buttons. */
 .experience-group-toggle {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-bottom: 1.4rem;
+  display: inline-flex;
+  /* It is a grid item of .section, so it would otherwise stretch to the height of the
+     section-title sharing its row — which is what made the old control oversized. */
+  align-self: start;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+  gap: 0.2rem;
+  padding: 0.3rem;
+  margin-bottom: 2rem;
+  background: var(--surface-inset);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
 }
 
 .experience-group-toggle button {
-  border: 1px solid var(--line-strong);
+  flex: 0 1 auto;
+  min-height: 3.4rem;
+  border: 1px solid transparent;
   color: var(--muted);
-  background: var(--surface);
+  background: transparent;
   border-radius: var(--radius-sm);
-  padding: 0.8rem 1.4rem;
+  padding: 0 1.6rem;
   cursor: pointer;
   font-size: 1.35rem;
   font-weight: 500;
-  transition: border-color var(--duration-fast) var(--ease-standard),
-    color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
+  white-space: nowrap;
+  transition: color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    box-shadow var(--duration-fast) var(--ease-standard);
 }
 
+.experience-group-toggle button:hover {
+  color: var(--text);
+}
+
+/* Same selected language as the company tabs and the nav: pale plum fill, dark plum
+   label. An elevated-surface thumb measured only 1.1:1 against the track, so the fill
+   would have been carrying no weight on its own. */
 .experience-group-toggle button.active {
-  border-color: var(--accent);
-  color: var(--brand);
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  color: var(--selected-fg);
+  background: var(--selected-bg);
+  border-color: color-mix(in srgb, var(--brand) 25%, var(--line));
+  box-shadow: var(--shadow-sm);
 }
 
 .experience-tabs {
@@ -859,11 +946,12 @@ footer {
 
 .experience-tabs button {
   text-align: left;
+  min-height: 4.2rem;
   border: 1px solid var(--line-strong);
   color: var(--muted);
   background: var(--surface);
-  border-radius: var(--radius-sm);
-  padding: 1.1rem 1.2rem;
+  border-radius: var(--radius-md);
+  padding: 1rem 1.4rem;
   cursor: pointer;
   font-size: 1.45rem;
   font-weight: 500;
@@ -871,10 +959,16 @@ footer {
     color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
 
+.experience-tabs button:hover {
+  border-color: var(--brand);
+  color: var(--text);
+}
+
+/* Fill *and* outline: the border alone should never be the only cue for which tab is on. */
 .experience-tabs button.active {
-  border-color: var(--accent);
-  color: var(--brand);
-  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border-color: var(--brand);
+  color: var(--selected-fg);
+  background: var(--selected-bg);
 }
 
 /* ExperienceSection keys this element on the active id, so React remounts it on every
@@ -905,14 +999,14 @@ footer {
 
 .experience-head p {
   margin: 0;
-  color: var(--muted);
+  color: var(--muted-panel);
   font-size: 1.3rem;
   font-weight: 500;
 }
 
 .experience-location {
   margin: 1rem 0 1.4rem;
-  color: var(--muted);
+  color: var(--muted-panel);
   font-size: 1.45rem;
 }
 
@@ -928,7 +1022,7 @@ footer {
 }
 
 .experience-link:hover {
-  color: var(--brand-strong);
+  color: var(--brand-hover);
 }
 
 .experience-panel ul {
@@ -976,7 +1070,7 @@ footer {
 .app-shell.motion-ready .project-card.is-revealed:hover,
 .project-card:hover {
   transform: translateY(-0.2rem);
-  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  border-color: var(--line-strong);
   box-shadow: var(--shadow);
 }
 
@@ -1005,7 +1099,7 @@ footer {
 }
 
 .project-card a:hover {
-  color: var(--brand-strong);
+  color: var(--brand-hover);
 }
 
 .project-links {
@@ -1033,15 +1127,16 @@ footer {
 
 .education-subhead {
   margin: 2.4rem 0 0;
+  /* Section-within-a-panel label: more air above than the panel heading needs. */
   font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--muted-panel);
 }
 
 .education-extra {
-  margin-top: 1.2rem;
+  margin-top: var(--space-heading);
 }
 
 .education-extra .education-header h4 {
@@ -1060,7 +1155,7 @@ footer {
 }
 
 .inline-link:hover {
-  color: var(--brand-strong);
+  color: var(--brand-hover);
 }
 
 .about-education,
@@ -1071,14 +1166,14 @@ footer {
 .patent-list {
   list-style: none;
   padding: 0;
-  margin: 1.6rem 0 0;
+  margin: var(--space-heading) 0 0;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.6rem 2rem;
 }
 
 .patent-list li {
-  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
+  border-left: 2px solid var(--brand);
   padding-left: 1.2rem;
 }
 
@@ -1134,7 +1229,7 @@ footer {
 }
 
 .mail-link:hover {
-  color: var(--brand-strong);
+  color: var(--brand-hover);
 }
 
 .social-links {
@@ -1144,11 +1239,13 @@ footer {
   justify-content: center;
 }
 
+/* Purposefully circular: icon-only, equal-weight actions. */
 .social-links a {
   width: 4.4rem;
   height: 4.4rem;
   border: 1px solid var(--line-strong);
   border-radius: 999px;
+  background: var(--surface);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -1161,6 +1258,7 @@ footer {
 .social-links a:hover {
   border-color: var(--brand);
   color: var(--brand);
+  background: var(--surface-elevated);
 }
 
 .social-links a:active {
@@ -1217,10 +1315,10 @@ footer {
   transform: scaleX(1);
 }
 
-/* The active section reads as a filled pill now that the underline indicator is gone. */
+/* The active section reads as a filled chip now that the underline indicator is gone. */
 .site-nav a.active {
-  color: var(--brand);
-  background: color-mix(in srgb, var(--accent) 14%, transparent);
+  color: var(--selected-fg);
+  background: var(--selected-bg);
 }
 
 /* Scroll position indicator along the bottom edge of the header. Pure CSS — it is driven
@@ -1267,8 +1365,11 @@ footer {
     column-gap: 0;
   }
 
+  /* Stacked above the content now that the rail is gone, so the gap becomes a
+     heading-to-content gap rather than a column offset. */
   .section > .section-title {
     grid-column: content-start / content-end;
+    margin-bottom: 2.4rem;
   }
 
   .hero {
@@ -1330,6 +1431,34 @@ footer {
     display: flex;
   }
 
+  /* Full-width rows on the header's own elevated surface. The tap target is in px on
+     purpose: below 520px the root drops to 56.25%, and a rem value would shrink the
+     row under the 44px minimum right where it matters most. */
+  .site-nav a {
+    width: 100%;
+    min-height: 44px;
+    border-radius: var(--radius-md);
+  }
+
+  .site-nav a.active {
+    background: var(--selected-bg);
+  }
+
+  .experience-group-toggle {
+    width: 100%;
+  }
+
+  /* Same reason as the nav rows: keep the segments touch-sized once the root font
+     drops, which puts the whole control at ~46px. */
+  .experience-group-toggle button {
+    flex: 1 1 0;
+    min-height: 38px;
+  }
+
+  .experience-tabs button {
+    min-height: 44px;
+  }
+
   .header-actions {
     margin-left: 0;
   }
@@ -1346,6 +1475,15 @@ footer {
 
   .project-grid {
     grid-template-columns: 1fr;
+  }
+
+  .about-card {
+    padding: 2.4rem 2rem;
+  }
+
+  .panel,
+  .experience-panel {
+    padding: 2.2rem 2rem;
   }
 }
 

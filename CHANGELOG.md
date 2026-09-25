@@ -32,6 +32,33 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- Light mode moved off white and purple onto a warm stone palette: an off-white
+  `#eeece7` page with alternating slightly deeper bands, `#f7f5f0` reading panels and a
+  quieter `#76518f` plum for links, buttons and accents. No large surface is pure white
+  any more, and the browser chrome on mobile picks up the page colour too. Dark mode is
+  unchanged.
+- The desktop Industry/Academia control is now a compact segmented control about 42px
+  tall — a recessed track with the selected side filled — instead of two oversized
+  buttons that stretched to the height of the section heading beside them.
+- Selected things look the same everywhere now: the current nav item, the active
+  Industry/Academia side and the selected company tab all use a pale plum fill with a
+  dark plum label.
+- Technology badges read as passive labels rather than controls — neutral stone chips
+  with grey text, no purple outline and no hover effect, so they stop competing with the
+  buttons and tabs around them.
+- Toolbar controls line up: the menu button, theme toggle and Resume button share one
+  height, one border weight and one icon size, and corner rounding follows a single
+  scale across buttons, navigation and cards.
+- The keyboard focus ring is now a solid plum outline with a thin gap, replacing a faint
+  translucent halo that was hard to see against a reading panel and invisible on the
+  plum primary button.
+- Hover, press and selection feedback is quicker — roughly 140–200ms instead of
+  240–360ms — so controls feel responsive rather than laggy.
+- The soft purple glow behind the hero is gone, and the colour wash on the opening
+  splash is about half as strong.
+- Headings sit a consistent distance from the content below them, and on narrow screens
+  nav rows, the Industry/Academia control and the company tabs are all at least 44px
+  tall for touch.
 - Hero portrait no longer sits in a cropped square card. The framing box (border,
   shadow, rounded corners) is gone and the full cutout image now blends straight
   into the section background.
