@@ -81,8 +81,9 @@ function ExperienceSection({ experiences }) {
           ))}
         </div>
 
+        {/* Keyed so React remounts on every switch, replaying the panel-in animation. */}
         {activeExperience && (
-          <article className="experience-panel">
+          <article className="experience-panel" key={activeExperience.id}>
             <div className="experience-head">
               <h3>
                 {activeExperience.role} <span>@ {activeExperience.company}</span>

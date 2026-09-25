@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import AboutSection from './components/AboutSection';
@@ -51,6 +52,9 @@ function App() {
   const [theme, setTheme] = useState(getInitialTheme);
   const [introState, setIntroState] = useState(getInitialIntroState);
   const [revealed, setRevealed] = useState(() => getInitialIntroState() === 'hidden');
+  const [headerHidden, setHeaderHidden] = useState(false);
+  const [motionReady, setMotionReady] = useState(false);
+  const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
@@ -61,6 +65,50 @@ function App() {
     const onScroll = () => setMenuOpen((open) => (open ? false : open));
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // GNOME Shell hides the top bar and brings it back when the pointer reaches the screen
+  // edge. Touch devices have no pointer to reach that edge, so there the nav comes back on
+  // an upward scroll instead — otherwise it would only be reachable from the top of the page.
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+
+    const revealsOnScrollUp = window.matchMedia('(hover: none)').matches;
+    const REVEAL_ZONE = 96;
+    const PINNED_UNTIL = 160;
+
+    let pointerNearTop = false;
+    let lastY = window.scrollY;
+    let frame = 0;
+
+    const resolve = () => {
+      frame = 0;
+      const y = window.scrollY;
+      const scrollingUp = y < lastY;
+      lastY = y;
+      setHeaderHidden(y > PINNED_UNTIL && !pointerNearTop && !(revealsOnScrollUp && scrollingUp));
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(resolve);
+    };
+
+    const onPointerMove = (event) => {
+      const near = event.clientY <= REVEAL_ZONE;
+      if (near === pointerNearTop) return;
+      pointerNearTop = near;
+      schedule();
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('pointermove', onPointerMove, { passive: true });
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      window.removeEventListener('pointermove', onPointerMove);
+    };
   }, []);
 
   useEffect(() => {
@@ -97,10 +145,97 @@ function App() {
     return () => window.clearTimeout(settleTimer);
   }, [introState, revealed]);
 
+  // Reveal-on-scroll. Waits for the intro so nothing animates behind an opacity-0 <main>.
+  // `motion-ready` is what arms the hidden start state in CSS — if this effect never runs,
+  // the content is simply visible rather than stuck invisible.
+  useEffect(() => {
+    if (introState !== 'hidden') return undefined;
+
+    const targets = document.querySelectorAll(
+      '.section-title, .about-card, .panel, .project-card, .experience-group-toggle, .experience-layout'
+    );
+
+    // Never arm the hidden state without a working observer to undo it, or the page
+    // renders blank.
+    if (!('IntersectionObserver' in window)) return undefined;
+
+    targets.forEach((el) => el.classList.add('reveal'));
+    setMotionReady(true);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-revealed');
+          observer.unobserve(entry.target);
+        });
+      },
+      // Fires a little before the block is comfortably in view, so the ~0.9s reveal
+      // has settled by the time the eye reaches it.
+      { threshold: 0.08, rootMargin: '0px 0px -5% 0px' }
+    );
+
+    targets.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [introState]);
+
+  // Drives the nav's active-section indicator.
+  useEffect(() => {
+    const sections = document.querySelectorAll('section[id], footer[id]');
+    if (!sections.length) return undefined;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-40% 0px -50% 0px' }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => observer.disconnect();
+  }, []);
+
   const isDark = theme === 'dark';
 
-  const toggleTheme = () => {
-    setTheme((current) => (current === 'dark' ? 'light' : 'dark'));
+  const toggleTheme = (event) => {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!document.startViewTransition || reducedMotion) {
+      setTheme(next);
+      return;
+    }
+
+    // The circle grows from the toggle itself, so it needs the click coordinates and a
+    // radius reaching the furthest corner of the viewport.
+    const x = event?.clientX ?? window.innerWidth - 80;
+    const y = event?.clientY ?? 40;
+    const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+
+    // flushSync is required: React 18 would otherwise batch the state update to after the
+    // transition snapshot, and the wipe would reveal the old theme.
+    const transition = document.startViewTransition(() => flushSync(() => setTheme(next)));
+
+    transition.ready
+      .then(() => {
+        document.documentElement.animate(
+          {
+            clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`]
+          },
+          {
+            duration: 480,
+            easing: 'cubic-bezier(0.2, 0, 0, 1)',
+            pseudoElement: '::view-transition-new(root)'
+          }
+        );
+      })
+      // `ready` rejects when the transition is abandoned — the tab is hidden partway
+      // through, or a second toggle supersedes this one. The theme has already been
+      // applied by then, so the wipe is all that is lost and there is nothing to report.
+      .catch(() => {});
   };
 
   // Clicking a nav link while the intro is still playing should jump straight to the
@@ -112,11 +247,17 @@ function App() {
   const isReady = introState === 'hidden';
 
   return (
-    <div className={`app-shell ${isReady ? 'ready' : ''} ${revealed ? 'revealed' : ''}`}>
+    <div
+      className={`app-shell ${isReady ? 'ready' : ''} ${revealed ? 'revealed' : ''} ${
+        motionReady ? 'motion-ready' : ''
+      }`}
+    >
       <LandingIntro state={introState} profile={profile} />
       <Header
         menuOpen={menuOpen}
         setMenuOpen={setMenuOpen}
+        isHidden={headerHidden && !menuOpen}
+        activeSection={activeSection}
         isDark={isDark}
         onThemeToggle={toggleTheme}
         onNavigate={skipIntro}

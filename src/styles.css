@@ -1,58 +1,125 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --bg: #0b1b33;
-  --bg-2: #12294a;
-  --surface: rgba(13, 27, 52, 0.84);
-  --surface-strong: #17315a;
-  --text: #e8f0ff;
-  --muted: #afc1dd;
-  --line: rgba(145, 174, 226, 0.22);
-  --base-glow: #295abf;
-  --base-glow-strong: #1a438f;
-  --brand: #117b4f;
-  --brand-strong: #0c5f3d;
-  --shadow: 0 16px 40px rgba(2, 8, 24, 0.5);
+  --bg: #faf8fb;
+  --bg-2: #f4f0f7;
+  --surface: #ffffff;
+  --surface-strong: #f3e9f7;
+  --text: #1d1626;
+  /* Long-form copy. Sits between --text and --muted: --muted is reserved for metadata,
+     and pure --text is heavier than needed for multi-paragraph reading. */
+  --text-body: #2b2433;
+  --muted: #605568;
+  --line: rgba(0, 0, 0, 0.1);
+  --line-strong: rgba(0, 0, 0, 0.2);
+
+  /* Text-on-page accent (links, icons, active states) — tuned per theme for
+     contrast against --bg. Kept separate from --accent below, which stays
+     the same purple in both themes for solid button fills. */
+  --brand: #813d9c;
+  --brand-strong: #613583;
+
+  --accent: #9141ac;
+  --accent-hover: #813d9c;
+  --accent-fg: #ffffff;
+
+  /* Chip fills sit ~1.15:1 against their card in BOTH themes — they differ in hue,
+     not luminance — so the border is what makes a chip readable as a separate object.
+     Light needs a heavier mix than dark to clear 3:1. */
+  --chip-border: color-mix(in srgb, var(--accent) 70%, transparent);
+
+  --shadow: 0 1px 2px rgba(20, 20, 25, 0.04), 0 10px 28px rgba(20, 20, 25, 0.08);
+  --shadow-sm: 0 1px 2px rgba(20, 20, 25, 0.06);
+
+  --radius-sm: 0.8rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.4rem;
+  --radius-xl: 2rem;
+
+  /* Page geometry. The width cap lives on each section rather than on <main>, so section
+     backgrounds can paint edge to edge while their content stays contained. */
+  --page-max: 132rem;
+  --rail: 26rem;
+  --page-gutter: clamp(2rem, 5vw, 6rem);
+
+  --header-surface: rgba(255, 255, 255, 0.78);
+  --overlay-surface: rgba(255, 255, 255, 0.97);
+
+  --focus-ring: 0 0 0 0.3rem color-mix(in srgb, var(--accent) 45%, transparent);
+
+  --duration-fast: 240ms;
+  --duration-base: 360ms;
+  --duration-reveal: 900ms;
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  /* Deep decelerating ease for entrances — the slow settle Apple's pages use. */
+  --ease-reveal: cubic-bezier(0.32, 0.72, 0, 1);
 }
 
 :root[data-theme='dark'] {
-  --bg: #060f20;
-  --bg-2: #0a1833;
-  --surface: rgba(10, 21, 44, 0.86);
-  --surface-strong: #12284f;
-  --text: #e4edff;
-  --muted: #9fb4d9;
-  --line: rgba(132, 162, 218, 0.24);
-  --base-glow: #2f67d3;
-  --base-glow-strong: #1f4ca7;
-  --brand: #2ac178;
-  --brand-strong: #8ef2bf;
-  --shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --bg: #1b1622;
+  --bg-2: #15111b;
+  --surface: #262030;
+  --surface-strong: #3a2547;
+  --text: #ffffff;
+  /* Deliberately not #ffffff — pure white paragraphs on a dark surface halate. */
+  --text-body: #e7e2ed;
+  --muted: #b8b0c4;
+  --line: rgba(255, 255, 255, 0.12);
+  --line-strong: rgba(255, 255, 255, 0.22);
+
+  --brand: #dc8add;
+  --brand-strong: #e9b8e9;
+
+  --accent: #9141ac;
+  --accent-hover: #a84fc2;
+  --accent-fg: #ffffff;
+
+  /* On dark the lighter --brand carries the edge better than the deeper --accent. */
+  --chip-border: color-mix(in srgb, var(--brand) 60%, transparent);
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 10px 28px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+
+  --header-surface: rgba(30, 24, 38, 0.72);
+  --overlay-surface: rgba(38, 32, 48, 0.97);
+
+  --focus-ring: 0 0 0 0.3rem color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Theme change is driven by a View Transition (see toggleTheme in App.jsx). The default
+   cross-fade is suppressed so the clip-path circle animation is the only motion, with
+   the incoming theme stacked above the outgoing one. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
 html {
   font-size: 62.5%;
   scroll-behavior: smooth;
   min-height: 100%;
-  background:
-    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--base-glow) 26%, transparent), transparent 45%),
-    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--base-glow-strong) 22%, transparent), transparent 38%),
-    linear-gradient(165deg, var(--bg), var(--bg-2));
+  background: var(--bg);
   overscroll-behavior-y: none;
 }
 
 body {
   margin: 0;
-  font-family: 'Space Grotesk', sans-serif;
+  font-family: 'Inter', system-ui, sans-serif;
   color: var(--text);
-  background:
-    radial-gradient(circle at 8% 10%, color-mix(in srgb, var(--base-glow) 26%, transparent), transparent 45%),
-    radial-gradient(circle at 92% 6%, color-mix(in srgb, var(--base-glow-strong) 22%, transparent), transparent 38%),
-    linear-gradient(165deg, var(--bg), var(--bg-2));
+  background: var(--bg);
   min-height: 100vh;
   overscroll-behavior-y: none;
 }
@@ -70,10 +137,18 @@ a {
   text-decoration: none;
 }
 
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border-radius: var(--radius-sm);
+}
+
 main,
 footer {
-  width: min(114rem, calc(100% - 4rem));
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
 }
 
 .landing-intro {
@@ -83,41 +158,27 @@ footer {
   display: grid;
   place-items: center;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 18% 18%, color-mix(in srgb, var(--base-glow) 28%, transparent), transparent 52%),
-    radial-gradient(circle at 82% 30%, color-mix(in srgb, var(--base-glow-strong) 24%, transparent), transparent 50%),
-    linear-gradient(155deg, #050f24, #0b1d48 42%, #060f2a);
-}
-
-.landing-noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.12;
-  background-image:
-    radial-gradient(circle at 25% 20%, #fff 0.08rem, transparent 0.09rem),
-    radial-gradient(circle at 75% 75%, #fff 0.08rem, transparent 0.09rem);
-  background-size: 2.8rem 2.8rem;
-  animation: intro-noise-shift 6s linear infinite;
+  background: var(--bg);
 }
 
 .landing-radial {
   position: absolute;
-  width: 40rem;
+  width: 46rem;
   aspect-ratio: 1;
   border-radius: 50%;
-  filter: blur(70px);
-  opacity: 0.5;
-  background: color-mix(in srgb, var(--base-glow) 70%, transparent);
+  filter: blur(90px);
+  opacity: 0.28;
+  background: var(--accent);
 }
 
 .landing-radial-left {
-  top: -12rem;
-  left: -10rem;
+  top: -14rem;
+  left: -12rem;
 }
 
 .landing-radial-right {
-  right: -8rem;
-  bottom: -10rem;
+  right: -10rem;
+  bottom: -12rem;
 }
 
 .landing-content {
@@ -128,13 +189,13 @@ footer {
 
 .landing-label {
   margin: 0;
-  color: color-mix(in srgb, var(--brand) 80%, #9bf4c6);
+  color: var(--brand);
   font-size: 1.3rem;
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: 0.2em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   opacity: 0;
-  animation: intro-fade-up 0.65s ease forwards;
+  animation: intro-fade-up 0.5s var(--ease-standard) forwards;
 }
 
 .landing-content h1 {
@@ -142,31 +203,33 @@ footer {
   display: grid;
   gap: 0.3rem;
   font-size: clamp(4.2rem, 10vw, 11rem);
-  line-height: 0.9;
+  font-weight: 700;
+  line-height: 0.98;
   letter-spacing: -0.02em;
-  color: #e9f1ff;
+  color: var(--text);
 }
 
 .landing-content h1 span {
   display: block;
   opacity: 0;
-  transform: translateY(2.4rem);
+  transform: translateY(1.6rem);
 }
 
 .landing-content h1 span:first-child {
-  animation: intro-fade-up 0.85s cubic-bezier(0.17, 0.67, 0.2, 0.98) 0.15s forwards;
+  animation: intro-fade-up 0.6s var(--ease-standard) 0.1s forwards;
 }
 
 .landing-content h1 span:last-child {
-  animation: intro-fade-up 0.85s cubic-bezier(0.17, 0.67, 0.2, 0.98) 0.3s forwards;
+  animation: intro-fade-up 0.6s var(--ease-standard) 0.2s forwards;
 }
 
 .landing-progress {
   margin-top: 2.8rem;
   height: 0.2rem;
   width: min(42rem, 80%);
-  background: color-mix(in srgb, #fff 12%, transparent);
+  background: var(--line);
   overflow: hidden;
+  border-radius: 999px;
 }
 
 .landing-progress span {
@@ -174,31 +237,31 @@ footer {
   height: 100%;
   width: 100%;
   transform-origin: left center;
-  background: linear-gradient(90deg, var(--brand), #9bf4c6);
-  animation: intro-progress 1.45s cubic-bezier(0.25, 1, 0.3, 1) 0.2s forwards;
+  background: var(--accent);
+  animation: intro-progress 1.1s var(--ease-standard) 0.15s forwards;
 }
 
 .landing-intro.is-exiting {
-  animation: intro-exit 0.75s cubic-bezier(0.7, 0.05, 0.28, 0.98) forwards;
+  animation: intro-exit 0.5s var(--ease-standard) forwards;
 }
 
 .landing-intro.is-exiting .landing-content {
-  animation: intro-content-exit 0.4s ease forwards;
+  animation: intro-content-exit 0.3s ease forwards;
 }
 
 .app-shell .site-header {
   opacity: 0;
-  transform: translate(-50%, 2.4rem);
-  filter: blur(0.8rem);
-  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+  transform: translate(-50%, 1.6rem);
+  filter: blur(0.6rem);
+  transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard), filter 0.5s var(--ease-standard);
 }
 
 .app-shell main,
 .app-shell .contact {
   opacity: 0;
-  transform: translateY(2.4rem);
-  filter: blur(0.8rem);
-  transition: opacity 0.75s ease, transform 0.75s ease, filter 0.75s ease;
+  transform: translateY(1.6rem);
+  filter: blur(0.6rem);
+  transition: opacity 0.5s var(--ease-standard), transform 0.5s var(--ease-standard), filter 0.5s var(--ease-standard);
 }
 
 .app-shell.ready .site-header {
@@ -214,10 +277,28 @@ footer {
   filter: blur(0);
 }
 
+/* The blur filter is dropped once the reveal settles (see App.jsx), but transform and
+   opacity keep transitioning here — that is what animates the auto-hide below. */
 .app-shell.revealed .site-header {
   filter: none;
   transform: translateX(-50%);
-  transition: none;
+  transition: transform var(--duration-base) var(--ease-standard),
+    opacity var(--duration-base) var(--ease-standard);
+}
+
+.site-header.is-hidden,
+.app-shell.revealed .site-header.is-hidden {
+  transform: translate(-50%, calc(-100% - 2rem));
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Tabbing into the hidden bar has to bring it back, or the nav becomes keyboard-unreachable. */
+.site-header.is-hidden:focus-within,
+.app-shell.revealed .site-header.is-hidden:focus-within {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .app-shell.revealed main,
@@ -229,24 +310,24 @@ footer {
 
 .app-shell.ready .hero-content > * {
   opacity: 0;
-  transform: translateY(1.6rem);
-  animation: hero-rise 0.65s ease forwards;
+  transform: translateY(2rem);
+  animation: hero-rise var(--duration-reveal) var(--ease-reveal) forwards;
 }
 
 .app-shell.ready .hero-content > :nth-child(1) {
-  animation-delay: 0.16s;
+  animation-delay: 0.15s;
 }
 
 .app-shell.ready .hero-content > :nth-child(2) {
-  animation-delay: 0.26s;
+  animation-delay: 0.3s;
 }
 
 .app-shell.ready .hero-content > :nth-child(3) {
-  animation-delay: 0.36s;
+  animation-delay: 0.45s;
 }
 
 .app-shell.ready .hero-content > :nth-child(4) {
-  animation-delay: 0.46s;
+  animation-delay: 0.6s;
 }
 
 .site-header {
@@ -254,13 +335,14 @@ footer {
   top: 1.4rem;
   left: 50%;
   transform: translateX(-50%);
-  width: min(114rem, calc(100% - 2.4rem));
+  width: min(var(--page-max), calc(100% - 2.4rem));
   z-index: 20;
-  background: var(--surface);
-  backdrop-filter: blur(10px);
+  background: var(--header-surface);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
   border: 1px solid var(--line);
-  border-radius: 1.4rem;
-  box-shadow: var(--shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
   padding: 1.2rem 1.6rem;
   display: flex;
   align-items: center;
@@ -268,9 +350,9 @@ footer {
 }
 
 .brand {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 2rem;
-  font-weight: 500;
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
   color: var(--brand);
 }
 
@@ -278,17 +360,30 @@ footer {
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 1.8rem;
+  gap: 0.3rem;
 }
 
+/* Same feedback as the hero buttons — lift on hover, compress on press — rather than
+   the wiping underline the inline body links use. */
 .site-nav a {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.3rem;
+  font-size: 1.4rem;
+  font-weight: 500;
   color: var(--muted);
+  padding: 0.7rem 1.1rem;
+  border-radius: 999px;
+  transition: color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
 }
 
 .site-nav a:hover {
-  color: var(--brand);
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  transform: translateY(-0.1rem);
+}
+
+.site-nav a:active {
+  transform: scale(0.97);
 }
 
 .header-actions {
@@ -299,7 +394,7 @@ footer {
 
 .theme-toggle,
 .resume-link {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   background: transparent;
   color: var(--text);
   border-radius: 999px;
@@ -310,6 +405,9 @@ footer {
   justify-content: center;
   cursor: pointer;
   font-size: 1.4rem;
+  font-weight: 500;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
 }
 
 .theme-toggle {
@@ -319,21 +417,28 @@ footer {
 
 .resume-link {
   color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.2rem;
 }
 
+/* Same feedback as the hero buttons: lift on hover, settle back under the cursor on
+   press, with the press winning over the lift. */
 .theme-toggle:hover,
 .resume-link:hover {
   border-color: var(--brand);
+  color: var(--brand);
+  transform: translateY(-0.1rem);
+}
+
+.theme-toggle:active,
+.resume-link:active {
+  transform: scale(0.97);
 }
 
 .menu-toggle {
   display: none;
   width: 4rem;
   height: 4rem;
-  border: 1px solid var(--line);
-  border-radius: 1rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
   background: transparent;
   cursor: pointer;
 }
@@ -344,25 +449,45 @@ footer {
   height: 0.2rem;
   background: var(--text);
   margin: 0.4rem auto;
+  border-radius: 999px;
 }
 
+/* Same bleed geometry as .section, but the portrait claims the outer right track so it
+   reads as anchored to the page edge rather than floating inside a centred strip. */
 .hero {
   min-height: 100vh;
   padding-top: 12.5rem;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
+  grid-template-columns:
+    [full-start] minmax(var(--page-gutter), 1fr)
+    [text-start] minmax(0, 68rem)
+    [text-end] minmax(0, 52rem)
+    [art-end] minmax(var(--page-gutter), 0.4fr) [full-end];
   gap: 4rem;
   align-items: center;
   position: relative;
   overflow: hidden;
+  scroll-margin-top: 9rem;
 }
 
-.hero-particles {
+.hero-content {
+  grid-column: text-start / text-end;
+}
+
+.hero-art {
+  grid-column: text-end / art-end;
+}
+
+.hero::before {
+  content: '';
   position: absolute;
-  inset: 0;
+  top: -10%;
+  right: -10%;
+  width: 60rem;
+  aspect-ratio: 1;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent) 10%, transparent), transparent 70%);
   z-index: 0;
   pointer-events: none;
-  opacity: 0.9;
 }
 
 .hero-content,
@@ -371,32 +496,26 @@ footer {
   z-index: 1;
 }
 
-.hero-kicker,
-.section-kicker {
-  font-family: 'IBM Plex Mono', monospace;
-  color: var(--brand);
-  font-size: 1.3rem;
-  letter-spacing: 0.08em;
-}
-
 .hero h1 {
-  font-size: clamp(4.4rem, 8vw, 7.2rem);
-  margin: 1rem 0 0;
-  line-height: 0.98;
+  font-size: clamp(4.2rem, 8vw, 6.8rem);
+  font-weight: 800;
+  margin: 0;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
 }
 
 .hero h2 {
   margin: 0.8rem 0 0;
-  font-size: clamp(2.1rem, 3.2vw, 3rem);
+  font-size: clamp(2rem, 3.2vw, 2.6rem);
   color: var(--muted);
   font-weight: 500;
 }
 
 .hero p {
-  font-size: 1.8rem;
+  font-size: 1.7rem;
   line-height: 1.7;
   max-width: 62ch;
-  color: var(--muted);
+  color: var(--text-body);
   margin-top: 2rem;
 }
 
@@ -404,32 +523,46 @@ footer {
   display: flex;
   flex-wrap: wrap;
   gap: 1.2rem;
-  margin-top: 2.4rem;
+  margin-top: 2.6rem;
 }
 
 .btn {
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   min-height: 4.4rem;
-  padding: 0 2rem;
+  padding: 0 2.2rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   border: 1px solid transparent;
   font-size: 1.4rem;
+  font-weight: 600;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard), color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.btn:hover {
+  transform: translateY(-0.1rem);
+}
+
+/* Press wins over hover-lift: the button settles back under the cursor on click. */
+.btn:active {
+  transform: scale(0.97);
 }
 
 .btn-primary {
-  background: var(--brand);
-  color: #ffffff;
+  background: var(--accent);
+  color: var(--accent-fg);
 }
 
 .btn-primary:hover {
-  background: var(--brand-strong);
+  background: var(--accent-hover);
 }
 
 .btn-secondary {
-  border-color: var(--line);
+  border-color: var(--line-strong);
   color: var(--text);
+  background: var(--surface);
 }
 
 .btn-secondary:hover {
@@ -443,26 +576,96 @@ footer {
 }
 
 .hero-art img {
-  width: min(36rem, 100%);
+  width: min(34rem, 100%);
   aspect-ratio: 1;
-  border-radius: 3rem;
+  border-radius: var(--radius-xl);
   object-fit: cover;
-  border: 2px solid var(--line);
+  border: 1px solid var(--line);
   box-shadow: var(--shadow);
 }
 
+/* Full-bleed band with an asymmetric interior: the outer 1fr tracks centre the assembly
+   and cap it at --page-max, while the section's own background paints the whole viewport
+   width. The section title sits in the rail column beside its content, not above it.
+   scroll-margin-top must stay — without it anchor targets land behind the fixed header. */
 .section {
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--page-gutter), 1fr)
+    [rail-start] minmax(0, var(--rail))
+    [content-start] minmax(0, 100rem)
+    [content-end] minmax(var(--page-gutter), 1fr) [full-end];
+  column-gap: 4rem;
   padding: 8rem 0;
   scroll-margin-top: 9rem;
 }
 
-.hero {
-  scroll-margin-top: 9rem;
+.section > * {
+  grid-column: content-start / content-end;
+}
+
+.section > .section-title {
+  grid-column: rail-start / content-start;
+  align-self: start;
+  margin: 0;
+}
+
+/* Alternating tone turns the page into stacked bands instead of one continuous strip. */
+#about,
+#projects {
+  background: var(--bg-2);
+}
+
+/* Reveal-on-scroll. The hidden start state is gated behind `.motion-ready`, which
+   App.jsx only adds once the observer is wired — without JS the content just renders. */
+.app-shell.motion-ready .reveal {
+  opacity: 0;
+  transform: translateY(2.4rem);
+  /* Opacity lands ahead of the movement, so the block is readable while it is still
+     easing into place rather than fading and travelling in lockstep. */
+  transition: opacity 0.7s var(--ease-reveal), transform var(--duration-reveal) var(--ease-reveal);
+}
+
+/* Landing on `transform: none` (not translateY(0)) matters: a lingering transform keeps
+   these large elements on their own composited layer, which is what painted the page
+   blank mid-scroll before. See the Fixed entry in CHANGELOG.md. */
+.app-shell.motion-ready .reveal.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.app-shell.motion-ready .about-layout > .reveal:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.app-shell.motion-ready .about-layout > .reveal:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.app-shell.motion-ready .about-layout > .reveal:nth-child(4) {
+  transition-delay: 0.3s;
+}
+
+.app-shell.motion-ready .project-featured-grid > .reveal:nth-child(2),
+.app-shell.motion-ready .project-grid > .reveal:nth-child(2) {
+  transition-delay: 0.1s;
+}
+
+.app-shell.motion-ready .project-featured-grid > .reveal:nth-child(3),
+.app-shell.motion-ready .project-grid > .reveal:nth-child(3) {
+  transition-delay: 0.2s;
+}
+
+.app-shell.motion-ready .project-featured-grid > .reveal:nth-child(n + 4),
+.app-shell.motion-ready .project-grid > .reveal:nth-child(n + 4) {
+  transition-delay: 0.3s;
 }
 
 .section-title {
   margin: 0.9rem 0 3.2rem;
-  font-size: clamp(3rem, 5vw, 4.2rem);
+  font-size: clamp(2.8rem, 5vw, 3.8rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .about-layout {
@@ -478,25 +681,34 @@ footer {
 .contact {
   background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 1.8rem;
-  box-shadow: var(--shadow);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Reading surfaces get a border brighten only — bobbing a wall of text on hover is
+   distracting. Project cards are the browsable items, so they lift (below). */
+.about-card,
+.panel {
+  transition: border-color var(--duration-base) var(--ease-standard);
+}
+
+.about-card:hover,
+.panel:hover {
+  border-color: color-mix(in srgb, var(--accent) 35%, var(--line));
 }
 
 .about-card {
   padding: 3rem;
 }
 
-.about-card-title {
-  margin: 0 0 1.8rem;
-  font-size: clamp(3rem, 4.5vw, 4.4rem);
-  line-height: 1.05;
-}
-
+/* The content column is far wider than the old strip, so the measure is capped here.
+   Without this the paragraphs would run to ~1000px and undo the readability pass. */
 .about-card p {
   margin: 0;
-  font-size: 1.7rem;
+  max-width: 68ch;
+  font-size: 1.6rem;
   line-height: 1.8;
-  color: var(--muted);
+  color: var(--text-body);
 }
 
 .about-card p + p {
@@ -507,7 +719,7 @@ footer {
 .about-card a {
   color: var(--brand);
   border-bottom: 1px solid color-mix(in srgb, var(--brand) 45%, transparent);
-  transition: color 0.2s ease, border-color 0.2s ease;
+  transition: color var(--duration-fast) var(--ease-standard), border-color var(--duration-fast) var(--ease-standard);
 }
 
 .about-card a:hover {
@@ -521,7 +733,8 @@ footer {
 
 .panel h3 {
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .chip-list {
@@ -533,11 +746,19 @@ footer {
 
 .chip-list span {
   font-size: 1.25rem;
-  border: 1px solid var(--line);
-  color: var(--muted);
+  font-weight: 500;
+  border: 1px solid var(--chip-border);
+  color: var(--brand);
   border-radius: 999px;
   padding: 0.55rem 1.1rem;
   background: var(--surface-strong);
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    border-color var(--duration-fast) var(--ease-standard);
+}
+
+.chip-list span:hover {
+  background: color-mix(in srgb, var(--accent) 22%, var(--surface-strong));
+  border-color: var(--brand);
 }
 
 .tech-groups {
@@ -548,9 +769,9 @@ footer {
 
 .tech-group-label {
   margin: 0;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.1rem;
-  letter-spacing: 0.08em;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
 }
@@ -571,7 +792,7 @@ footer {
 }
 
 .education-list li {
-  border-left: 2px solid color-mix(in srgb, var(--brand) 50%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   padding-left: 1.2rem;
 }
 
@@ -584,19 +805,20 @@ footer {
 
 .education-header h4 {
   margin: 0;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  font-weight: 600;
 }
 
 .education-header span {
-  font-size: 1.3rem;
-  color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--muted);
 }
 
 .education-list p {
   margin: 0.6rem 0 0;
   color: var(--muted);
-  font-size: 1.45rem;
+  font-size: 1.4rem;
   line-height: 1.6;
 }
 
@@ -609,51 +831,60 @@ footer {
 .experience-group-toggle {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.6rem;
   margin-bottom: 1.4rem;
 }
 
 .experience-group-toggle button {
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   color: var(--muted);
   background: var(--surface);
-  border-radius: 999px;
+  border-radius: var(--radius-sm);
   padding: 0.8rem 1.4rem;
   cursor: pointer;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
+  font-weight: 500;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
 
 .experience-group-toggle button.active {
-  border-color: var(--brand);
+  border-color: var(--accent);
   color: var(--brand);
-  background: color-mix(in srgb, var(--brand) 10%, var(--surface-strong));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
 }
 
 .experience-tabs {
   display: grid;
-  gap: 0.8rem;
+  gap: 0.6rem;
   align-content: start;
 }
 
 .experience-tabs button {
   text-align: left;
-  border: 1px solid var(--line);
+  border: 1px solid var(--line-strong);
   color: var(--muted);
   background: var(--surface);
-  border-radius: 1rem;
+  border-radius: var(--radius-sm);
   padding: 1.1rem 1.2rem;
   cursor: pointer;
-  font-size: 1.5rem;
+  font-size: 1.45rem;
+  font-weight: 500;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard), background-color var(--duration-fast) var(--ease-standard);
 }
 
 .experience-tabs button.active {
-  border-color: var(--brand);
+  border-color: var(--accent);
   color: var(--brand);
-  background: color-mix(in srgb, var(--brand) 10%, var(--surface-strong));
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
 }
 
+/* ExperienceSection keys this element on the active id, so React remounts it on every
+   switch and this entrance animation replays — the crossfade comes for free. */
 .experience-panel {
   padding: 2.8rem;
+  animation: panel-in 0.24s var(--ease-standard);
 }
 
 .experience-head {
@@ -666,34 +897,37 @@ footer {
 
 .experience-head h3 {
   margin: 0;
-  font-size: 2.5rem;
+  font-size: 2.2rem;
+  font-weight: 700;
 }
 
 .experience-head h3 span {
   color: var(--brand);
+  font-weight: 500;
 }
 
 .experience-head p {
   margin: 0;
-  font-family: 'IBM Plex Mono', monospace;
-  color: var(--brand);
+  color: var(--muted);
   font-size: 1.3rem;
+  font-weight: 500;
 }
 
 .experience-location {
   margin: 1rem 0 1.4rem;
   color: var(--muted);
-  font-size: 1.5rem;
+  font-size: 1.45rem;
 }
 
 .experience-link {
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
   margin: 0 0 1.5rem;
   color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 1.3rem;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .experience-link:hover {
@@ -709,18 +943,22 @@ footer {
 }
 
 .experience-panel li {
-  color: var(--muted);
-  font-size: 1.6rem;
+  color: var(--text-body);
+  font-size: 1.55rem;
   line-height: 1.65;
-  padding-left: 1.8rem;
+  padding-left: 1.6rem;
   position: relative;
 }
 
 .experience-panel li::before {
-  content: '▹';
-  color: var(--brand);
+  content: '';
   position: absolute;
   left: 0;
+  top: 0.7em;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: var(--brand);
 }
 
 .project-featured-grid {
@@ -730,17 +968,31 @@ footer {
 
 .project-card {
   padding: 2.2rem;
+  transition: transform var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard);
+}
+
+/* The revealed state pins `transform: none` at (0,4,0) specificity to drop the composited
+   layer, which outranks a bare `.project-card:hover`. The first selector reclaims the lift
+   for revealed cards; the second still covers the no-JS path where .reveal never applies. */
+.app-shell.motion-ready .project-card.is-revealed:hover,
+.project-card:hover {
+  transform: translateY(-0.2rem);
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+  box-shadow: var(--shadow);
 }
 
 .project-card h3 {
   margin: 0;
-  font-size: 2.3rem;
+  font-size: 2.1rem;
+  font-weight: 700;
 }
 
 .project-card p {
   margin: 1.1rem 0 0;
-  color: var(--muted);
-  font-size: 1.55rem;
+  color: var(--text-body);
+  font-size: 1.5rem;
   line-height: 1.65;
 }
 
@@ -748,10 +1000,15 @@ footer {
   margin-top: 1.8rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.7rem;
   color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 1.3rem;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.project-card a:hover {
+  color: var(--brand-strong);
 }
 
 .project-links {
@@ -764,8 +1021,10 @@ footer {
 .project-tag {
   margin: 0 0 1rem;
   color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .project-grid {
@@ -777,11 +1036,11 @@ footer {
 
 .education-subhead {
   margin: 2.4rem 0 0;
-  font-size: 1.35rem;
-  letter-spacing: 0.08em;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--muted);
-  font-family: 'IBM Plex Mono', monospace;
 }
 
 .education-extra {
@@ -789,17 +1048,18 @@ footer {
 }
 
 .education-extra .education-header h4 {
-  font-size: 1.6rem;
+  font-size: 1.55rem;
 }
 
 .inline-link {
   margin-top: 0.8rem;
   display: inline-flex;
   align-items: center;
-  gap: 0.7rem;
+  gap: 0.6rem;
   color: var(--brand);
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 1.25rem;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .inline-link:hover {
@@ -821,30 +1081,38 @@ footer {
 }
 
 .patent-list li {
-  border-left: 2px solid color-mix(in srgb, var(--brand) 50%, transparent);
+  border-left: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
   padding-left: 1.2rem;
 }
 
 .patent-list p {
   margin: 0;
-  color: var(--muted);
-  font-size: 1.45rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
   line-height: 1.6;
 }
 
+/* Contact opts out of the rail: its heading is nested inside .contact rather than being a
+   direct child, and the card is centred by design. It still gets the full-bleed band. */
 .contact-section {
-  margin: 5rem auto 2.2rem;
+  margin: 5rem 0 0;
+  padding-bottom: 4rem;
   text-align: center;
+  background: var(--bg-2);
+  grid-template-columns:
+    [full-start] minmax(var(--page-gutter), 1fr)
+    [content-start] minmax(0, 96rem)
+    [content-end] minmax(var(--page-gutter), 1fr) [full-end];
+}
+
+.contact-section > * {
+  grid-column: content-start / content-end;
 }
 
 .contact {
   margin: 0 auto;
   padding: 4rem;
   text-align: center;
-}
-
-.contact .section-kicker {
-  justify-content: center;
 }
 
 .contact .section-title {
@@ -854,7 +1122,7 @@ footer {
 .contact-copy {
   margin: 0 auto;
   max-width: 64ch;
-  color: var(--muted);
+  color: var(--text-body);
   font-size: 1.6rem;
   line-height: 1.75;
 }
@@ -862,26 +1130,35 @@ footer {
 .mail-link {
   display: inline-block;
   margin-top: 2.4rem;
-  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 600;
   color: var(--brand);
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.mail-link:hover {
+  color: var(--brand-strong);
 }
 
 .social-links {
   margin-top: 2rem;
   display: flex;
-  gap: 1.4rem;
+  gap: 1.2rem;
   justify-content: center;
 }
 
 .social-links a {
-  width: 4.6rem;
-  height: 4.6rem;
-  border: 1px solid var(--line);
+  width: 4.4rem;
+  height: 4.4rem;
+  border: 1px solid var(--line-strong);
   border-radius: 999px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.8rem;
+  font-size: 1.7rem;
+  color: var(--text);
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard), transform var(--duration-fast) var(--ease-standard);
 }
 
 .social-links a:hover {
@@ -889,12 +1166,17 @@ footer {
   color: var(--brand);
 }
 
+.social-links a:active {
+  transform: scale(0.94);
+}
+
 .back-to-top {
   display: inline-block;
   margin-top: 2.8rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
+  font-weight: 500;
   color: var(--muted);
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .back-to-top:hover {
@@ -905,8 +1187,66 @@ footer {
   margin: 1.8rem 0 0;
   color: var(--muted);
   font-size: 1.25rem;
-  font-family: 'IBM Plex Mono', monospace;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
+}
+
+/* Wiping underline shared by the inline action links. Uses a pseudo-element rather than
+   border-bottom so it can animate on transform alone. */
+.project-card a,
+.inline-link,
+.experience-link {
+  position: relative;
+}
+
+.project-card a::after,
+.inline-link::after,
+.experience-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.3rem;
+  height: 0.15rem;
+  border-radius: 999px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.project-card a:hover::after,
+.inline-link:hover::after,
+.experience-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* The active section reads as a filled pill now that the underline indicator is gone. */
+.site-nav a.active {
+  color: var(--brand);
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+/* Scroll position indicator along the bottom edge of the header. Pure CSS — it is driven
+   by the scroll timeline, so it costs no JS and no main-thread work. */
+.scroll-progress {
+  display: none;
+  position: absolute;
+  left: 1.6rem;
+  right: 1.6rem;
+  bottom: 0.6rem;
+  height: 0.15rem;
+  border-radius: 999px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    display: block;
+    animation: scroll-progress-grow linear;
+    animation-timeline: scroll(root block);
+  }
 }
 
 @media (max-width: 980px) {
@@ -914,15 +1254,39 @@ footer {
     top: 1rem;
   }
 
-  .hero,
   .about-layout,
   .experience-layout {
     grid-template-columns: 1fr;
   }
 
+  /* Collapse the rail to a zero-width track rather than redefining the columns, so every
+     named line the placement rules depend on still exists. */
+  .section {
+    grid-template-columns:
+      [full-start] var(--page-gutter)
+      [rail-start] 0
+      [content-start] minmax(0, 1fr)
+      [content-end] var(--page-gutter) [full-end];
+    column-gap: 0;
+  }
+
+  .section > .section-title {
+    grid-column: content-start / content-end;
+  }
+
   .hero {
     padding-top: 11.5rem;
     gap: 3rem;
+    grid-template-columns:
+      [full-start] var(--page-gutter)
+      [text-start] minmax(0, 1fr)
+      [text-end] 0
+      [art-end] var(--page-gutter) [full-end];
+  }
+
+  .hero-content,
+  .hero-art {
+    grid-column: text-start / text-end;
   }
 
   .hero-art {
@@ -943,11 +1307,6 @@ footer {
 }
 
 @media (max-width: 760px) {
-  main,
-  footer {
-    width: min(114rem, calc(100% - 2.4rem));
-  }
-
   .site-header {
     flex-wrap: wrap;
     gap: 1rem;
@@ -967,6 +1326,7 @@ footer {
     margin-left: 0;
     padding-top: 0.8rem;
     border-top: 1px solid var(--line);
+    gap: 0.2rem;
   }
 
   .site-nav.open {
@@ -987,10 +1347,6 @@ footer {
     font-size: 56.25%;
   }
 
-  .landing-content h1 {
-    line-height: 0.95;
-  }
-
   .project-grid {
     grid-template-columns: 1fr;
   }
@@ -1009,6 +1365,47 @@ footer {
     animation: none;
   }
 
+  /* The auto-hide is nonessential movement, so the bar simply stays put. App.jsx skips the
+     listeners entirely under this preference; this keeps the rules honest either way. */
+  .site-header.is-hidden,
+  .app-shell.revealed .site-header.is-hidden {
+    transform: translateX(-50%);
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Most important rule in this block: without it, every observed element stays at
+     opacity 0 and the page reads as blank. */
+  .app-shell.motion-ready .reveal,
+  .app-shell.motion-ready .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0s;
+  }
+
+  .experience-panel {
+    animation: none;
+  }
+
+  .scroll-progress {
+    display: none;
+  }
+
+  .project-card:hover,
+  .btn:hover,
+  .theme-toggle:hover,
+  .resume-link:hover,
+  .site-nav a:hover {
+    transform: none;
+  }
+
+  .project-card a::after,
+  .inline-link::after,
+  .experience-link::after {
+    transition: none;
+  }
+
   .app-shell main,
   .app-shell .contact,
   .app-shell.ready .hero-content > * {
@@ -1023,7 +1420,7 @@ footer {
 @keyframes intro-fade-up {
   from {
     opacity: 0;
-    transform: translateY(2.4rem);
+    transform: translateY(1.6rem);
   }
 
   to {
@@ -1058,23 +1455,31 @@ footer {
 @keyframes intro-content-exit {
   to {
     opacity: 0;
-    transform: translateY(-2rem);
-  }
-}
-
-@keyframes intro-noise-shift {
-  from {
-    transform: translate(0, 0);
-  }
-
-  to {
-    transform: translate(-2.8rem, -2.8rem);
+    transform: translateY(-1.4rem);
   }
 }
 
 @keyframes hero-rise {
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
+  }
+}
+
+@keyframes scroll-progress-grow {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.8rem);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
   }
 }

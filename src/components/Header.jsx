@@ -6,14 +6,23 @@ const navItems = [
   { href: '#contact', label: 'Contact' }
 ];
 
-function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resumeLink }) {
+function Header({
+  menuOpen,
+  setMenuOpen,
+  isHidden,
+  activeSection,
+  isDark,
+  onThemeToggle,
+  onNavigate,
+  resumeLink
+}) {
   const handleNavClick = () => {
     setMenuOpen(false);
     onNavigate();
   };
 
   return (
-    <header className="site-header">
+    <header className={`site-header ${isHidden ? 'is-hidden' : ''}`}>
       <a className="brand" href="#home" onClick={handleNavClick}>
         RM
       </a>
@@ -31,7 +40,12 @@ function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resu
 
       <nav className={`site-nav ${menuOpen ? 'open' : ''}`}>
         {navItems.map((item) => (
-          <a key={item.href} href={item.href} onClick={handleNavClick}>
+          <a
+            key={item.href}
+            href={item.href}
+            className={item.href === `#${activeSection}` ? 'active' : ''}
+            onClick={handleNavClick}
+          >
             {item.label}
           </a>
         ))}
@@ -50,6 +64,8 @@ function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resu
           Resume
         </a>
       </div>
+
+      <div className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }

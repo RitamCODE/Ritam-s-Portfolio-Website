@@ -32,7 +32,7 @@ function ContactSection({ profile }) {
         </a>
       </div>
 
-      <p className="footer-credit">&copy; {new Date().getFullYear()} Built by Ritam with Codex</p>
+      <p className="footer-credit">&copy; {new Date().getFullYear()} Designed and developed by Ritam</p>
     </footer>
   );
 }

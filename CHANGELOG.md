@@ -7,6 +7,72 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- Sections now animate into view as you scroll, rising and fading in with their cards
+  staggered rather than appearing fully formed. Runs once per element.
+- Cards, tags, buttons and links respond to the cursor: project cards lift and pick up
+  an accent border, tags brighten, buttons lift on hover and compress on press, and
+  inline links grow a wiping underline.
+- The nav shows which section you are in, with an accent underline that moves between
+  items as you scroll, plus a thin progress line across the header.
+- Switching between companies or Industry/Academia now crossfades instead of swapping
+  instantly.
+- Changing the theme plays a circular wipe spreading from the toggle itself. Falls back
+  to an instant swap where the View Transitions API is unavailable.
+- The header now auto-hides like the GNOME Shell top bar: it slides away once you
+  scroll past the top of the page and returns when the pointer reaches the top edge
+  of the window. It stays put while the mobile menu is open, comes back on an upward
+  scroll on touch devices (which have no pointer to reach the edge), reappears when
+  tabbed into, and does not hide at all under `prefers-reduced-motion`.
+
+### Changed
+
+- Footer credit line reworded from "Built by Ritam with Codex" to
+  "Designed and developed by Ritam".
+- Hero portrait swapped for a new photo.
+- Header navigation items behave like buttons instead of underlined links: each is a
+  pill that tints and lifts on hover and compresses on press, and the section you are
+  in is marked by a filled pill rather than an accent underline. The Resume pill and
+  theme toggle get the same feedback. Body and card links keep their wiping underline.
+- Sections and cards now ease into view over about a second instead of a quarter of
+  one, rising further and cascading further apart, and the hero lines follow the same
+  slower pace. Hover and press feedback is a touch slower to match.
+- The page no longer sits in a narrow centred column. Sections now span the full width
+  of the window as alternating bands, and each section's heading sits in a left rail
+  beside its content rather than stacked above it. Paragraph width is capped
+  independently, so the wider layout does not stretch the text into long lines.
+- "About Me" moved out of the About card and became the section's heading, matching the
+  other sections and putting the title outside its container.
+- Body copy — the About paragraphs, hero summary, project descriptions, experience
+  bullets, contact text and patent titles — is no longer grey. It now uses a dedicated
+  reading colour, with grey kept for metadata like dates, locations and group labels.
+- Palette moved from neutral grays with a blue accent to a purple-black "Plum"
+  scheme built on the official GNOME palette — `#1b1622` backgrounds and `#9141ac`
+  purple in dark, `#faf8fb` and the same purple in light. GNOME's own dark tones are
+  purple-tinted, so the accent now shares the background's warmth instead of fighting it.
+- Tech Stack and project tags are legible again. The tags previously sat at a 1.13:1
+  contrast ratio against the card behind them — effectively invisible — because the
+  surface ramp was only an 8/255 step and the outline was too faint to carry an edge.
+  Tags now use a purple-tinted fill, purple label text and a border measured at 3.2:1
+  in both themes.
+- Full visual redesign in a calm, GNOME/Adwaita-inspired style: the dark navy
+  "space" theme (particle network hero, glowing radial backgrounds, green neon
+  accent, monospace labels) is replaced with a flat light/dark palette (Adwaita
+  blue accent, `#fafafb`/`#1e1e1e` backgrounds), a single Inter typeface, opaque
+  reading-surface cards with hairline borders and soft shadows instead of
+  glowing pill cards, and a frosted (blurred, translucent) sticky header. Button
+  and card corner radii are more restrained (rounded rectangles instead of full
+  pill shapes for primary actions), and interactive borders were tuned for
+  contrast in light mode. Layout, content, and section structure are unchanged.
+- Landing intro simplified: the animated dot-noise texture is gone and the
+  intro background is now flat instead of a glowing gradient.
+
+### Removed
+
+- Hero particle network (`@tsparticles/react`, `@tsparticles/slim`) — dropped
+  from the hero and from `package.json` as part of the visual redesign.
+
+### Added
+
 - AdaptMATH at the top of Projects — a K-5 adaptive math tutor built for the Nerdy
   AI Hackathon, with links to the repo and a walkthrough video.
 - Research section with its own nav item, holding the AO-OCT retinal scan work.

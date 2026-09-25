@@ -54,7 +54,7 @@ URL, so a card can point at a repo and a demo at the same time. `courseItems` an
 
 ## Styling
 
-Single global `src/styles.css` (~1000 lines). No CSS modules, no Tailwind.
+Single global `src/styles.css` (~1500 lines). No CSS modules, no Tailwind.
 
 - **`1rem = 10px`** — `html { font-size: 62.5% }`. Sizes written against the usual
   16px base come out far too small.
@@ -82,7 +82,8 @@ Two things keep `#hash` navigation from breaking, both easy to undo by accident:
 
 ## Motion
 
-Animated work (Hero tsparticles, `LandingIntro`) is gated on `prefers-reduced-motion`,
+Animated work (scroll-reveal on sections/cards, the header auto-hide, the theme-toggle
+wipe, `LandingIntro`) is gated on `prefers-reduced-motion`,
 and `src/styles.css` ends with a `@media (prefers-reduced-motion: reduce)` block. New
 animation follows the same gate. The intro also locks scrolling via
 `body.intro-active`, which is why `getInitialIntroState()` skips it for deep links.
