@@ -691,6 +691,13 @@ footer {
   transition: opacity 0.7s var(--ease-reveal), transform var(--duration-reveal) var(--ease-reveal);
 }
 
+/* The cards are large, arrive several at a time and are read in a group, so the full
+   0.9s settle drags. They travel less and land in 0.6s. */
+.app-shell.motion-ready .project-card.reveal {
+  transform: translateY(1.8rem);
+  transition: opacity 0.45s var(--ease-reveal), transform 0.6s var(--ease-reveal);
+}
+
 /* Landing on `transform: none` (not translateY(0)) matters: a lingering transform keeps
    these large elements on their own composited layer, which is what painted the page
    blank mid-scroll before. See the Fixed entry in CHANGELOG.md. */
@@ -713,17 +720,17 @@ footer {
 
 .app-shell.motion-ready .project-featured-grid > .reveal:nth-child(2),
 .app-shell.motion-ready .project-grid > .reveal:nth-child(2) {
-  transition-delay: 0.1s;
+  transition-delay: 0.07s;
 }
 
 .app-shell.motion-ready .project-featured-grid > .reveal:nth-child(3),
 .app-shell.motion-ready .project-grid > .reveal:nth-child(3) {
-  transition-delay: 0.2s;
+  transition-delay: 0.14s;
 }
 
 .app-shell.motion-ready .project-featured-grid > .reveal:nth-child(n + 4),
 .app-shell.motion-ready .project-grid > .reveal:nth-child(n + 4) {
-  transition-delay: 0.3s;
+  transition-delay: 0.21s;
 }
 
 .section-title {
@@ -1512,7 +1519,8 @@ footer {
   /* Most important rule in this block: without it, every observed element stays at
      opacity 0 and the page reads as blank. */
   .app-shell.motion-ready .reveal,
-  .app-shell.motion-ready .reveal.is-revealed {
+  .app-shell.motion-ready .reveal.is-revealed,
+  .app-shell.motion-ready .project-card.reveal {
     opacity: 1;
     transform: none;
     transition: none;

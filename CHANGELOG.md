@@ -69,9 +69,10 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   pill that tints and lifts on hover and compresses on press, and the section you are
   in is marked by a filled pill rather than an accent underline. The Resume pill and
   theme toggle get the same feedback. Body and card links keep their wiping underline.
-- Sections and cards now ease into view over about a second instead of a quarter of
-  one, rising further and cascading further apart, and the hero lines follow the same
-  slower pace. Hover and press feedback is a touch slower to match.
+- Sections now ease into view over about a second instead of a quarter of one, rising
+  further and cascading further apart, and the hero lines follow the same slower pace.
+  Project and research cards keep a brisker 0.6s entrance so a grid of them does not
+  drag. Hover and press feedback is a touch slower to match.
 - The page no longer sits in a narrow centred column. Sections now span the full width
   of the window as alternating bands, and each section's heading sits in a left rail
   beside its content rather than stacked above it. Paragraph width is capped
