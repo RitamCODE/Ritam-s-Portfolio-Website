@@ -24,8 +24,17 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   scroll on touch devices (which have no pointer to reach the edge), reappears when
   tabbed into, and does not hide at all under `prefers-reduced-motion`.
 
+### Fixed
+
+- Clicking a section link no longer adds a new browser-history entry, so the back
+  button and edge swipe-back on mobile now leave the site in one step instead of
+  stepping back through previously visited sections first.
+
 ### Changed
 
+- Hero portrait no longer sits in a cropped square card. The framing box (border,
+  shadow, rounded corners) is gone and the full cutout image now blends straight
+  into the section background.
 - Footer credit line reworded from "Built by Ritam with Codex" to
   "Designed and developed by Ritam".
 - Hero portrait swapped for a new photo.

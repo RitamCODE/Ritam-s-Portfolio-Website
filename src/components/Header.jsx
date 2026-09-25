@@ -1,3 +1,5 @@
+import { scrollToHash } from '../utils/scrollToHash';
+
 const navItems = [
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
@@ -16,14 +18,15 @@ function Header({
   onNavigate,
   resumeLink
 }) {
-  const handleNavClick = () => {
+  const handleNavClick = (event, href) => {
     setMenuOpen(false);
     onNavigate();
+    scrollToHash(event, href);
   };
 
   return (
     <header className={`site-header ${isHidden ? 'is-hidden' : ''}`}>
-      <a className="brand" href="#home" onClick={handleNavClick}>
+      <a className="brand" href="#home" onClick={(event) => handleNavClick(event, '#home')}>
         RM
       </a>
 
@@ -44,7 +47,7 @@ function Header({
             key={item.href}
             href={item.href}
             className={item.href === `#${activeSection}` ? 'active' : ''}
-            onClick={handleNavClick}
+            onClick={(event) => handleNavClick(event, item.href)}
           >
             {item.label}
           </a>

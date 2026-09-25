@@ -576,12 +576,9 @@ footer {
 }
 
 .hero-art img {
-  width: min(34rem, 100%);
-  aspect-ratio: 1;
-  border-radius: var(--radius-xl);
-  object-fit: cover;
-  border: 1px solid var(--line);
-  box-shadow: var(--shadow);
+  width: min(38rem, 100%);
+  height: auto;
+  object-fit: contain;
 }
 
 /* Full-bleed band with an asymmetric interior: the outer 1fr tracks centre the assembly
