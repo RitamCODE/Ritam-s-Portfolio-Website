@@ -32,6 +32,9 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- New favicon and app icons: a circular portrait on the site's purple accent replaces
+  the previous icon set, across the browser tab, bookmarks, the iOS home screen and
+  the web manifest.
 - Light mode moved off white and purple onto a warm stone palette: an off-white
   `#eeece7` page with alternating slightly deeper bands, `#f7f5f0` reading panels and a
   quieter `#76518f` plum for links, buttons and accents. No large surface is pure white
