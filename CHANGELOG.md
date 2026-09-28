@@ -3,7 +3,7 @@
 Notable changes to the portfolio site. Newest first.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## 2026-09-28
 
 ### Added
 
