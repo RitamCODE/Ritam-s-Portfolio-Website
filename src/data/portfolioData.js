@@ -15,7 +15,7 @@ export const profile = {
     ],
     "Right now I'm going deeper on multi-agent systems in LangGraph and on applied AI research in medical imaging at OSU's College of Optometry."
   ],
-  image: '/assets/my_pics/Ritam_web.png',
+  image: '/assets/my_pics/RM_floral_final.png',
   resume: '/assets/Resume/RM_Resume_2026.pdf',
   email: 'mukherjee.ritam27@gmail.com',
   social: {

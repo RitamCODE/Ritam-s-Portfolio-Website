@@ -5,7 +5,6 @@ function LandingIntro({ state, profile }) {
 
   return (
     <div className={`landing-intro ${state === 'exit' ? 'is-exiting' : ''}`} aria-hidden="true">
-      <div className="landing-noise" />
       <div className="landing-radial landing-radial-left" />
       <div className="landing-radial landing-radial-right" />
 

@@ -1,3 +1,5 @@
+import { scrollToHash } from '../utils/scrollToHash';
+
 function ContactSection({ profile }) {
   return (
     <footer className="section contact-section" id="contact">
@@ -27,12 +29,12 @@ function ContactSection({ profile }) {
           </a>
         </div>
 
-        <a className="back-to-top" href="#home">
+        <a className="back-to-top" href="#home" onClick={(event) => scrollToHash(event, '#home')}>
           Back to top
         </a>
       </div>
 
-      <p className="footer-credit">&copy; {new Date().getFullYear()} Built by Ritam with Codex</p>
+      <p className="footer-credit">&copy; {new Date().getFullYear()} Designed and developed by Ritam</p>
     </footer>
   );
 }

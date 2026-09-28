@@ -22,9 +22,9 @@ function AboutParagraph({ content }) {
 function AboutSection({ about, techStack, education, courses, patents }) {
   return (
     <section className="section" id="about">
+      <h2 className="section-title">About Me</h2>
       <div className="about-layout">
         <article className="about-card">
-          <h2 className="about-card-title">About Me</h2>
           {about.map((paragraph, index) => (
             <AboutParagraph key={index} content={paragraph} />
           ))}

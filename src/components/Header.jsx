@@ -1,3 +1,5 @@
+import { scrollToHash } from '../utils/scrollToHash';
+
 const navItems = [
   { href: '#about', label: 'About' },
   { href: '#experience', label: 'Experience' },
@@ -6,15 +8,25 @@ const navItems = [
   { href: '#contact', label: 'Contact' }
 ];
 
-function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resumeLink }) {
-  const handleNavClick = () => {
+function Header({
+  menuOpen,
+  setMenuOpen,
+  isHidden,
+  activeSection,
+  isDark,
+  onThemeToggle,
+  onNavigate,
+  resumeLink
+}) {
+  const handleNavClick = (event, href) => {
     setMenuOpen(false);
     onNavigate();
+    scrollToHash(event, href);
   };
 
   return (
-    <header className="site-header">
-      <a className="brand" href="#home" onClick={handleNavClick}>
+    <header className={`site-header ${isHidden ? 'is-hidden' : ''}`}>
+      <a className="brand" href="#home" onClick={(event) => handleNavClick(event, '#home')}>
         RM
       </a>
 
@@ -31,7 +43,12 @@ function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resu
 
       <nav className={`site-nav ${menuOpen ? 'open' : ''}`}>
         {navItems.map((item) => (
-          <a key={item.href} href={item.href} onClick={handleNavClick}>
+          <a
+            key={item.href}
+            href={item.href}
+            className={item.href === `#${activeSection}` ? 'active' : ''}
+            onClick={(event) => handleNavClick(event, item.href)}
+          >
             {item.label}
           </a>
         ))}
@@ -50,6 +67,8 @@ function Header({ menuOpen, setMenuOpen, isDark, onThemeToggle, onNavigate, resu
           Resume
         </a>
       </div>
+
+      <div className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }

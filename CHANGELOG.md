@@ -3,7 +3,113 @@
 Notable changes to the portfolio site. Newest first.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
-## [Unreleased]
+## 2026-09-28
+
+### Added
+
+- Sections now animate into view as you scroll, rising and fading in with their cards
+  staggered rather than appearing fully formed. Runs once per element.
+- Cards, tags, buttons and links respond to the cursor: project cards lift and pick up
+  an accent border, tags brighten, buttons lift on hover and compress on press, and
+  inline links grow a wiping underline.
+- The nav shows which section you are in, with an accent underline that moves between
+  items as you scroll, plus a thin progress line across the header.
+- Switching between companies or Industry/Academia now crossfades instead of swapping
+  instantly.
+- Changing the theme plays a circular wipe spreading from the toggle itself. Falls back
+  to an instant swap where the View Transitions API is unavailable.
+- The header now auto-hides like the GNOME Shell top bar: it slides away once you
+  scroll past the top of the page and returns when the pointer reaches the top edge
+  of the window. It stays put while the mobile menu is open, comes back on an upward
+  scroll on touch devices (which have no pointer to reach the edge), reappears when
+  tabbed into, and does not hide at all under `prefers-reduced-motion`.
+
+### Fixed
+
+- Clicking a section link no longer adds a new browser-history entry, so the back
+  button and edge swipe-back on mobile now leave the site in one step instead of
+  stepping back through previously visited sections first.
+
+### Changed
+
+- New favicon and app icons: a circular portrait on the site's purple accent replaces
+  the previous icon set, across the browser tab, bookmarks, the iOS home screen and
+  the web manifest.
+- Light mode moved off white and purple onto a warm stone palette: an off-white
+  `#eeece7` page with alternating slightly deeper bands, `#f7f5f0` reading panels and a
+  quieter `#76518f` plum for links, buttons and accents. No large surface is pure white
+  any more, and the browser chrome on mobile picks up the page colour too. Dark mode is
+  unchanged.
+- The desktop Industry/Academia control is now a compact segmented control about 42px
+  tall — a recessed track with the selected side filled — instead of two oversized
+  buttons that stretched to the height of the section heading beside them.
+- Selected things look the same everywhere now: the current nav item, the active
+  Industry/Academia side and the selected company tab all use a pale plum fill with a
+  dark plum label.
+- Technology badges read as passive labels rather than controls — neutral stone chips
+  with grey text, no purple outline and no hover effect, so they stop competing with the
+  buttons and tabs around them.
+- Toolbar controls line up: the menu button, theme toggle and Resume button share one
+  height, one border weight and one icon size, and corner rounding follows a single
+  scale across buttons, navigation and cards.
+- The keyboard focus ring is now a solid plum outline with a thin gap, replacing a faint
+  translucent halo that was hard to see against a reading panel and invisible on the
+  plum primary button.
+- Hover, press and selection feedback is quicker — roughly 140–200ms instead of
+  240–360ms — so controls feel responsive rather than laggy.
+- The soft purple glow behind the hero is gone, and the colour wash on the opening
+  splash is about half as strong.
+- Headings sit a consistent distance from the content below them, and on narrow screens
+  nav rows, the Industry/Academia control and the company tabs are all at least 44px
+  tall for touch.
+- Hero portrait no longer sits in a cropped square card. The framing box (border,
+  shadow, rounded corners) is gone and the full cutout image now blends straight
+  into the section background.
+- Footer credit line reworded from "Built by Ritam with Codex" to
+  "Designed and developed by Ritam".
+- Hero portrait swapped for a new photo.
+- Header navigation items behave like buttons instead of underlined links: each is a
+  pill that tints and lifts on hover and compresses on press, and the section you are
+  in is marked by a filled pill rather than an accent underline. The Resume pill and
+  theme toggle get the same feedback. Body and card links keep their wiping underline.
+- Sections now ease into view over about a second instead of a quarter of one, rising
+  further and cascading further apart, and the hero lines follow the same slower pace.
+  Project and research cards keep a brisker 0.6s entrance so a grid of them does not
+  drag. Hover and press feedback is a touch slower to match.
+- The page no longer sits in a narrow centred column. Sections now span the full width
+  of the window as alternating bands, and each section's heading sits in a left rail
+  beside its content rather than stacked above it. Paragraph width is capped
+  independently, so the wider layout does not stretch the text into long lines.
+- "About Me" moved out of the About card and became the section's heading, matching the
+  other sections and putting the title outside its container.
+- Body copy — the About paragraphs, hero summary, project descriptions, experience
+  bullets, contact text and patent titles — is no longer grey. It now uses a dedicated
+  reading colour, with grey kept for metadata like dates, locations and group labels.
+- Palette moved from neutral grays with a blue accent to a purple-black "Plum"
+  scheme built on the official GNOME palette — `#1b1622` backgrounds and `#9141ac`
+  purple in dark, `#faf8fb` and the same purple in light. GNOME's own dark tones are
+  purple-tinted, so the accent now shares the background's warmth instead of fighting it.
+- Tech Stack and project tags are legible again. The tags previously sat at a 1.13:1
+  contrast ratio against the card behind them — effectively invisible — because the
+  surface ramp was only an 8/255 step and the outline was too faint to carry an edge.
+  Tags now use a purple-tinted fill, purple label text and a border measured at 3.2:1
+  in both themes.
+- Full visual redesign in a calm, GNOME/Adwaita-inspired style: the dark navy
+  "space" theme (particle network hero, glowing radial backgrounds, green neon
+  accent, monospace labels) is replaced with a flat light/dark palette (Adwaita
+  blue accent, `#fafafb`/`#1e1e1e` backgrounds), a single Inter typeface, opaque
+  reading-surface cards with hairline borders and soft shadows instead of
+  glowing pill cards, and a frosted (blurred, translucent) sticky header. Button
+  and card corner radii are more restrained (rounded rectangles instead of full
+  pill shapes for primary actions), and interactive borders were tuned for
+  contrast in light mode. Layout, content, and section structure are unchanged.
+- Landing intro simplified: the animated dot-noise texture is gone and the
+  intro background is now flat instead of a glowing gradient.
+
+### Removed
+
+- Hero particle network (`@tsparticles/react`, `@tsparticles/slim`) — dropped
+  from the hero and from `package.json` as part of the visual redesign.
 
 ### Added
 
