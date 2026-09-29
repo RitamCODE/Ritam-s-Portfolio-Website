@@ -3,6 +3,20 @@
 Notable changes to the portfolio site. Newest first.
 Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [Unreleased]
+
+### Changed
+
+- The favicon and touch/app icons are now the circular portrait on a charcoal
+  background instead of purple, transparent outside the circle.
+- Installing the site as an app now labels it "Ritam" on the home screen instead of
+  falling back to the truncated page title.
+
+### Removed
+
+- Dropped an unused duplicate set of the old purple icons that was still being
+  deployed alongside the real ones.
+
 ## 2026-09-28
 
 ### Added
