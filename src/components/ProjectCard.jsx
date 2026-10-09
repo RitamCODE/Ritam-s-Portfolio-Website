@@ -1,9 +1,11 @@
 import { useId, useState } from 'react';
 import AdaptMathWalkthrough from './adaptmath/AdaptMathWalkthrough';
+import ScientificQaWalkthrough from './scientificqa/ScientificQaWalkthrough';
 
 // A project opts in with `walkthrough: '<key>'` in portfolioData.js.
 const WALKTHROUGHS = {
-  adaptmath: AdaptMathWalkthrough
+  adaptmath: AdaptMathWalkthrough,
+  scientificqa: ScientificQaWalkthrough
 };
 
 function ProjectCard({ project }) {

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 const SETTLE_MS = 140;
 
@@ -11,7 +11,11 @@ function reducedMotion() {
 // same scroll position, and a debounced scroll listener keeps the counter in step with
 // whatever moved it. The deck stays mounted while collapsed, so the selected slide and
 // each slide's local state survive a collapse.
-function WalkthroughDeck({ id, label, heading, note, expanded, slides }) {
+//
+// By default the track is as tall as its tallest slide and every slide stretches to match.
+// `adaptiveHeight` is the opt-in alternative: slides keep their natural height and the track
+// follows the active slide, re-measured whenever that slide's size changes.
+function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveHeight = false }) {
   const trackRef = useRef(null);
   const slideRefs = useRef([]);
   const settleTimer = useRef(0);
@@ -22,6 +26,8 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides }) {
   // handler waits for it, so a stalled animation frame cannot be mistaken for the scroll
   // having finished; the expiry stops it waiting on a target that is never reached.
   const scrollTarget = useRef(null);
+
+  const [trackHeight, setTrackHeight] = useState(null);
 
   const last = slides.length - 1;
 
@@ -48,6 +54,27 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides }) {
     const frame = window.requestAnimationFrame(() => go(currentRef.current, false));
     return () => window.cancelAnimationFrame(frame);
   }, [expanded, go]);
+
+  // The slide's own size changes with navigation, resizes, web fonts loading and any
+  // interaction that swaps its content, so observing it covers all of them.
+  useLayoutEffect(() => {
+    if (!adaptiveHeight) return undefined;
+    const track = trackRef.current;
+    const slide = slideRefs.current[current];
+    if (!track || !slide) return undefined;
+
+    const measure = () => {
+      const style = window.getComputedStyle(track);
+      const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      setTrackHeight(Math.ceil(slide.getBoundingClientRect().height + padding));
+    };
+    measure();
+    if (typeof ResizeObserver === 'undefined') return undefined;
+
+    const observer = new ResizeObserver(measure);
+    observer.observe(slide);
+    return () => observer.disconnect();
+  }, [adaptiveHeight, current]);
 
   // A width change moves every snap point; put the current slide back under the edge.
   useEffect(() => {
@@ -127,7 +154,8 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides }) {
           </div>
 
           <div
-            className="walkthrough-track"
+            className={`walkthrough-track ${adaptiveHeight ? 'is-adaptive' : ''}`}
+            style={adaptiveHeight && trackHeight ? { height: trackHeight } : undefined}
             ref={trackRef}
             role="region"
             aria-roledescription="carousel"

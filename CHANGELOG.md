@@ -25,8 +25,33 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   Bayesian inference or graph modeling), each with a one-line note on how it was applied
   in the work on that slide. The opening purpose slide is unchanged.
 
+- The scientific question answering project card now has its own "Inside the engineering"
+  walkthrough: five slides covering the research question (how much context is enough for a
+  small language model), preparing QASPER into JSONL training examples, adapting
+  Qwen2.5-0.5B with LoRA in two ways, a blind LLM-judged answer comparison, and what the
+  comparison does and does not show. It uses the same deck as AdaptMATH: swipe, scroll,
+  arrows, labelled dots and keyboard navigation, with the next slide peeking in.
+- The walkthrough's demos run locally and call no model: step through answer selection,
+  an example and its saved JSONL line, switch between the two training approaches, and
+  reveal which model wrote answer A and which wrote answer B in a saved judged example.
+  Counts are labelled as saved artifacts, and the closing next step is marked as proposed.
+- The data preparation, LoRA, evaluation and findings slides end with the same quiet
+  "Skills demonstrated" footer as AdaptMATH, with short source links to the repository.
+- Added "Data preparation" (Data) and "Evaluation design" (LLM Systems & Agents) to the
+  About Me tech stack.
+
 ### Changed
 
+- The scientific question answering walkthrough now sizes to the slide you are on instead of
+  to its tallest slide, so the opening purpose slide no longer has a large blank area above
+  its footer. The deck grows or shrinks (smoothly, unless reduced motion is on) as you
+  navigate, resize the window, or switch a slide's demo. AdaptMATH's walkthrough is unchanged.
+- The purpose slide gained a one-sentence motivation under its description: scientific
+  questions can depend on details scattered across a paper, which makes useful answers hard
+  for a small model.
+- Retitled the NLP project card from "Comparing Small LLM QA Capabilities with Fine-Tuning
+  vs Full Context" to "Small Models for Scientific Question Answering", and rewrote its
+  description: both versions are LoRA-adapted, so the old wording was misleading.
 - Renamed the "About" nav pill to "About Me".
 - Restructured the About Me section into a single stacked column: bio, then a Tech
   Stack subsection with a collapsed preview of skills and a "View full tech stack"

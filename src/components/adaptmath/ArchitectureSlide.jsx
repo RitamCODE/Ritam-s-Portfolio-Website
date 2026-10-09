@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import { architectureSlide as copy } from '../../data/adaptmathWalkthrough';
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import useElementWidth from '../walkthrough/useElementWidth';
 import { turnSlide as copy } from '../../data/adaptmathWalkthrough';

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import { bktSlide as copy } from '../../data/adaptmathWalkthrough';
 import { BKT_DEFAULTS, nextRun, updateMastery } from '../../utils/bkt';

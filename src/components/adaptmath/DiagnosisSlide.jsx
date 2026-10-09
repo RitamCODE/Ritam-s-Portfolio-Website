@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import { diagnosisSlide as copy } from '../../data/adaptmathWalkthrough';
 

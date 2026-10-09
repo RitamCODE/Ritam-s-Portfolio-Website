@@ -1,4 +1,4 @@
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import { evaluationSlide as copy } from '../../data/adaptmathWalkthrough';
 

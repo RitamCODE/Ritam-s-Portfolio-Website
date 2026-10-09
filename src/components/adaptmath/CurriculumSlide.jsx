@@ -1,5 +1,5 @@
 import { Fragment, useState } from 'react';
-import SourceLink from './SourceLink';
+import SourceLink from '../walkthrough/SourceLink';
 import SkillsFooter from '../walkthrough/SkillsFooter';
 import { curriculumSlide as copy } from '../../data/adaptmathWalkthrough';
 

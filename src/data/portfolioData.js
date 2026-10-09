@@ -42,6 +42,7 @@ export const techStack = [
       'Vector retrieval (FAISS, ChromaDB)',
       'LLM-as-judge evaluation',
       'Synthetic eval harnesses',
+      'Evaluation design',
       'LangSmith',
       'Pydantic structured outputs'
     ]
@@ -69,7 +70,7 @@ export const techStack = [
   },
   {
     label: 'Data',
-    items: ['SQLite', 'Oracle SQL', 'pandas', 'NumPy']
+    items: ['SQLite', 'Oracle SQL', 'pandas', 'NumPy', 'Data preparation']
   }
 ];
 
@@ -149,9 +150,9 @@ export const projectItems = [
     featured: true
   },
   {
-    title: 'Comparing Small LLM QA Capabilities with Fine-Tuning vs Full Context',
+    title: 'Small Models for Scientific Question Answering',
     summary:
-      'Fine-tuned Qwen 0.5B with LoRA on the QASPER dataset and compared answer quality with and without full-document context.',
+      'Compared two LoRA-adapted versions of Qwen2.5-0.5B on scientific question answering over specialized NLP papers from QASPER: one trained on question-answer pairs, the other on full paper text. I built the data preparation, training and inference pipelines, and a blind comparison in which a larger model judged randomized A/B answers against the references.',
     stack: ['Python', 'PyTorch', 'HuggingFace Transformers', 'LoRA'],
     links: [
       {
@@ -159,6 +160,8 @@ export const projectItems = [
         href: 'https://github.com/RitamCODE/Comparing-Small-LLMs-for-Scientific-Question-Answering'
       }
     ],
+    // Adds the "Inside the engineering" walkthrough under the card (see ProjectCard.jsx).
+    walkthrough: 'scientificqa',
     featured: true
   },
   {

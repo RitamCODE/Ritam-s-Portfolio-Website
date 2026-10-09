@@ -1269,6 +1269,16 @@ footer {
   display: none;
 }
 
+/* Opt-in (WalkthroughDeck `adaptiveHeight`): slides keep their natural height instead of
+   stretching to the tallest, and the deck sets the track's height to the active slide's.
+   overflow-y is hidden because the height always fits the active slide, so there is never
+   anything to scroll to. */
+.walkthrough-track.is-adaptive {
+  align-items: flex-start;
+  overflow-y: hidden;
+  transition: height 0.3s var(--ease-standard);
+}
+
 /* The track is clipped by .walkthrough-clip, so the focus ring sits inside it. */
 .walkthrough-track:focus-visible {
   box-shadow: inset 0 0 0 0.25rem var(--brand);
@@ -1323,6 +1333,11 @@ footer {
   color: var(--muted);
   font-size: 1.4rem;
   line-height: 1.6;
+}
+
+/* Two supporting paragraphs in a row: the first sits close to the second. */
+.walkthrough-lead.is-tight {
+  margin-bottom: 0.6rem;
 }
 
 .walkthrough-aside,
@@ -2162,6 +2177,428 @@ footer {
   color: var(--success-fg);
 }
 
+/* Scientific QA walkthrough. Shares the deck, chain, card and choice rules above; these are
+   the pieces only it uses. Same colour tokens throughout, so both themes need no overrides. */
+.walkthrough-flow {
+  margin: 0.4rem 0 2rem;
+}
+
+.walkthrough-origin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding-bottom: 1.6rem;
+}
+
+.walkthrough-origin > i {
+  color: var(--brand);
+  font-size: 2.2rem;
+}
+
+.walkthrough-origin strong,
+.walkthrough-outcome strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-origin small,
+.walkthrough-outcome small {
+  display: block;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-branches {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.4rem;
+}
+
+.walkthrough-branch {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+}
+
+.walkthrough-branch-label,
+.walkthrough-branch-method {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--selected-fg);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.walkthrough-branch strong {
+  font-size: 1.7rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.walkthrough-branch p {
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.walkthrough-branch-method {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--selected-fg) 25%, transparent);
+  font-size: 1.3rem;
+}
+
+.walkthrough-outcome {
+  padding-top: 1.6rem;
+  text-align: center;
+}
+
+.walkthrough-outcome > i {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--muted);
+  font-size: 1.8rem;
+}
+
+.walkthrough-aside-spaced {
+  margin-top: 1.8rem;
+}
+
+/* Panels swapped by the slide's own buttons. The minimum height keeps the slide from
+   jumping between stages of different length. */
+.walkthrough-stage,
+.walkthrough-training {
+  margin-bottom: 1.4rem;
+  padding: 1.8rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.walkthrough-stage h5,
+.walkthrough-training h5 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.walkthrough-stage > h5 {
+  margin-bottom: 1.2rem;
+}
+
+.walkthrough-stage p,
+.walkthrough-training p {
+  margin-top: 0.7rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+.walkthrough-stage p.walkthrough-note-small,
+.walkthrough-training p.walkthrough-note-small {
+  color: var(--muted);
+}
+
+.walkthrough-stage > .walkthrough-note-small {
+  margin-top: 1.2rem;
+}
+
+.walkthrough-fields,
+.walkthrough-training {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
+}
+
+.walkthrough-field-label {
+  display: block;
+  color: var(--brand);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.walkthrough-code {
+  margin: 0.7rem 0 0;
+  padding: 1.2rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text-body);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.2rem;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.walkthrough-stage > .walkthrough-code {
+  margin-top: 0;
+}
+
+.walkthrough-rules {
+  display: grid;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.walkthrough-rules li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.walkthrough-rules i {
+  flex-shrink: 0;
+  width: 1.4rem;
+  margin-top: 0.2rem;
+  color: var(--brand);
+  text-align: center;
+}
+
+.walkthrough-counts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  margin-bottom: 1.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-counts strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* LoRA: frozen base + trainable adapter. The dominant visual of its slide. */
+.walkthrough-lora {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1fr) 3rem minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.6rem;
+  margin: 0.4rem 0 2rem;
+}
+
+.walkthrough-lora-op {
+  align-self: center;
+  color: var(--muted);
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.walkthrough-weight {
+  display: flex;
+  min-width: 0;
+  min-height: 14rem;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.8rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  text-align: center;
+}
+
+.walkthrough-weight.is-adapter {
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.walkthrough-weight > i {
+  color: var(--muted);
+  font-size: 2.2rem;
+}
+
+.walkthrough-weight.is-adapter > i {
+  color: var(--selected-fg);
+}
+
+.walkthrough-weight strong {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-weight small {
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-weight.is-adapter small {
+  color: var(--text-body);
+}
+
+.walkthrough-weight-state {
+  padding: 0.2rem 0.9rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.walkthrough-weight.is-adapter .walkthrough-weight-state {
+  border-color: var(--selected-fg);
+  color: var(--selected-fg);
+}
+
+/* Blind evaluation */
+.walkthrough-chain.is-stackable {
+  margin-bottom: 1.8rem;
+}
+
+.walkthrough-eval-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+}
+
+.walkthrough-question {
+  margin-bottom: 0.4rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-answers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin: 1.2rem 0 0.8rem;
+}
+
+.walkthrough-answer {
+  min-width: 0;
+  padding: 1.3rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.walkthrough-answer-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  color: var(--brand);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.walkthrough-answer-head em {
+  padding: 0.1rem 0.9rem;
+  border-radius: 999px;
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  font-style: normal;
+}
+
+.walkthrough-answer p {
+  margin-top: 0.7rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+.walkthrough-judgment {
+  margin-top: 1.2rem;
+  padding: 1.4rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+}
+
+.walkthrough-judgment .walkthrough-field-label {
+  color: var(--selected-fg);
+}
+
+.walkthrough-judgment p {
+  margin-top: 0.6rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+.walkthrough-judgment .walkthrough-effect {
+  color: var(--selected-fg);
+  font-weight: 500;
+}
+
+/* Findings */
+.walkthrough-config dl {
+  margin: 0;
+}
+
+.walkthrough-config dl > div {
+  padding: 0.8rem 0;
+  border-top: 1px solid var(--line);
+}
+
+.walkthrough-config dt {
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.walkthrough-config dd {
+  margin: 0.2rem 0 0;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.walkthrough-limits {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.walkthrough-limits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.walkthrough-limits i {
+  flex-shrink: 0;
+  width: 1.6rem;
+  margin-top: 0.3rem;
+  color: var(--brand);
+  text-align: center;
+}
+
+.walkthrough-next {
+  margin-top: 1.4rem;
+  padding: 1.3rem 1.5rem;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius-md);
+}
+
+.walkthrough-next p {
+  margin-top: 0.5rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
 /* Footer: slide-position dots and arrows */
 .walkthrough-footer {
   display: flex;
@@ -2762,6 +3199,54 @@ footer {
     flex-wrap: wrap;
   }
 
+  /* Scientific QA walkthrough: every two-up grid becomes one column, and the chains and the
+     LoRA diagram read top to bottom. */
+  .walkthrough-branches,
+  .walkthrough-fields,
+  .walkthrough-training,
+  .walkthrough-answers {
+    grid-template-columns: 1fr;
+    gap: 1.2rem;
+  }
+
+  .walkthrough-branch {
+    padding: 1.6rem;
+  }
+
+  .walkthrough-stage,
+  .walkthrough-training {
+    padding: 1.5rem;
+  }
+
+  .walkthrough-lora {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
+  }
+
+  .walkthrough-weight {
+    min-height: 0;
+    padding: 1.4rem 1rem;
+  }
+
+  .walkthrough-lora-op.fa-arrow-right {
+    transform: rotate(90deg);
+  }
+
+  .walkthrough-chain.is-stackable {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.4rem;
+  }
+
+  .walkthrough-chain.is-stackable .walkthrough-system {
+    padding: 1rem 0.7rem;
+  }
+
+  .walkthrough-chain.is-stackable .walkthrough-chain-arrow {
+    align-self: center;
+    transform: rotate(90deg);
+  }
+
   .walkthrough-footer {
     flex-wrap: wrap;
     justify-content: center;
@@ -2832,6 +3317,7 @@ footer {
   }
 
   .walkthrough,
+  .walkthrough-track.is-adaptive,
   .walkthrough-chevron,
   .walkthrough-meter-fill,
   .walkthrough-dot::after,
