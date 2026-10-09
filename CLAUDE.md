@@ -42,11 +42,12 @@ URL, so a card can point at a repo and a demo at the same time. `courseItems` an
 `patentItems` render inside `AboutSection`, not in sections of their own.
 
 A project opts into an expandable walkthrough with `walkthrough: '<key>'` in
-`projectItems`; `ProjectCard.jsx` maps the key to a component (today only `adaptmath`,
-in `src/components/adaptmath/`, built on the generic `components/walkthrough/WalkthroughDeck`).
-Its copy lives in `src/data/adaptmathWalkthrough.js` rather than `portfolioData.js`
-because of its size. Each engineering slide there carries a `demonstrated` list (max two
-`{ name, applied }` pairs) rendered by `components/walkthrough/SkillsFooter` just above the
+`projectItems`; `ProjectCard.jsx` maps the key to a component (`adaptmath`, `scientificqa`
+and `birds`, in `src/components/<name>/`, all built on the generic
+`components/walkthrough/WalkthroughDeck`). Each walkthrough's copy lives in its own
+`src/data/*Walkthrough.js` rather than `portfolioData.js` because of its size. Each
+engineering slide carries a `demonstrated` list (max two `{ name, applied }` pairs)
+rendered by `components/walkthrough/SkillsFooter` just above the
 source link; it is `demonstrated` because `skills` is taken by the curriculum picker.
 `.project-card > h3`, `> p` and `.project-links a` are scoped to the card's own children so
 the walkthrough's nested headings, paragraphs and links don't inherit them — keep new card

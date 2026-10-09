@@ -40,6 +40,21 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - Added "Data preparation" (Data) and "Evaluation design" (LLM Systems & Agents) to the
   About Me tech stack.
 
+- The bird classification project card now has its own "Inside the engineering"
+  walkthrough: five slides covering the idea of recognizing birds by appearance and sound,
+  how a call becomes a mel spectrogram, adapting a ResNet18 audio encoder to a one-channel
+  input, joining the image and audio features before one classifier, and what the project
+  does and does not establish. It uses the same deck as the other walkthroughs: swipe,
+  scroll, arrows, labelled dots and keyboard navigation, with the next slide peeking in.
+- The walkthrough's two demos run locally and call no model: switch the audio between a
+  waveform, a mel spectrogram and the fixed-size model input, and trace the audio path
+  through the two-branch architecture. The audio pictures are labelled as schematics, not
+  recordings, and the 128-feature and 256-feature sizes are labelled as architecture
+  dimensions rather than results.
+- Every slide of the bird walkthrough ends with the same quiet "Skills demonstrated"
+  footer as the other two. The closing slide states that performance is unverified and
+  marks the proposed comparison as future work, not completed work.
+
 ### Changed
 
 - The scientific question answering walkthrough now sizes to the slide you are on instead of

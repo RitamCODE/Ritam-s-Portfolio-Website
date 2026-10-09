@@ -2599,6 +2599,339 @@ footer {
   line-height: 1.55;
 }
 
+/* Bird classification walkthrough. Shares the deck, chain, card and choice rules above; these
+   are the pieces only it uses. Colour tokens only, so both themes need no overrides. */
+.bird-purpose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 3rem minmax(0, 1.1fr);
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0 2rem;
+}
+
+.bird-cues {
+  display: grid;
+  gap: 1rem;
+}
+
+.bird-cue {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.bird-cue > i {
+  flex-shrink: 0;
+  width: 2.4rem;
+  color: var(--brand);
+  font-size: 2rem;
+  text-align: center;
+}
+
+.bird-cue strong,
+.bird-response strong {
+  display: block;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.bird-cue small,
+.bird-response small {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.bird-purpose-arrow {
+  color: var(--muted);
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.bird-response {
+  padding: 2.2rem 1.6rem;
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+  text-align: center;
+}
+
+.bird-response > i {
+  display: block;
+  margin-bottom: 1rem;
+  color: var(--selected-fg);
+  font-size: 3rem;
+}
+
+.bird-response strong {
+  font-size: 1.7rem;
+}
+
+.bird-response small {
+  color: var(--text-body);
+}
+
+.bird-prediction {
+  display: block;
+  margin-top: 1.2rem;
+  padding-top: 1rem;
+  border-top: 1px solid color-mix(in srgb, var(--selected-fg) 25%, transparent);
+  color: var(--selected-fg);
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.bird-aside {
+  align-items: flex-start;
+  margin-bottom: 0.6rem;
+}
+
+.bird-aside i {
+  margin-top: 0.3rem;
+}
+
+/* Audio representation: a labelled schematic panel. The plot stretches to its container
+   (preserveAspectRatio none), so it needs no width measuring. */
+.bird-signal {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.bird-signal-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.bird-signal-head strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.bird-plot {
+  display: block;
+  width: 100%;
+  height: 15.5rem;
+}
+
+.bird-plot-axis {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.bird-plot-line {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 1.4;
+  vector-effect: non-scaling-stroke;
+}
+
+.bird-plot-cell {
+  fill: var(--brand);
+}
+
+.bird-axis {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.bird-detail {
+  min-height: 5.2rem;
+  max-width: 70ch;
+  margin: 1.2rem 0 0.8rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.6;
+}
+
+/* Encoder adaptation */
+.bird-dimension {
+  display: block;
+  margin-top: 0.6rem;
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.bird-channels {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.3rem;
+  margin-bottom: 1.4rem;
+}
+
+.bird-channel {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  padding: 1.2rem 1.3rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  color: var(--text-body);
+  font-size: 1.3rem;
+}
+
+.bird-channel.is-single {
+  background: var(--selected-bg);
+}
+
+.bird-channel strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.bird-channel small {
+  display: block;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.bird-channel-bars {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.bird-channel-bars b {
+  display: block;
+  width: 0.8rem;
+  height: 2.8rem;
+  border-radius: 0.3rem;
+  background: var(--line-strong);
+}
+
+.bird-channel.is-single .bird-channel-bars b {
+  background: var(--brand);
+}
+
+/* Feature fusion: two branches merge into one classifier. */
+.walkthrough-cards.bird-branches {
+  margin-bottom: 0;
+}
+
+.bird-branch {
+  border: 1px solid transparent;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.bird-branch.is-traced {
+  border-color: var(--brand);
+  background: var(--selected-bg);
+}
+
+.bird-branch p {
+  margin-top: 0;
+}
+
+.bird-steps {
+  display: grid;
+  gap: 0.4rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  list-style: none;
+}
+
+.bird-steps li:last-child {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.bird-merge {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  height: 2.4rem;
+  margin-bottom: 1rem;
+  padding: 0 24%;
+}
+
+.bird-merge span {
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.bird-merge span:first-child {
+  border-left: 1px solid var(--line-strong);
+  border-radius: 0 0 0 0.8rem;
+}
+
+.bird-merge span:last-child {
+  border-right: 1px solid var(--line-strong);
+  border-radius: 0 0 0.8rem 0;
+}
+
+/* Learning and limits: a short vertical timeline. */
+.bird-boundaries {
+  display: grid;
+  margin: 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.bird-boundaries li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 3.2rem minmax(0, 1fr);
+  gap: 1.4rem;
+  padding-bottom: 2.2rem;
+}
+
+.bird-boundaries li:last-child {
+  padding-bottom: 0;
+}
+
+.bird-boundaries li:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 3.6rem;
+  bottom: 0.4rem;
+  left: 1.6rem;
+  width: 1px;
+  background: var(--line-strong);
+}
+
+.bird-marker {
+  display: grid;
+  width: 3.2rem;
+  height: 3.2rem;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--surface-inset);
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.bird-boundaries li:first-child .bird-marker {
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.bird-boundaries strong {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.bird-boundaries p {
+  margin: 0.4rem 0 0.7rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
 /* Footer: slide-position dots and arrows */
 .walkthrough-footer {
   display: flex;
@@ -3247,6 +3580,52 @@ footer {
     transform: rotate(90deg);
   }
 
+  /* Bird walkthrough: the two cues sit above the outcome; the two branches stay side by side
+     so the merge connector still lines up with them. */
+  .bird-purpose {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .bird-purpose-arrow {
+    transform: rotate(90deg);
+  }
+
+  .bird-response {
+    padding: 1.6rem 1.2rem;
+  }
+
+  .bird-response > i {
+    margin-bottom: 0.6rem;
+    font-size: 2.4rem;
+  }
+
+  .bird-signal {
+    padding: 1.2rem;
+  }
+
+  .bird-detail {
+    min-height: 9rem;
+  }
+
+  .bird-channels {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .walkthrough-cards.bird-branches {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.8rem;
+  }
+
+  .bird-branch {
+    padding: 1.1rem 0.9rem;
+  }
+
+  .bird-boundaries li {
+    gap: 1rem;
+  }
+
   .walkthrough-footer {
     flex-wrap: wrap;
     justify-content: center;
@@ -3319,6 +3698,7 @@ footer {
   .walkthrough,
   .walkthrough-track.is-adaptive,
   .walkthrough-chevron,
+  .bird-branch,
   .walkthrough-meter-fill,
   .walkthrough-dot::after,
   .walkthrough-toggle {

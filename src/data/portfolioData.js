@@ -170,6 +170,8 @@ export const projectItems = [
       'Built a multimodal bird-species classifier that fuses visual and auditory features using ResNet18-based encoders and Mel-spectrogram audio representations.',
     stack: ['Torchvision', 'TorchAudio', 'NumPy', 'Pandas'],
     links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
+    // Adds the "Inside the engineering" walkthrough under the card (see ProjectCard.jsx).
+    walkthrough: 'birds',
     featured: true
   },
   {
