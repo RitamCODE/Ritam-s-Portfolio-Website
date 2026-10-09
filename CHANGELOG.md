@@ -75,6 +75,12 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- The Microsoft "Explore my contribution" walkthrough now opens attached to the bottom of the
+  experience panel and runs the full width of the tabs and panel together, instead of being
+  squeezed into the panel column. Open, the panel and walkthrough form one L-shaped card: one
+  surface, no seam between them, and a curved inside corner where they meet.
+- The Microsoft walkthrough's "Skills demonstrated" footers now sit a clear step below each
+  slide's content instead of directly under it.
 - Rewrote the Microsoft internship bullets to match the walkthrough: dropped the claims of
   "seamless" deployment, tracing, logging and memory management, and AzureML UI integration;
   the entry now lists the retriever save/load proposal (an unmerged MLflow draft), the

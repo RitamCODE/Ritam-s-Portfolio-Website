@@ -1,5 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
-import ExperienceWalkthrough from './ExperienceWalkthrough';
+import { useEffect, useId, useMemo, useState } from 'react';
+import ExperienceWalkthrough, { ExperienceWalkthroughActions } from './ExperienceWalkthrough';
 
 function ExperienceSection({ experiences }) {
   const groupedExperience = useMemo(
@@ -23,6 +23,9 @@ function ExperienceSection({ experiences }) {
     industry: groupedExperience.industry[0]?.id || null,
     academia: groupedExperience.academia[0]?.id || null
   }));
+  // Id of the experience whose walkthrough is open, so switching entries hides the deck.
+  const [openWalkthrough, setOpenWalkthrough] = useState(null);
+  const walkthroughId = useId();
 
   useEffect(() => {
     if (!availableGroups.includes(activeGroup)) {
@@ -84,7 +87,10 @@ function ExperienceSection({ experiences }) {
 
         {/* Keyed so React remounts on every switch, replaying the panel-in animation. */}
         {activeExperience && (
-          <article className="experience-panel" key={activeExperience.id}>
+          <article
+            className={`experience-panel ${openWalkthrough === activeExperience.id ? 'has-open-walkthrough' : ''}`}
+            key={activeExperience.id}
+          >
             <div className="experience-head">
               <h3>
                 {activeExperience.role} <span>@ {activeExperience.company}</span>
@@ -107,10 +113,30 @@ function ExperienceSection({ experiences }) {
                 <li key={point}>{point}</li>
               ))}
             </ul>
-            {activeExperience.walkthrough && <ExperienceWalkthrough experience={activeExperience} />}
+            {activeExperience.walkthrough && (
+              <ExperienceWalkthroughActions
+                experience={activeExperience}
+                controls={walkthroughId}
+                expanded={openWalkthrough === activeExperience.id}
+                onToggle={() =>
+                  setOpenWalkthrough((open) => (open === activeExperience.id ? null : activeExperience.id))
+                }
+              />
+            )}
           </article>
         )}
       </div>
+
+      {/* Below the whole layout rather than inside the panel, so it spans the tabs + panel
+          width; it attaches flush to the panel's bottom edge. */}
+      {activeExperience?.walkthrough && (
+        <ExperienceWalkthrough
+          key={activeExperience.id}
+          experience={activeExperience}
+          id={walkthroughId}
+          expanded={openWalkthrough === activeExperience.id}
+        />
+      )}
     </section>
   );
 }

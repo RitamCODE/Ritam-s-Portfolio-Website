@@ -981,8 +981,6 @@ footer {
 /* ExperienceSection keys this element on the active id, so React remounts it on every
    switch and this entrance animation replays — the crossfade comes for free. */
 .experience-panel {
-  --walkthrough-bleed-x: 2.8rem;
-  --walkthrough-bleed-y: 2.8rem;
   padding: 2.8rem;
   animation: panel-in 0.24s var(--ease-standard);
 }
@@ -3298,6 +3296,113 @@ footer {
   margin: 0;
 }
 
+/* The experience walkthrough renders below the tabs + panel (not inside the panel), so it
+   spans the full content column: from the tabs' left edge to the panel's right edge. Open,
+   the panel and deck read as one L-shaped card: same surface, no seam under the panel, a
+   concave fillet where the panel's left edge turns into the deck's top edge, and the card
+   shadow on the outer edge only. -1px lays the deck's top border under the panel's bottom
+   border row, where the raised panel covers it. */
+.experience-walkthrough {
+  /* Not stretched to its grid row, which the negative margin would otherwise turn into a
+     1px-tall box while collapsed. */
+  align-self: start;
+  margin-top: -1px;
+}
+
+.experience-walkthrough .walkthrough {
+  margin: 0;
+}
+
+/* Square where it meets the panel (top right), rounded everywhere it is an outer edge. The
+   outline sits on the deck, inside the clip, so it is clipped away while collapsed. */
+.experience-walkthrough .walkthrough-clip,
+.experience-walkthrough .walkthrough-deck {
+  border-radius: var(--radius-lg) 0 var(--radius-lg) var(--radius-lg);
+}
+
+.experience-walkthrough .walkthrough-clip {
+  box-shadow: var(--shadow-sm);
+}
+
+/* The deck is adaptive-height, so a slide is only as tall as its content and the footer's
+   margin-top: auto resolves to nothing; this restores a clear break between the slide body and
+   "Skills demonstrated", like the one equal-height decks such as AdaptMATH get from auto. */
+.experience-walkthrough .walkthrough-demonstrated {
+  margin-top: 1.6rem;
+}
+
+/* --surface, not the inset tone the deck takes inside a project card: here it continues the
+   panel rather than sitting recessed within it. The slides keep their own elevated fill and
+   outline, so they still lift off it. */
+.experience-walkthrough .walkthrough-deck {
+  background: var(--surface);
+  border: 1px solid var(--line);
+}
+
+/* Each attached-state change waits out the deck's 0.35s collapse before reverting, so the
+   seam, corners and fillet never come back while the deck is still visible below. */
+.experience-panel {
+  position: relative;
+  transition: border-bottom-left-radius 0s linear 0.35s, border-bottom-right-radius 0s linear 0.35s,
+    border-bottom-color 0s linear 0.35s, box-shadow 0s linear 0.35s, z-index 0s linear 0.35s;
+}
+
+/* Raised over the deck, its transparent bottom border row (panel surface) covers the deck's
+   top border, so the line only shows where the deck's top edge is exposed. */
+.experience-panel.has-open-walkthrough {
+  z-index: 1;
+  border-bottom-color: transparent;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: none;
+  transition-delay: 0s;
+}
+
+/* The concave fillet: a --radius-lg square just outside the panel's bottom-left corner,
+   filled with --surface beyond a quarter circle and stroked with --line along it. The stroke
+   is layered over the surface, the way a card's own border sits over its background, so the
+   translucent dark-theme line matches the straight edges either side. left: -radius puts the
+   arc's top end on the panel's left border; bottom: -1px puts its other end on the deck's top
+   border row. */
+.experience-panel::after {
+  content: '';
+  position: absolute;
+  left: calc(var(--radius-lg) * -1);
+  bottom: -1px;
+  width: var(--radius-lg);
+  height: var(--radius-lg);
+  background:
+    radial-gradient(
+      circle at 0 0,
+      transparent calc(var(--radius-lg) - 1px),
+      var(--line) calc(var(--radius-lg) - 1px),
+      var(--line) var(--radius-lg),
+      transparent var(--radius-lg)
+    ),
+    radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), var(--surface) calc(var(--radius-lg) - 1px));
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear 0.35s;
+}
+
+.experience-panel.has-open-walkthrough::after {
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+/* Once the tabs stack above the panel, the deck is exactly the panel's width: both top
+   corners meet the panel and there is no exposed edge to fillet. */
+@media (max-width: 980px) {
+  .experience-walkthrough .walkthrough-clip,
+  .experience-walkthrough .walkthrough-deck {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+  }
+
+  .experience-panel::after {
+    display: none;
+  }
+}
+
 /* Expandable "Project notes" closing a slide (shared walkthrough ProjectNotes). Sits where
    .walkthrough-source does and takes the same top rule. */
 .walkthrough-demonstrated + .walkthrough-notes {
@@ -3947,8 +4052,6 @@ footer {
 
   .panel,
   .experience-panel {
-    --walkthrough-bleed-x: 2rem;
-    --walkthrough-bleed-y: 2.2rem;
     padding: 2.2rem 2rem;
   }
 
@@ -4207,8 +4310,10 @@ footer {
     transition-delay: 0s;
   }
 
-  .experience-panel {
+  .experience-panel,
+  .experience-panel::after {
     animation: none;
+    transition: none;
   }
 
   .scroll-progress {
