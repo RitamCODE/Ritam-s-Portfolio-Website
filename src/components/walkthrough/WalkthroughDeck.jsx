@@ -15,13 +15,21 @@ function reducedMotion() {
 // By default the track is as tall as its tallest slide and every slide stretches to match.
 // `adaptiveHeight` is the opt-in alternative: slides keep their natural height and the track
 // follows the active slide, re-measured whenever that slide's size changes.
-function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveHeight = false }) {
+//
+// Only the active slide is interactive: the others are `inert`, so their buttons and links
+// stay out of the tab order and the accessibility tree while the next slide still peeks in.
+// Both ResizeObservers only schedule work. Layout is read and written in the next animation
+// frame, at most once per frame, and a measurement equal to the last one is dropped, so a
+// resize can never feed back into itself.
+// `note` (the caveat line under the controls) and `hint` ("Scroll or swipe…") are optional.
+function WalkthroughDeck({ id, label, heading, note, hint = true, expanded, slides, adaptiveHeight = false }) {
   const trackRef = useRef(null);
   const slideRefs = useRef([]);
   const settleTimer = useRef(0);
   const [current, setCurrent] = useState(0);
   const currentRef = useRef(0);
   const lastTrackWidth = useRef(0);
+  const dotRefs = useRef([]);
   // Where an in-flight programmatic scroll is headed ({ left, expires }). The settle
   // handler waits for it, so a stalled animation frame cannot be mistaken for the scroll
   // having finished; the expiry stops it waiting on a target that is never reached.
@@ -56,7 +64,8 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
   }, [expanded, go]);
 
   // The slide's own size changes with navigation, resizes, web fonts loading and any
-  // interaction that swaps its content, so observing it covers all of them.
+  // interaction that swaps its content, so observing it covers all of them. The first read
+  // is synchronous so a newly selected slide never paints at the previous slide's height.
   useLayoutEffect(() => {
     if (!adaptiveHeight) return undefined;
     const track = trackRef.current;
@@ -66,14 +75,25 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
     const measure = () => {
       const style = window.getComputedStyle(track);
       const padding = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
-      setTrackHeight(Math.ceil(slide.getBoundingClientRect().height + padding));
+      const height = Math.ceil(slide.getBoundingClientRect().height + padding);
+      if (height > padding) setTrackHeight((previous) => (previous === height ? previous : height));
     };
     measure();
     if (typeof ResizeObserver === 'undefined') return undefined;
 
-    const observer = new ResizeObserver(measure);
+    let frame = 0;
+    const observer = new ResizeObserver(() => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    });
     observer.observe(slide);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(frame);
+    };
   }, [adaptiveHeight, current]);
 
   // A width change moves every snap point; put the current slide back under the edge.
@@ -81,15 +101,23 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
     const track = trackRef.current;
     if (!track || typeof ResizeObserver === 'undefined') return undefined;
 
+    let frame = 0;
     const observer = new ResizeObserver(() => {
-      const width = track.clientWidth;
-      if (width > 0 && width !== lastTrackWidth.current) {
-        lastTrackWidth.current = width;
-        go(currentRef.current, false);
-      }
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        const width = track.clientWidth;
+        if (width > 0 && width !== lastTrackWidth.current) {
+          lastTrackWidth.current = width;
+          go(currentRef.current, false);
+        }
+      });
     });
     observer.observe(track);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(frame);
+    };
   }, [go]);
 
   useEffect(() => () => window.clearTimeout(settleTimer.current), []);
@@ -137,6 +165,25 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
     go(moves[event.key]);
   };
 
+  // An arrow that reaches the end of the deck disables itself, which would drop keyboard
+  // focus; it hands focus to the current position dot first.
+  const step = (delta) => {
+    const index = Math.max(0, Math.min(last, currentRef.current + delta));
+    go(index);
+    if (index === 0 || index === last) dotRefs.current[index]?.focus({ preventScroll: true });
+  };
+
+  // Arrow keys, Home and End move between slides from a position dot as well.
+  const handleDotKeyDown = (event) => {
+    const at = currentRef.current;
+    const moves = { ArrowRight: at + 1, ArrowLeft: at - 1, Home: 0, End: last };
+    if (!(event.key in moves)) return;
+    event.preventDefault();
+    const index = Math.max(0, Math.min(last, moves[event.key]));
+    go(index);
+    dotRefs.current[index]?.focus({ preventScroll: true });
+  };
+
   const active = slides[current];
 
   return (
@@ -177,6 +224,7 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} of ${slides.length}: ${slide.chapter}`}
+                inert={index === current ? undefined : ''}
               >
                 {slide.content}
               </section>
@@ -184,10 +232,18 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
           </div>
 
           <div className="walkthrough-footer">
-            <div className="walkthrough-dots" role="group" aria-label="Choose a slide">
+            <div
+              className="walkthrough-dots"
+              role="group"
+              aria-label="Choose a slide"
+              onKeyDown={handleDotKeyDown}
+            >
               {slides.map((slide, index) => (
                 <button
                   key={slide.key}
+                  ref={(node) => {
+                    dotRefs.current[index] = node;
+                  }}
                   type="button"
                   className="walkthrough-dot"
                   aria-label={`Slide ${index + 1}: ${slide.chapter}`}
@@ -198,15 +254,17 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
               ))}
             </div>
             <div className="walkthrough-nav">
-              <span className="walkthrough-hint" aria-hidden="true">
-                Scroll or swipe to look under the hood
-              </span>
+              {hint && (
+                <span className="walkthrough-hint" aria-hidden="true">
+                  Scroll or swipe to look under the hood
+                </span>
+              )}
               <button
                 type="button"
                 className="walkthrough-arrow"
                 aria-label="Previous slide"
                 disabled={current === 0}
-                onClick={() => go(currentRef.current - 1)}
+                onClick={() => step(-1)}
               >
                 <i className="fa-solid fa-arrow-left" aria-hidden="true" />
               </button>
@@ -215,14 +273,14 @@ function WalkthroughDeck({ id, label, heading, note, expanded, slides, adaptiveH
                 className="walkthrough-arrow"
                 aria-label="Next slide"
                 disabled={current === last}
-                onClick={() => go(currentRef.current + 1)}
+                onClick={() => step(1)}
               >
                 <i className="fa-solid fa-arrow-right" aria-hidden="true" />
               </button>
             </div>
           </div>
 
-          <p className="walkthrough-note">{note}</p>
+          {note && <p className="walkthrough-note">{note}</p>}
         </div>
       </div>
     </div>

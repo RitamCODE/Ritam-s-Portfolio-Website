@@ -981,6 +981,8 @@ footer {
 /* ExperienceSection keys this element on the active id, so React remounts it on every
    switch and this entrance animation replays — the crossfade comes for free. */
 .experience-panel {
+  --walkthrough-bleed-x: 2.8rem;
+  --walkthrough-bleed-y: 2.8rem;
   padding: 2.8rem;
   animation: panel-in 0.24s var(--ease-standard);
 }
@@ -1032,7 +1034,8 @@ footer {
   color: var(--brand-hover);
 }
 
-.experience-panel ul {
+/* Direct children only: an expanded walkthrough nests its own lists inside the panel. */
+.experience-panel > ul {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -1040,7 +1043,7 @@ footer {
   gap: 1rem;
 }
 
-.experience-panel li {
+.experience-panel > ul > li {
   color: var(--text-body);
   font-size: 1.55rem;
   line-height: 1.65;
@@ -1048,7 +1051,7 @@ footer {
   position: relative;
 }
 
-.experience-panel li::before {
+.experience-panel > ul > li::before {
   content: '';
   position: absolute;
   left: 0;
@@ -1191,7 +1194,9 @@ footer {
   --walkthrough-dot: var(--line-strong);
   display: grid;
   grid-template-rows: 0fr;
-  margin: 2.2rem -2.2rem -2.2rem;
+  /* The deck is full-bleed: negative margins cancel its host's padding. A project card pads
+     2.2rem; the experience panel overrides these on itself. */
+  margin: 2.2rem calc(var(--walkthrough-bleed-x, 2.2rem) * -1) calc(var(--walkthrough-bleed-y, 2.2rem) * -1);
   visibility: hidden;
   transition: grid-template-rows 0.35s var(--ease-standard), visibility 0s linear 0.35s;
 }
@@ -3279,6 +3284,513 @@ footer {
   }
 }
 
+/* Experience entry actions: the public link and the "Explore my contribution" toggle. */
+.experience-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.2rem 1.8rem;
+  margin-top: 2rem;
+}
+
+.experience-actions .experience-link {
+  margin: 0;
+}
+
+/* Expandable "Project notes" closing a slide (shared walkthrough ProjectNotes). Sits where
+   .walkthrough-source does and takes the same top rule. */
+.walkthrough-demonstrated + .walkthrough-notes {
+  margin-top: 0;
+}
+
+.walkthrough-notes {
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-notes summary {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3rem;
+  color: var(--brand);
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.walkthrough-notes summary::-webkit-details-marker {
+  display: none;
+}
+
+.walkthrough-notes summary::before {
+  content: '';
+  flex-shrink: 0;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 0.2rem solid currentColor;
+  border-bottom: 0.2rem solid currentColor;
+  transform: translateY(-0.1rem) rotate(-45deg);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.walkthrough-notes[open] summary::before {
+  transform: translateY(-0.2rem) rotate(45deg);
+}
+
+.walkthrough-notes summary:hover {
+  color: var(--brand-hover);
+}
+
+.walkthrough-notes p {
+  max-width: 70ch;
+  margin-top: 0.6rem;
+  line-height: 1.55;
+}
+
+.walkthrough-notes-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.8rem;
+  margin: 0.8rem 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.walkthrough-notes-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 2.4rem;
+  color: var(--brand);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.walkthrough-notes-links a:hover {
+  color: var(--brand-hover);
+  text-decoration: underline;
+}
+
+/* Microsoft internship walkthrough. Shares the deck, choice, card and notes rules above;
+   these are the diagram pieces only it uses. Colour tokens only, so both themes need no
+   overrides. A diagram stacks when its own width runs out (Diagram.jsx adds .is-compact),
+   not at a viewport breakpoint. */
+.msft-diagram {
+  display: grid;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0 1.4rem;
+}
+
+.msft-flow {
+  grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1.15fr) 2rem minmax(0, 1fr);
+}
+
+.msft-pair {
+  grid-template-columns: minmax(0, 1fr) 2.4rem minmax(0, 1fr);
+}
+
+.msft-arrow {
+  justify-self: center;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.msft-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 1.6rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  text-align: center;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.msft-node > i {
+  color: var(--brand);
+  font-size: 2.2rem;
+}
+
+.msft-node strong,
+.msft-rebuild strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.msft-node small,
+.msft-rebuild small,
+.msft-file small {
+  display: block;
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.msft-node.is-active {
+  background: var(--selected-bg);
+}
+
+.msft-diagram.is-compact {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.7rem;
+}
+
+.msft-diagram.is-compact .msft-arrow {
+  transform: rotate(90deg);
+}
+
+.msft-diagram.is-compact .msft-node {
+  flex-direction: row;
+  gap: 1.2rem;
+  padding: 1.2rem 1.3rem;
+  text-align: left;
+}
+
+.msft-diagram.is-compact .msft-node > i {
+  flex-shrink: 0;
+  width: 2.4rem;
+  font-size: 1.9rem;
+  text-align: center;
+}
+
+.msft-aside {
+  align-items: flex-start;
+  margin-bottom: 1.4rem;
+}
+
+.msft-aside i {
+  margin-top: 0.3rem;
+}
+
+.msft-detail,
+.msft-caption {
+  margin: 0.2rem 0 1.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+.msft-backend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.9rem;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
+.msft-backend strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.msft-backend i {
+  font-size: 1.1rem;
+}
+
+.msft-mini-label {
+  margin-bottom: 0.8rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.msft-bundle {
+  min-width: 0;
+  padding: 1.4rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.msft-bundle .msft-mini-label {
+  margin-bottom: 0.4rem;
+}
+
+.msft-file {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: 0.9rem 0;
+  font-size: 1.3rem;
+}
+
+.msft-file + .msft-file {
+  border-top: 1px solid var(--line);
+}
+
+.msft-file > i {
+  flex-shrink: 0;
+  width: 1.8rem;
+  margin-top: 0.3rem;
+  color: var(--brand);
+  text-align: center;
+}
+
+.msft-file strong {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.msft-file.is-missing > i,
+.msft-file.is-missing strong {
+  color: var(--muted);
+}
+
+.msft-rebuild {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 0;
+  padding: 2rem 1.4rem;
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+  text-align: center;
+}
+
+.msft-rebuild > i {
+  margin-bottom: 1rem;
+  color: var(--brand);
+  font-size: 2.6rem;
+}
+
+.msft-diagram.is-compact .msft-rebuild {
+  display: grid;
+  grid-template-columns: 2.6rem minmax(0, 1fr);
+  column-gap: 1.2rem;
+  padding: 1.5rem;
+  text-align: left;
+}
+
+.msft-diagram.is-compact .msft-rebuild > i {
+  grid-row: 1 / 3;
+  margin: 0.2rem 0 0;
+  font-size: 2.2rem;
+  text-align: center;
+}
+
+.msft-code,
+.msft-gap-note {
+  margin: 0;
+  padding: 1.3rem 1.5rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-inset);
+  color: var(--text-body);
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+.msft-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  white-space: pre-wrap;
+}
+
+.msft-gap-note {
+  font-size: 1.3rem;
+}
+
+.msft-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.7rem;
+  margin-top: 1.2rem;
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
+.msft-status i {
+  margin-top: 0.2rem;
+  color: var(--brand);
+}
+
+.msft-boundary {
+  min-width: 0;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.msft-boundary.is-runtime {
+  background: var(--selected-bg);
+}
+
+.msft-boundary-title {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.msft-boundary-title i {
+  color: var(--brand);
+}
+
+.msft-boundary ul {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+  list-style: none;
+}
+
+.msft-boundary li {
+  overflow-wrap: anywhere;
+}
+
+.msft-boundary-location {
+  margin-top: 1.1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: 1.3rem;
+}
+
+.msft-events {
+  display: flex;
+  gap: 0.8rem;
+  margin-bottom: 1.4rem;
+}
+
+.msft-event {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.7rem;
+  min-width: 0;
+  min-height: 6.4rem;
+  padding: 1.3rem 0.6rem;
+  border: 0;
+  border-bottom: 0.2rem solid var(--line);
+  border-radius: 0.8rem 0.8rem 0 0;
+  background: var(--surface-inset);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  text-align: center;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: background-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard);
+}
+
+.msft-event:hover {
+  color: var(--text);
+}
+
+.msft-event[aria-pressed='true'] {
+  border-bottom-color: var(--brand);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.msft-console {
+  min-height: 8.6rem;
+  padding: 1.6rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  color: var(--text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1.25rem;
+  overflow-wrap: anywhere;
+}
+
+.msft-console small {
+  display: block;
+  margin-bottom: 0.7rem;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 1.1rem;
+}
+
+.msft-planned {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0.4rem 0 0.2rem;
+  padding-top: 1.2rem;
+  border-top: 1px dashed var(--line);
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
+.msft-planned i {
+  color: var(--brand);
+}
+
+.msft-results {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 0.8rem;
+  padding: 0;
+  list-style: none;
+}
+
+.msft-results li {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  column-gap: 1.2rem;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.msft-results li:last-child {
+  border-bottom: 0;
+}
+
+.msft-results li > i {
+  margin-top: 0.3rem;
+  color: var(--brand);
+  font-size: 1.9rem;
+  text-align: center;
+}
+
+.msft-results strong {
+  display: block;
+  color: var(--text);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.msft-results p {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+.msft-results .walkthrough-field-label {
+  margin-top: 0.6rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
 @media (max-width: 980px) {
   .site-header {
     top: 1rem;
@@ -3435,6 +3947,8 @@ footer {
 
   .panel,
   .experience-panel {
+    --walkthrough-bleed-x: 2rem;
+    --walkthrough-bleed-y: 2.2rem;
     padding: 2.2rem 2rem;
   }
 
@@ -3639,8 +4153,14 @@ footer {
 
 /* Touch devices: every walkthrough control reaches the 44px minimum. */
 @media (pointer: coarse) {
-  .walkthrough-source a {
+  .walkthrough-source a,
+  .walkthrough-notes summary,
+  .walkthrough-notes-links a {
     min-height: 44px;
+  }
+
+  .msft-event {
+    min-height: 70px;
   }
 
   .walkthrough-arrow {
@@ -3701,6 +4221,9 @@ footer {
   .bird-branch,
   .walkthrough-meter-fill,
   .walkthrough-dot::after,
+  .walkthrough-notes summary::before,
+  .msft-node,
+  .msft-event,
   .walkthrough-toggle {
     transition: none;
   }

@@ -98,11 +98,16 @@ export const experienceItems = [
     duration: 'May 2023 - Jul 2023',
     location: 'Bangalore, India',
     certificate: '/assets/Certifcates/Microsoft_Internship_Certificate.jpg',
+    // Opens the "Explore my contribution" walkthrough under the entry. Keep the bullets
+    // consistent with src/data/microsoftWalkthrough.js: the MLflow PR is an unmerged draft.
+    walkthrough: 'microsoft',
+    links: [{ label: 'My MLflow proposal (draft PR)', href: 'https://github.com/mlflow/mlflow/pull/8980' }],
     points: [
-      'Converted LangChain Retrieval QA chains into MLflow models for seamless Azure ML deployment.',
-      'Ensured correct load and store behavior of retriever components in the MLflow model structure.',
-      'Improved GenAI workflow reliability with tracing, logging, and memory management in Azure ML.',
-      'Streamlined deployment of RAG-based applications through AzureML UI integration.'
+      'Worked on packaging LangChain RetrievalQA applications as MLflow models for an AzureML deployment workflow.',
+      'Wrote a retriever save/load proposal, still an unmerged MLflow draft PR, that persists the retriever with the chain and supplies it on load.',
+      'Moved Azure Cognitive Search and OpenAI credentials from JSON configuration to environment variables.',
+      'Wrote a preliminary callback handler that printed queries, retrieved documents, and LLM output; Application Insights, MLIndex, and conversation-memory work stayed future directions.',
+      'With the team, tested feasibility with ChromaDB and then AzureSearch.'
     ]
   },
   {

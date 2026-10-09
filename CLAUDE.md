@@ -49,9 +49,18 @@ and `birds`, in `src/components/<name>/`, all built on the generic
 engineering slide carries a `demonstrated` list (max two `{ name, applied }` pairs)
 rendered by `components/walkthrough/SkillsFooter` just above the
 source link; it is `demonstrated` because `skills` is taken by the curriculum picker.
+An `experienceItems` entry opts in the same way (`walkthrough: 'microsoft'` plus a `links` list),
+through `ExperienceWalkthrough.jsx`, which owns the "Explore my contribution" toggle and mounts
+`components/microsoft/MicrosoftWalkthrough` (copy in `data/microsoftWalkthrough.js`). Its slides
+close with `walkthrough/ProjectNotes` (expandable notes with public links) instead of
+`SourceLink`. The deck's full-bleed margins come from `--walkthrough-bleed-x/y`, which the host
+sets to its own padding (`.experience-panel` does).
 `.project-card > h3`, `> p` and `.project-links a` are scoped to the card's own children so
 the walkthrough's nested headings, paragraphs and links don't inherit them — keep new card
-content selectors scoped the same way.
+content selectors scoped the same way. `.experience-panel > ul` and `> ul > li` are scoped for the
+same reason (a descendant `li` rule would give every walkthrough list a bullet).
+The deck keeps only the active slide interactive (`inert` on the rest) and defers all
+`ResizeObserver` work to one animation frame — keep any new observer on that pattern.
 
 ### Adding a section
 

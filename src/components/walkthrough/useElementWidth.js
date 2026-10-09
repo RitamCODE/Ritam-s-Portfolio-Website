@@ -1,7 +1,9 @@
 import { useLayoutEffect, useRef, useState } from 'react';
 
 // Measures an element's content width so a layout can react to the space it actually has
-// (a slide inside a card) rather than to the viewport.
+// (a slide inside a card) rather than to the viewport. The first read is synchronous;
+// later changes are applied on the next animation frame, so the observer callback never
+// writes state while the browser is still resolving layout.
 function useElementWidth() {
   const ref = useRef(null);
   const [width, setWidth] = useState(0);
@@ -13,9 +15,21 @@ function useElementWidth() {
     setWidth(Math.round(element.clientWidth));
     if (typeof ResizeObserver === 'undefined') return undefined;
 
-    const observer = new ResizeObserver(([entry]) => setWidth(Math.round(entry.contentRect.width)));
+    let frame = 0;
+    let latest = -1;
+    const observer = new ResizeObserver(([entry]) => {
+      latest = Math.round(entry.contentRect.width);
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        setWidth(latest);
+      });
+    });
     observer.observe(element);
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      window.cancelAnimationFrame(frame);
+    };
   }, []);
 
   return [ref, width];

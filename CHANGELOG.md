@@ -54,9 +54,38 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - Every slide of the bird walkthrough ends with the same quiet "Skills demonstrated"
   footer as the other two. The closing slide states that performance is unverified and
   marks the proposed comparison as future work, not completed work.
+- The Microsoft internship entry now has an "Explore my contribution" button that opens a
+  six-slide walkthrough directly under it: making document Q&A easier to deploy, how
+  RetrievalQA depends on its retriever, my MLflow retriever save/load proposal, moving
+  credentials from JSON to environment variables, a preliminary callback handler, and an
+  outcomes slide covering scope and future work. The entry starts compact, uses the same
+  deck as the project walkthroughs (swipe, scroll, arrows, labelled dots, arrow keys, next
+  slide peeking in), and keeps your place if you close and reopen it.
+- The Microsoft walkthrough's demos run locally and call no model: trace a request from
+  document lookup to answer generation, switch between the original gap and the save and
+  load steps, compare JSON and environment-variable credentials, and inspect the query,
+  documents and LLM output a callback prototype would print. Terminal output is labelled
+  schematic.
+- Each engineering slide of that walkthrough ends with up to two skills, each with a note on
+  how I applied it, above short expandable "Project notes" with the public MLflow commit and
+  draft pull request links. The notes state that the pull request is an unmerged draft and
+  that testing, Studio UI resolution and performance results are not claimed.
+- The Microsoft entry also shows a "My MLflow proposal (draft PR)" link beside the button.
+  Its walkthrough has no "Scroll or swipe" hint or caveat line under the slide controls.
 
 ### Changed
 
+- Rewrote the Microsoft internship bullets to match the walkthrough: dropped the claims of
+  "seamless" deployment, tracing, logging and memory management, and AzureML UI integration;
+  the entry now lists the retriever save/load proposal (an unmerged MLflow draft), the
+  environment-variable credential change, a preliminary callback handler, and the team's
+  ChromaDB-to-AzureSearch feasibility testing.
+- All walkthroughs: only the slide you are on can be tabbed into, so the keyboard no longer
+  steps through the slides that are scrolled out of view. The position dots also respond to
+  the arrow keys, Home and End, and keyboard focus moves to the current dot when the Previous
+  or Next arrow reaches the end of the deck and switches off.
+- All walkthroughs now resize more calmly: height and width changes are applied once per
+  animation frame and ignored when nothing changed, which avoids resize loops.
 - The scientific question answering walkthrough now sizes to the slide you are on instead of
   to its tallest slide, so the opening purpose slide no longer has a large blank area above
   its footer. The deck grows or shrinks (smoothly, unless reduced motion is on) as you

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import ExperienceWalkthrough from './ExperienceWalkthrough';
 
 function ExperienceSection({ experiences }) {
   const groupedExperience = useMemo(
@@ -106,6 +107,7 @@ function ExperienceSection({ experiences }) {
                 <li key={point}>{point}</li>
               ))}
             </ul>
+            {activeExperience.walkthrough && <ExperienceWalkthrough experience={activeExperience} />}
           </article>
         )}
       </div>
