@@ -1,5 +1,6 @@
 import { Fragment } from 'react';
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import { architectureSlide as copy } from '../../data/adaptmathWalkthrough';
 
 function ArchitectureSlide() {
@@ -49,6 +50,7 @@ function ArchitectureSlide() {
         ))}
       </div>
 
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

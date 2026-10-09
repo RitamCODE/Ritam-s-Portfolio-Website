@@ -20,6 +20,10 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   a skill to see its prerequisite and digit widths, and try the `42 − 17` answers to see
   the diagnosis. Test counts on the evaluation slide are labelled as results from the
   October 8, 2026 review, not live measurements.
+- Each engineering slide of the AdaptMATH walkthrough now ends with a quiet "Skills
+  demonstrated" footer, just above its source link: up to two skills (such as LangGraph,
+  Bayesian inference or graph modeling), each with a one-line note on how it was applied
+  in the work on that slide. The opening purpose slide is unchanged.
 
 ### Changed
 

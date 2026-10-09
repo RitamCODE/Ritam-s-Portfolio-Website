@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import { bktSlide as copy } from '../../data/adaptmathWalkthrough';
 import { BKT_DEFAULTS, nextRun, updateMastery } from '../../utils/bkt';
 
@@ -101,6 +102,7 @@ function BktSlide() {
       </div>
 
       <p className="walkthrough-note-small">{copy.parameters}</p>
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

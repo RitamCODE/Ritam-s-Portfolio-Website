@@ -1,4 +1,5 @@
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import { evaluationSlide as copy } from '../../data/adaptmathWalkthrough';
 
 function EvaluationSlide() {
@@ -63,6 +64,7 @@ function EvaluationSlide() {
         {copy.review}
       </p>
 
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

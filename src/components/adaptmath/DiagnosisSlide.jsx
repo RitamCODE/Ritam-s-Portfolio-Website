@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import { diagnosisSlide as copy } from '../../data/adaptmathWalkthrough';
 
 function DiagnosisSlide() {
@@ -49,6 +50,7 @@ function DiagnosisSlide() {
       </ol>
 
       <p className="walkthrough-note-small">{copy.note}</p>
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

@@ -45,9 +45,12 @@ A project opts into an expandable walkthrough with `walkthrough: '<key>'` in
 `projectItems`; `ProjectCard.jsx` maps the key to a component (today only `adaptmath`,
 in `src/components/adaptmath/`, built on the generic `components/walkthrough/WalkthroughDeck`).
 Its copy lives in `src/data/adaptmathWalkthrough.js` rather than `portfolioData.js`
-because of its size. `.project-card > h3`, `> p` and `.project-links a` are scoped to the
-card's own children so the walkthrough's nested headings, paragraphs and links don't
-inherit them — keep new card content selectors scoped the same way.
+because of its size. Each engineering slide there carries a `demonstrated` list (max two
+`{ name, applied }` pairs) rendered by `components/walkthrough/SkillsFooter` just above the
+source link; it is `demonstrated` because `skills` is taken by the curriculum picker.
+`.project-card > h3`, `> p` and `.project-links a` are scoped to the card's own children so
+the walkthrough's nested headings, paragraphs and links don't inherit them — keep new card
+content selectors scoped the same way.
 
 ### Adding a section
 

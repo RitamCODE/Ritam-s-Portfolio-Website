@@ -1293,8 +1293,9 @@ footer {
   margin-right: 6%;
 }
 
-/* Keeps a gap above the pinned source line however short the slide is. */
-.walkthrough-slide > :nth-last-child(2) {
+/* Keeps a gap above the pinned source line however short the slide is. The skills footer
+   carries its own gap (padding-top) so it can sit between the content and the source. */
+.walkthrough-slide > :nth-last-child(2):not(.walkthrough-demonstrated) {
   margin-bottom: 1.6rem;
 }
 
@@ -1355,6 +1356,53 @@ footer {
   color: var(--muted);
   font-size: 1.3rem;
   line-height: 1.55;
+}
+
+/* "Skills demonstrated": pinned to the bottom with the source line, kept quieter than the
+   slide's own content. Columns follow the slide's width, so they stack when it is narrow. */
+.walkthrough-demonstrated {
+  margin-top: auto;
+  margin-bottom: 1.2rem;
+  padding-top: 1.6rem;
+}
+
+.walkthrough-demonstrated + .walkthrough-source {
+  margin-top: 0;
+}
+
+.walkthrough-demonstrated-label {
+  margin-bottom: 0.7rem;
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.walkthrough-demonstrated dl {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: 0.8rem 2.4rem;
+  margin: 0;
+}
+
+.walkthrough-demonstrated dl > div {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.walkthrough-demonstrated dt {
+  color: var(--text);
+  font-size: 1.3rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.walkthrough-demonstrated dd {
+  margin: 0.1rem 0 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1.5;
 }
 
 .walkthrough-source {

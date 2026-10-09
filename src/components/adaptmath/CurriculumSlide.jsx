@@ -1,5 +1,6 @@
 import { Fragment, useState } from 'react';
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import { curriculumSlide as copy } from '../../data/adaptmathWalkthrough';
 
 function CurriculumSlide() {
@@ -53,6 +54,7 @@ function CurriculumSlide() {
       </div>
 
       <p className="walkthrough-note-small">{copy.separation}</p>
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

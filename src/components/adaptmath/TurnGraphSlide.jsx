@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import SourceLink from './SourceLink';
+import SkillsFooter from '../walkthrough/SkillsFooter';
 import useElementWidth from '../walkthrough/useElementWidth';
 import { turnSlide as copy } from '../../data/adaptmathWalkthrough';
 
@@ -190,6 +191,7 @@ function TurnGraphSlide() {
         </p>
       </div>
 
+      <SkillsFooter skills={copy.demonstrated} />
       <SourceLink caveat={copy.caveat} source={copy.source} />
     </>
   );

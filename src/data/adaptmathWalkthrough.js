@@ -93,7 +93,11 @@ export const architectureSlide = {
     }
   ],
   caveat: 'AI errors fall back to plain copy.',
-  source: { label: 'API implementation', href: blob('backend/api.py#L501-L657') }
+  source: { label: 'API implementation', href: blob('backend/api.py#L501-L657') },
+  demonstrated: [
+    { name: 'React + FastAPI', applied: 'Connected client and typed API contracts' },
+    { name: 'System design', applied: 'Separated grading from AI narration' }
+  ]
 };
 
 export const turnSlide = {
@@ -161,7 +165,11 @@ export const turnSlide = {
   ],
   graphLabel: 'Submit-answer branches of the turn graph. Bootstrap and terminal return edges are omitted.',
   caveat: 'Highlighted paths verified against the compiled graph.',
-  source: { label: 'Graph wiring', href: blob('backend/graph.py#L349-L454') }
+  source: { label: 'Graph wiring', href: blob('backend/graph.py#L349-L454') },
+  demonstrated: [
+    { name: 'LangGraph', applied: 'Conditional routes through explicit states' },
+    { name: 'Python', applied: 'Deterministic grading and retry logic' }
+  ]
 };
 
 export const bktSlide = {
@@ -184,7 +192,11 @@ export const bktSlide = {
   restartLabel: 'Restart example',
   parameters: 'Model defaults: initial mastery 30% · slip 10% · guess 5% · learning 15%',
   caveat: 'The estimate and the sustained-evidence gate are separate.',
-  source: { label: 'BKT update', href: blob('backend/models/bkt.py#L14-L68') }
+  source: { label: 'BKT update', href: blob('backend/models/bkt.py#L14-L68') },
+  demonstrated: [
+    { name: 'Bayesian inference', applied: 'Updated mastery from answer evidence' },
+    { name: 'Algorithm design', applied: 'Required sustained evidence to advance' }
+  ]
 };
 
 const LADDER_FAST = '1 → 2 digits: two consecutive correct answers, trivial then non-trivial. Later tiers require three.';
@@ -230,7 +242,11 @@ export const curriculumSlide = {
   separation:
     'A first correct answer can raise the BKT estimate above 90%; the separate ladder keeps that jump from skipping difficulty tiers.',
   caveat: '4 sub-skills · 2 parent groups',
-  source: { label: 'Prerequisite DAG', href: blob('backend/skills/skill_graph.py') }
+  source: { label: 'Prerequisite DAG', href: blob('backend/skills/skill_graph.py') },
+  demonstrated: [
+    { name: 'Graph modeling', applied: 'Encoded prerequisites between skills' },
+    { name: 'State modeling', applied: 'Separated mastery from difficulty tiers' }
+  ]
 };
 
 export const diagnosisSlide = {
@@ -270,7 +286,11 @@ export const diagnosisSlide = {
   ],
   note: 'Hint and visual copy live in a JSON catalog; detector logic stays in Python. Matches are known error patterns, not proof of how the learner thought.',
   caveat: '*Subject to prerequisites and session-stop rules.',
-  source: { label: 'Diagnosis rules', href: blob('backend/nodes/diagnosis.py') }
+  source: { label: 'Diagnosis rules', href: blob('backend/nodes/diagnosis.py') },
+  demonstrated: [
+    { name: 'Rule-based reasoning', applied: 'Matched answers to mistake patterns' },
+    { name: 'Modular design', applied: 'Separated Python detectors from hint copy' }
+  ]
 };
 
 export const evaluationSlide = {
@@ -293,5 +313,9 @@ export const evaluationSlide = {
     'This tests the engine on simulated learners. It does not show that real students learn more.',
   review: 'Oct 8, 2026 review: 186 backend tests passed · production build passed',
   caveat: 'Reproduced from seed 0 · Oct 8, 2026',
-  source: { label: 'Full evaluation', href: blob('KNOWN_GAPS.md') }
+  source: { label: 'Full evaluation', href: blob('KNOWN_GAPS.md') },
+  demonstrated: [
+    { name: 'Evaluation design', applied: 'Compared adaptive and fixed practice on synthetic learners' },
+    { name: 'Testing', applied: 'Verified core behavior with backend tests' }
+  ]
 };
