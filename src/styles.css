@@ -2235,9 +2235,49 @@ footer {
 }
 
 .about-card,
+.about-tech,
 .about-education,
 .about-patents {
   grid-column: 1 / -1;
+}
+
+/* Passive badge like the others, but visually muted since it isn't a skill itself. */
+.chip-more {
+  color: var(--muted-panel);
+  border-style: dashed;
+}
+
+.tech-toggle {
+  margin-top: var(--space-heading);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  cursor: pointer;
+  color: var(--brand);
+  font-size: 1.4rem;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-standard);
+}
+
+.tech-toggle:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 4px;
+}
+
+.tech-toggle:hover {
+  color: var(--brand-hover);
+}
+
+.tech-toggle i {
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.tech-toggle[aria-expanded='true'] i {
+  transform: rotate(180deg);
 }
 
 .patent-list {

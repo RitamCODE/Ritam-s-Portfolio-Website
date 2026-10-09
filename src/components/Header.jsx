@@ -1,7 +1,7 @@
 import { scrollToHash } from '../utils/scrollToHash';
 
 const navItems = [
-  { href: '#about', label: 'About' },
+  { href: '#about', label: 'About Me' },
   { href: '#experience', label: 'Experience' },
   { href: '#projects', label: 'Projects' },
   { href: '#research', label: 'Research' },

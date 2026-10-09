@@ -6,14 +6,9 @@ export const profile = {
   // Paragraphs. An array entry may itself be an array of parts, where { text, href }
   // renders as an inline link.
   about: [
-    'I build things. A day only counts for me if something got made by the end of it. Coffee, a hard problem, and a long uninterrupted stretch is my idea of a good time.',
-    "What pulls me in is NLP and agentic AI, and beyond that, anything hands-on where I can see the value land on an actual person. If a problem is real and I can tell what contributing would be worth, I'm in.",
-    [
-      "I'm also stubborn about measurement. Building ",
-      { text: 'AdaptMATH', href: 'https://github.com/RitamCODE/Adaptive-Math-Tutor' },
-      ", a K-5 adaptive math tutor, I kept the LLM out of the decision loop entirely and ran grading, mastery tracking, and curriculum selection as a deterministic LangGraph state machine, so the app can't hallucinate a wrong answer into a right one. Then I wrote a synthetic-student harness to test whether the adaptive engine actually beat a fixed baseline, and published the cases where it didn't."
-    ],
-    "Right now I'm going deeper on multi-agent systems in LangGraph and on applied AI research in medical imaging at OSU's College of Optometry."
+    "I build things, and I like owning all of it: designing the product, architecting the system, writing the backend and the interface, wiring in the models, and getting it deployed. Most of my best work started as a side project I couldn't put down, and a day only counts for me if something got made by the end of it.",
+    "What drives me right now is NLP and agentic AI: systems that reason, use tools, and coordinate with each other. I'm stubborn about proving they work. I keep models out of decisions they can't be trusted with, and I test against baselines instead of trusting a good demo.",
+    "Currently going deeper on multi-agent systems in LangGraph and doing applied AI research in medical imaging at OSU."
   ],
   image: '/assets/my_pics/RM_floral_final.png',
   resume: '/assets/Resume/RM_Resume_2026.pdf',

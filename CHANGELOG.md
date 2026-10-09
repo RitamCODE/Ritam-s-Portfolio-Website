@@ -23,6 +23,15 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- Renamed the "About" nav pill to "About Me".
+- Restructured the About Me section into a single stacked column: bio, then a Tech
+  Stack subsection with a collapsed preview of skills and a "View full tech stack"
+  toggle (click, touch, or keyboard) that reveals every skill category, then a
+  separated Education subsection with both degrees and Continuing Education
+  (certificate link unchanged).
+- Rewrote the About section bio to focus on end-to-end ownership of projects and
+  what's currently being worked on (multi-agent LangGraph systems, medical imaging
+  research at OSU), dropping the AdaptMATH project callout.
 - The favicon and touch/app icons are now the circular portrait on a charcoal
   background instead of purple, transparent outside the circle.
 - Installing the site as an app now labels it "Ritam" on the home screen instead of

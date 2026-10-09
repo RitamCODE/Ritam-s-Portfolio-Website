@@ -1,4 +1,6 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
+
+const TECH_PREVIEW_COUNT = 8;
 
 // A paragraph is a string, or a list of parts where { text, href } is an inline link.
 function AboutParagraph({ content }) {
@@ -20,6 +22,12 @@ function AboutParagraph({ content }) {
 }
 
 function AboutSection({ about, techStack, education, courses, patents }) {
+  const [techExpanded, setTechExpanded] = useState(false);
+
+  const allSkills = techStack.flatMap((group) => group.items);
+  const previewSkills = allSkills.slice(0, TECH_PREVIEW_COUNT);
+  const remainingCount = allSkills.length - previewSkills.length;
+
   return (
     <section className="section" id="about">
       <h2 className="section-title">About Me</h2>
@@ -30,20 +38,43 @@ function AboutSection({ about, techStack, education, courses, patents }) {
           ))}
         </article>
 
-        <article className="panel">
+        <article className="panel about-tech">
           <h3>Tech Stack</h3>
-          <div className="tech-groups">
-            {techStack.map((group) => (
-              <div className="tech-group" key={group.label}>
-                <h4 className="tech-group-label">{group.label}</h4>
-                <div className="chip-list">
-                  {group.items.map((item) => (
-                    <span key={item}>{item}</span>
-                  ))}
+
+          {!techExpanded && (
+            <div className="chip-list">
+              {previewSkills.map((item) => (
+                <span key={item}>{item}</span>
+              ))}
+              {remainingCount > 0 && <span className="chip-more">+{remainingCount} more</span>}
+            </div>
+          )}
+
+          <button
+            type="button"
+            className="tech-toggle"
+            aria-expanded={techExpanded}
+            aria-controls="tech-stack-full"
+            onClick={() => setTechExpanded((prev) => !prev)}
+          >
+            {techExpanded ? 'Hide full tech stack' : 'View full tech stack'}{' '}
+            <i className="fa-solid fa-chevron-down" aria-hidden="true" />
+          </button>
+
+          {techExpanded && (
+            <div className="tech-groups" id="tech-stack-full">
+              {techStack.map((group) => (
+                <div className="tech-group" key={group.label}>
+                  <h4 className="tech-group-label">{group.label}</h4>
+                  <div className="chip-list">
+                    {group.items.map((item) => (
+                      <span key={item}>{item}</span>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </article>
 
         <article className="panel about-education">
