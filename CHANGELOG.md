@@ -5,17 +5,36 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ## [Unreleased]
 
+### Added
+
+- The AdaptMATH project card now has an "Inside the engineering" button that expands a
+  seven-slide walkthrough directly under the card: what the tutor is for, its system
+  architecture, how each answer is routed, Bayesian mastery tracking, the curriculum and
+  difficulty ladder, misconception diagnosis, and a bounded look at the synthetic-learner
+  evaluation. It starts collapsed, shows one slide at a time with the next one peeking in,
+  and can be moved with swipe or scroll, the arrow buttons, the labelled slide dots, or
+  the arrow keys. Closing and reopening it keeps your place.
+- The walkthrough's demos are hands-on and run entirely in the browser: pick a turn
+  scenario to highlight its path through the routing graph, answer a mastery example
+  correct, wrong or blank and watch the estimate and sustained-evidence gate move, select
+  a skill to see its prerequisite and digit widths, and try the `42 − 17` answers to see
+  the diagnosis. Test counts on the evaluation slide are labelled as results from the
+  October 8, 2026 review, not live measurements.
+
 ### Changed
 
 - The favicon and touch/app icons are now the circular portrait on a charcoal
   background instead of purple, transparent outside the circle.
 - Installing the site as an app now labels it "Ritam" on the home screen instead of
   falling back to the truncated page title.
+- Project cards now keep one column width however wide a card's contents are, so
+  nothing inside a card can stretch the page sideways.
 
 ### Removed
 
 - Dropped an unused duplicate set of the old purple icons that was still being
   deployed alongside the real ones.
+- Removed the "Featured Project" label from project cards.
 
 ## 2026-09-28
 

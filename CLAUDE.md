@@ -41,6 +41,14 @@ section. Each entry carries `links: [{ label, href }]`, a list rather than a sin
 URL, so a card can point at a repo and a demo at the same time. `courseItems` and
 `patentItems` render inside `AboutSection`, not in sections of their own.
 
+A project opts into an expandable walkthrough with `walkthrough: '<key>'` in
+`projectItems`; `ProjectCard.jsx` maps the key to a component (today only `adaptmath`,
+in `src/components/adaptmath/`, built on the generic `components/walkthrough/WalkthroughDeck`).
+Its copy lives in `src/data/adaptmathWalkthrough.js` rather than `portfolioData.js`
+because of its size. `.project-card > h3`, `> p` and `.project-links a` are scoped to the
+card's own children so the walkthrough's nested headings, paragraphs and links don't
+inherit them — keep new card content selectors scoped the same way.
+
 ### Adding a section
 
 1. Export the data from `src/data/portfolioData.js`.
@@ -54,7 +62,7 @@ URL, so a card can point at a repo and a demo at the same time. `courseItems` an
 
 ## Styling
 
-Single global `src/styles.css` (~1500 lines). No CSS modules, no Tailwind.
+Single global `src/styles.css` (~2900 lines). No CSS modules, no Tailwind.
 
 - **`1rem = 10px`** — `html { font-size: 62.5% }`. Sizes written against the usual
   16px base come out far too small.

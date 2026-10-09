@@ -1061,10 +1061,13 @@ footer {
 
 .project-featured-grid {
   display: grid;
+  /* minmax(0, ...) so the walkthrough's scrolling track cannot widen the column. */
+  grid-template-columns: minmax(0, 1fr);
   gap: 1.8rem;
 }
 
 .project-card {
+  min-width: 0;
   padding: 2.2rem;
   transition: transform var(--duration-base) var(--ease-standard),
     border-color var(--duration-base) var(--ease-standard),
@@ -1081,21 +1084,22 @@ footer {
   box-shadow: var(--shadow);
 }
 
-.project-card h3 {
+/* Direct children only: the AdaptMATH walkthrough nests its own headings, paragraphs and
+   links inside the card. */
+.project-card > h3 {
   margin: 0;
   font-size: 2.1rem;
   font-weight: 700;
 }
 
-.project-card p {
+.project-card > p {
   margin: 1.1rem 0 0;
   color: var(--text-body);
   font-size: 1.5rem;
   line-height: 1.65;
 }
 
-.project-card a {
-  margin-top: 1.8rem;
+.project-links a {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
@@ -1105,11 +1109,12 @@ footer {
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-.project-card a:hover {
+.project-links a:hover {
   color: var(--brand-hover);
 }
 
 .project-links {
+  margin-top: 1.8rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1130,6 +1135,1070 @@ footer {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.4rem;
+}
+
+/* AdaptMATH walkthrough ("Inside the engineering"). Lives inside .project-card, so every
+   selector here is prefixed and none reuse a class App.jsx tags for scroll-reveal.
+   The deck is full-bleed: negative margins cancel the card's 2.2rem padding. */
+.project-card.is-expanded:hover,
+.app-shell.motion-ready .project-card.is-revealed.is-expanded:hover {
+  /* A card that lifts under the pointer makes the controls inside it jitter. */
+  transform: none;
+  box-shadow: var(--shadow-sm);
+}
+
+.walkthrough-toggle {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-height: 3.8rem;
+  padding: 0 1.4rem;
+  border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--line));
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    transform var(--duration-fast) var(--ease-standard);
+}
+
+.walkthrough-toggle:hover {
+  border-color: var(--brand);
+}
+
+.walkthrough-toggle:active {
+  transform: scale(0.97);
+}
+
+.walkthrough-chevron {
+  font-size: 1.1rem;
+  transition: transform var(--duration-base) var(--ease-standard);
+}
+
+.walkthrough-toggle[aria-expanded='true'] .walkthrough-chevron {
+  transform: rotate(180deg);
+}
+
+/* Expand and collapse by animating the row from 0fr to 1fr, which needs no measured
+   height. visibility (delayed on the way out) takes the collapsed deck out of the tab
+   order and the accessibility tree. */
+.walkthrough {
+  --walkthrough-dot: var(--line-strong);
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 2.2rem -2.2rem -2.2rem;
+  visibility: hidden;
+  transition: grid-template-rows 0.35s var(--ease-standard), visibility 0s linear 0.35s;
+}
+
+:root[data-theme='dark'] .walkthrough {
+  --walkthrough-dot: color-mix(in srgb, var(--muted) 60%, transparent);
+}
+
+.walkthrough.is-open {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.walkthrough-clip {
+  min-height: 0;
+  overflow: hidden;
+  border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
+}
+
+.walkthrough-deck {
+  padding: 1.6rem 0 1.4rem;
+  background: var(--surface-inset);
+  border-top: 1px solid var(--line);
+}
+
+/* :where() keeps this reset below any class, so the margins set on individual elements
+   win without a specificity contest. */
+:where(.walkthrough) :is(p, h4, h5, ol) {
+  margin: 0;
+}
+
+.walkthrough-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0 2rem 1.2rem;
+}
+
+.walkthrough-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.walkthrough-heading i,
+.walkthrough-aside i,
+.walkthrough-card h5 i {
+  color: var(--brand);
+}
+
+.walkthrough-position {
+  color: var(--muted);
+  font-size: 1.3rem;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.walkthrough-track {
+  position: relative;
+  display: flex;
+  gap: 1.2rem;
+  padding: 0.4rem 1.8rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1.8rem;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+}
+
+.walkthrough-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* The track is clipped by .walkthrough-clip, so the focus ring sits inside it. */
+.walkthrough-track:focus-visible {
+  box-shadow: inset 0 0 0 0.25rem var(--brand);
+  border-radius: 0;
+}
+
+/* The basis leaves a sliver of the next slide showing; the last slide's right margin is
+   the same fraction, so it can still scroll all the way to the start edge. */
+.walkthrough-slide {
+  flex: 0 0 94%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: 2.2rem 2rem 1.4rem;
+  background: var(--surface-elevated);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  scroll-snap-align: start;
+}
+
+.walkthrough-slide:last-child {
+  margin-right: 6%;
+}
+
+/* Keeps a gap above the pinned source line however short the slide is. */
+.walkthrough-slide > :nth-last-child(2) {
+  margin-bottom: 1.6rem;
+}
+
+.walkthrough-kicker {
+  color: var(--brand);
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.walkthrough-title {
+  max-width: 36ch;
+  margin-top: 0.8rem;
+  font-size: clamp(2rem, 2.6vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+}
+
+.walkthrough-lead {
+  max-width: 62ch;
+  margin-top: 0.9rem;
+  margin-bottom: 1.6rem;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1.6;
+}
+
+.walkthrough-aside,
+.walkthrough-badge,
+.walkthrough-verdict,
+.walkthrough-review {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 1.3rem;
+}
+
+.walkthrough-aside {
+  margin-bottom: 0.8rem;
+  color: var(--muted);
+}
+
+.walkthrough-badge {
+  align-self: flex-start;
+  margin-bottom: 1.4rem;
+  padding: 0.4rem 1.1rem;
+  border-radius: 999px;
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  font-weight: 500;
+}
+
+.walkthrough-note-small,
+.walkthrough-meta {
+  max-width: 70ch;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.55;
+}
+
+.walkthrough-source {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: auto;
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-source a {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 24px;
+  color: var(--brand);
+  font-weight: 500;
+}
+
+.walkthrough-source a:hover {
+  color: var(--brand-hover);
+  text-decoration: underline;
+}
+
+.walkthrough-purpose-line {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  color: var(--text);
+}
+
+.walkthrough-purpose-line i {
+  color: var(--brand);
+}
+
+/* Purpose diagram: inputs on the left, AdaptMATH in the middle, outputs on the right.
+   PurposeSlide measures its own width and adds .is-compact, which stacks the same three
+   tiers vertically; the connectors are redrawn from the laid-out boxes either way. */
+.walkthrough-purpose {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 11.2rem minmax(0, 1fr);
+  grid-template-rows: 1fr 1fr;
+  gap: 1.8rem clamp(2.4rem, 7vw, 7rem);
+  min-height: 21rem;
+  margin: 0.6rem 0 2.2rem;
+}
+
+.walkthrough-connections {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.walkthrough-connections path {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.5;
+}
+
+.walkthrough-marker path {
+  fill: var(--line-strong);
+  stroke: none;
+}
+
+.walkthrough-marker.is-active path {
+  fill: var(--brand);
+}
+
+.walkthrough-node {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: 1.4rem 1.3rem;
+  background: var(--surface-inset);
+  border-radius: var(--radius-md);
+}
+
+.walkthrough-node > i {
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+  color: var(--muted);
+  font-size: 1.6rem;
+}
+
+.walkthrough-node strong {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.walkthrough-node small,
+.walkthrough-hub small {
+  display: block;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+
+.walkthrough-node.is-output {
+  background: var(--selected-bg);
+}
+
+.walkthrough-node.is-output > i {
+  color: var(--brand);
+}
+
+.purpose-from-0 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.purpose-from-1 {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.purpose-to-0 {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.purpose-to-1 {
+  grid-column: 3;
+  grid-row: 2;
+}
+
+.walkthrough-hub {
+  position: relative;
+  z-index: 1;
+  grid-column: 2;
+  grid-row: 1 / 3;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.walkthrough-hub-mark {
+  display: grid;
+  place-items: center;
+  width: 6.2rem;
+  height: 6.2rem;
+  margin-bottom: 1rem;
+  border-radius: 2rem;
+  background: var(--selected-bg);
+  color: var(--brand);
+  font-size: 2.6rem;
+}
+
+.walkthrough-hub strong {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-hub small {
+  margin-top: 0.4rem;
+  max-width: 11rem;
+}
+
+.walkthrough-purpose.is-compact {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto 13rem auto;
+  gap: 1.8rem 1.3rem;
+}
+
+.walkthrough-purpose.is-compact .walkthrough-node {
+  flex-direction: column;
+  gap: 0.8rem;
+  padding: 1.2rem 1rem;
+}
+
+.walkthrough-purpose.is-compact .purpose-from-0 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.walkthrough-purpose.is-compact .purpose-from-1 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.walkthrough-purpose.is-compact .walkthrough-hub {
+  grid-column: 1 / 3;
+  grid-row: 2;
+  justify-self: center;
+  width: 12rem;
+}
+
+.walkthrough-purpose.is-compact .walkthrough-hub-mark {
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: 0.6rem;
+  border-radius: 1.6rem;
+  font-size: 2.2rem;
+}
+
+.walkthrough-purpose.is-compact .walkthrough-hub small {
+  max-width: none;
+}
+
+.walkthrough-purpose.is-compact .purpose-to-0 {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.walkthrough-purpose.is-compact .purpose-to-1 {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+/* Architecture */
+.walkthrough-chain {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.walkthrough-system {
+  flex: 1;
+  min-width: 0;
+  padding: 1.3rem 0.7rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  font-size: 1.4rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.walkthrough-system small {
+  display: block;
+  margin-top: 0.5rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.walkthrough-system.is-engine {
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.walkthrough-chain-arrow {
+  flex: none;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.walkthrough-verdict {
+  justify-content: center;
+  margin: 1rem 0 1.6rem;
+  color: var(--success-fg);
+}
+
+.walkthrough-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.3rem;
+  margin-bottom: 1.4rem;
+}
+
+.walkthrough-card {
+  padding: 1.3rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.walkthrough-card h5 {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.walkthrough-card p {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.walkthrough-card strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Shared controls */
+.walkthrough-choices {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.walkthrough-choices .walkthrough-note-small {
+  margin-right: 0.4rem;
+}
+
+.walkthrough-choice,
+.walkthrough-skill {
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--muted);
+  font-family: inherit;
+  font-weight: 500;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color var(--duration-fast) var(--ease-standard),
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.walkthrough-choice {
+  min-height: 3.4rem;
+  padding: 0 1.3rem;
+  border-radius: var(--radius-sm);
+  font-size: 1.3rem;
+}
+
+.walkthrough-choice:hover,
+.walkthrough-skill:hover {
+  border-color: var(--brand);
+  color: var(--text);
+}
+
+/* Fill and outline together, as on the company tabs: the border is never the only cue. */
+.walkthrough-choice[aria-pressed='true'],
+.walkthrough-skill[aria-pressed='true'] {
+  border-color: var(--brand);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+}
+
+.walkthrough-text-button {
+  min-height: 3.4rem;
+  margin-left: auto;
+  padding: 0 0.8rem;
+  border: 0;
+  background: none;
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 1.3rem;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.walkthrough-text-button:hover {
+  color: var(--text);
+}
+
+/* Turn graph */
+.walkthrough-graph {
+  width: 100%;
+  min-height: 23rem;
+}
+
+.walkthrough-graph svg {
+  display: block;
+  width: 100%;
+}
+
+.walkthrough-graph text {
+  fill: var(--text);
+  font-family: inherit;
+  font-size: 12px;
+}
+
+.walkthrough-graph .graph-start {
+  fill: var(--muted);
+}
+
+.walkthrough-graph .graph-edge {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-opacity: 0.55;
+  stroke-width: 1.2;
+}
+
+.walkthrough-graph .graph-edge.is-active {
+  stroke: var(--brand);
+  stroke-opacity: 1;
+  stroke-width: 2;
+}
+
+.walkthrough-graph .graph-node rect {
+  fill: var(--surface-inset);
+}
+
+.walkthrough-graph .graph-node.is-active rect {
+  fill: var(--selected-bg);
+  stroke: var(--brand);
+  stroke-width: 1;
+}
+
+.walkthrough-graph .graph-node.is-active text {
+  fill: var(--selected-fg);
+  font-weight: 600;
+}
+
+.walkthrough-caption {
+  min-height: 4.2rem;
+  margin-top: 0.8rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.walkthrough-path {
+  margin: 0.4rem 0 1.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.walkthrough-path strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* BKT */
+.walkthrough-example {
+  margin-bottom: 1.2rem;
+  padding: 1.8rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.walkthrough-example-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+
+.walkthrough-value {
+  color: var(--text);
+  font-size: 2.6rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.walkthrough-meter-wrap {
+  position: relative;
+  margin-bottom: 1.4rem;
+  padding-bottom: 2.4rem;
+}
+
+.walkthrough-meter {
+  height: 1.1rem;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+.walkthrough-meter-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: var(--brand);
+  transition: width 0.35s var(--ease-standard);
+}
+
+.walkthrough-threshold {
+  position: absolute;
+  top: -0.5rem;
+  left: 80%;
+  height: 2.2rem;
+  border-left: 2px solid var(--text);
+}
+
+.walkthrough-threshold-label {
+  position: absolute;
+  top: 1.8rem;
+  left: 80%;
+  transform: translateX(-50%);
+  color: var(--muted);
+  font-size: 1.25rem;
+  white-space: nowrap;
+}
+
+.walkthrough-gate {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+  font-size: 1.4rem;
+}
+
+.walkthrough-pips {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.walkthrough-pip {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.walkthrough-pip.is-done {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: var(--accent-fg);
+}
+
+.walkthrough-example .walkthrough-choices {
+  margin: 1.2rem 0 0;
+}
+
+.walkthrough-message {
+  min-height: 4.2rem;
+  margin-top: 1rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+/* Curriculum */
+.walkthrough-skills {
+  display: flex;
+  align-items: stretch;
+  gap: 0.6rem;
+  margin: 0.4rem 0 1.6rem;
+}
+
+.walkthrough-skill {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1.2rem 0.6rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.walkthrough-skill-symbol {
+  margin-bottom: 0.5rem;
+  font-size: 2.2rem;
+  line-height: 1.2;
+}
+
+.walkthrough-skill-arrow {
+  flex: none;
+  align-self: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.walkthrough-detail {
+  margin-bottom: 1.4rem;
+  padding: 1.6rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.walkthrough-detail h5 {
+  margin-bottom: 0.7rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-detail p {
+  margin-top: 0.4rem;
+  color: var(--muted);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.walkthrough-widths {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 1.2rem 0 0.8rem;
+  font-size: 1.4rem;
+}
+
+.walkthrough-width {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+}
+
+/* Diagnosis */
+.walkthrough-diagnosis {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  gap: 1.6rem;
+  margin-bottom: 1.2rem;
+}
+
+.walkthrough-equation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.6rem 1.2rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  text-align: center;
+}
+
+.walkthrough-equation strong {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.walkthrough-equation small {
+  margin-top: 0.7rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-result {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--selected-bg);
+}
+
+.walkthrough-result h5 {
+  margin-bottom: 0.8rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.walkthrough-hint-copy {
+  margin-bottom: 1rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
+  line-height: 1.5;
+}
+
+.walkthrough-effect {
+  color: var(--selected-fg);
+  font-size: 1.3rem;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.walkthrough-ladder {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+  margin-bottom: 1.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.walkthrough-ladder li {
+  padding: 1.1rem 1rem;
+  border-radius: var(--radius-sm);
+  background: var(--surface-inset);
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.45;
+}
+
+.walkthrough-ladder strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* Evaluation */
+.walkthrough-meta {
+  margin-bottom: 1.2rem;
+}
+
+.walkthrough-table {
+  width: 100%;
+  margin-bottom: 1.2rem;
+  border-collapse: collapse;
+  font-size: 1.4rem;
+  table-layout: fixed;
+}
+
+.walkthrough-table th,
+.walkthrough-table td {
+  padding: 0.8rem 0.4rem;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+.walkthrough-table thead th {
+  color: var(--muted);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.walkthrough-table .is-profile {
+  width: 25%;
+  text-align: left;
+}
+
+.walkthrough-table tbody th {
+  color: var(--text);
+  font-weight: 500;
+}
+
+.walkthrough-table .is-group {
+  color: var(--text);
+  text-align: center;
+}
+
+.walkthrough-table .is-adaptive {
+  color: var(--brand);
+  font-weight: 600;
+}
+
+.walkthrough-findings {
+  max-width: 70ch;
+  margin-bottom: 1rem;
+  color: var(--text-body);
+  font-size: 1.4rem;
+  line-height: 1.55;
+}
+
+.walkthrough-review {
+  color: var(--success-fg);
+}
+
+/* Footer: slide-position dots and arrows */
+.walkthrough-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.2rem 1.8rem 0;
+}
+
+.walkthrough-dots,
+.walkthrough-nav {
+  display: flex;
+  align-items: center;
+}
+
+.walkthrough-dots {
+  gap: 0.2rem;
+}
+
+.walkthrough-dot {
+  display: grid;
+  place-items: center;
+  min-width: 24px;
+  width: 2.4rem;
+  height: 2.8rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.walkthrough-dot::after {
+  content: '';
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 999px;
+  background: var(--walkthrough-dot);
+  transition: width var(--duration-base) var(--ease-standard);
+}
+
+.walkthrough-dot[aria-current='true']::after {
+  width: 1.8rem;
+  background: var(--brand);
+}
+
+.walkthrough-nav {
+  gap: 0.5rem;
+}
+
+.walkthrough-hint {
+  margin-right: 0.8rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+}
+
+.walkthrough-arrow {
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface-elevated);
+  color: var(--text);
+  font-size: 1.3rem;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color var(--duration-fast) var(--ease-standard);
+}
+
+.walkthrough-arrow:hover:not(:disabled) {
+  border-color: var(--brand);
+}
+
+.walkthrough-arrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.walkthrough-note {
+  padding: 1rem 1.8rem 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1.5;
 }
 
 .education-subhead {
@@ -1165,6 +2234,7 @@ footer {
   color: var(--brand-hover);
 }
 
+.about-card,
 .about-education,
 .about-patents {
   grid-column: 1 / -1;
@@ -1294,13 +2364,13 @@ footer {
 
 /* Wiping underline shared by the inline action links. Uses a pseudo-element rather than
    border-bottom so it can animate on transform alone. */
-.project-card a,
+.project-links a,
 .inline-link,
 .experience-link {
   position: relative;
 }
 
-.project-card a::after,
+.project-links a::after,
 .inline-link::after,
 .experience-link::after {
   content: '';
@@ -1316,7 +2386,7 @@ footer {
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
-.project-card a:hover::after,
+.project-links a:hover::after,
 .inline-link:hover::after,
 .experience-link:hover::after {
   transform: scaleX(1);
@@ -1466,6 +2536,23 @@ footer {
     min-height: 44px;
   }
 
+  /* Walkthrough controls stay touch-sized; px on purpose, as with the nav rows. */
+  .walkthrough-toggle,
+  .walkthrough-choice,
+  .walkthrough-skill,
+  .walkthrough-text-button {
+    min-height: 44px;
+  }
+
+  .walkthrough-hint {
+    display: none;
+  }
+
+  .walkthrough-cards {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
   .header-actions {
     margin-left: 0;
   }
@@ -1491,6 +2578,127 @@ footer {
   .panel,
   .experience-panel {
     padding: 2.2rem 2rem;
+  }
+
+  .walkthrough-toggle {
+    width: 100%;
+    justify-content: center;
+    margin-left: 0;
+  }
+
+  .walkthrough-top {
+    padding: 0 1.4rem 1.2rem;
+    align-items: flex-start;
+  }
+
+  .walkthrough-position {
+    max-width: 14rem;
+  }
+
+  .walkthrough-track {
+    gap: 0.9rem;
+    padding-inline: 1.1rem;
+    scroll-padding-inline: 1.1rem;
+  }
+
+  .walkthrough-slide {
+    flex-basis: 96%;
+    padding: 2rem 1.5rem 1.4rem;
+  }
+
+  .walkthrough-slide:last-child {
+    margin-right: 4%;
+  }
+
+  .walkthrough-chain {
+    gap: 0.5rem;
+  }
+
+  .walkthrough-system {
+    padding: 1.3rem 0.3rem;
+    font-size: 1.3rem;
+  }
+
+  .walkthrough-example {
+    padding: 1.3rem;
+  }
+
+  .walkthrough-skills {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    margin-top: 0;
+  }
+
+  .walkthrough-skill {
+    flex-direction: row;
+    gap: 1rem;
+    padding: 0.7rem 1rem;
+    text-align: left;
+  }
+
+  .walkthrough-skill-symbol {
+    width: 2rem;
+    margin: 0;
+    text-align: center;
+  }
+
+  .walkthrough-skill-arrow {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+
+  .walkthrough-diagnosis {
+    grid-template-columns: 1fr;
+    gap: 0.9rem;
+  }
+
+  .walkthrough-ladder {
+    gap: 0.5rem;
+  }
+
+  .walkthrough-ladder li {
+    padding: 0.9rem 0.7rem;
+  }
+
+  .walkthrough-table {
+    font-size: 1.3rem;
+  }
+
+  .walkthrough-table th,
+  .walkthrough-table td {
+    padding: 0.9rem 0.2rem;
+  }
+
+  .walkthrough-source {
+    flex-wrap: wrap;
+  }
+
+  .walkthrough-footer {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-inline: 1.2rem;
+  }
+
+  .walkthrough-note {
+    padding-inline: 1.4rem;
+  }
+}
+
+/* Touch devices: every walkthrough control reaches the 44px minimum. */
+@media (pointer: coarse) {
+  .walkthrough-source a {
+    min-height: 44px;
+  }
+
+  .walkthrough-arrow {
+    width: 44px;
+    height: 44px;
+  }
+
+  .walkthrough-dot {
+    width: 32px;
+    height: 44px;
   }
 }
 
@@ -1535,6 +2743,18 @@ footer {
     display: none;
   }
 
+  .walkthrough,
+  .walkthrough-chevron,
+  .walkthrough-meter-fill,
+  .walkthrough-dot::after,
+  .walkthrough-toggle {
+    transition: none;
+  }
+
+  .walkthrough-toggle:active {
+    transform: none;
+  }
+
   .project-card:hover,
   .btn:hover,
   .theme-toggle:hover,
@@ -1543,7 +2763,7 @@ footer {
     transform: none;
   }
 
-  .project-card a::after,
+  .project-links a::after,
   .inline-link::after,
   .experience-link::after {
     transition: none;

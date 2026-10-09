@@ -149,6 +149,8 @@ export const projectItems = [
       { label: 'View Code', href: 'https://github.com/RitamCODE/Adaptive-Math-Tutor' },
       { label: 'Watch Demo', href: 'https://youtu.be/lPKNvPYhSEY' }
     ],
+    // Adds the "Inside the engineering" walkthrough under the card (see ProjectCard.jsx).
+    walkthrough: 'adaptmath',
     featured: true
   },
   {

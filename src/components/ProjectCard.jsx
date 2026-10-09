@@ -1,7 +1,20 @@
-function ProjectCard({ project, tag }) {
+import { useId, useState } from 'react';
+import AdaptMathWalkthrough from './adaptmath/AdaptMathWalkthrough';
+
+// A project opts in with `walkthrough: '<key>'` in portfolioData.js.
+const WALKTHROUGHS = {
+  adaptmath: AdaptMathWalkthrough
+};
+
+function ProjectCard({ project }) {
+  const [expanded, setExpanded] = useState(false);
+  const walkthroughId = useId();
+  const Walkthrough = project.walkthrough ? WALKTHROUGHS[project.walkthrough] : null;
+
   return (
-    <article className={`project-card ${tag ? 'featured' : ''}`}>
-      {tag && <p className="project-tag">{tag}</p>}
+    <article
+      className={`project-card ${project.featured ? 'featured' : ''} ${expanded ? 'is-expanded' : ''}`}
+    >
       <h3>{project.title}</h3>
       <p>{project.summary}</p>
       <div className="chip-list">
@@ -15,7 +28,21 @@ function ProjectCard({ project, tag }) {
             {link.label} <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
           </a>
         ))}
+        {Walkthrough && (
+          <button
+            type="button"
+            className="walkthrough-toggle"
+            aria-expanded={expanded}
+            aria-controls={walkthroughId}
+            onClick={() => setExpanded((open) => !open)}
+          >
+            <i className="fa-solid fa-diagram-project" aria-hidden="true" />
+            Inside the engineering
+            <i className="fa-solid fa-chevron-down walkthrough-chevron" aria-hidden="true" />
+          </button>
+        )}
       </div>
+      {Walkthrough && <Walkthrough id={walkthroughId} expanded={expanded} />}
     </article>
   );
 }

@@ -10,7 +10,7 @@ function ProjectsSection({ projects }) {
 
       <div className="project-featured-grid">
         {featured.map((project) => (
-          <ProjectCard key={project.title} project={project} tag="Featured Project" />
+          <ProjectCard key={project.title} project={project} />
         ))}
       </div>
 
