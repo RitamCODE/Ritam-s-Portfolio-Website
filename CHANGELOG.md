@@ -79,8 +79,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   experience panel and runs the full width of the tabs and panel together, instead of being
   squeezed into the panel column. Open, the panel and walkthrough form one L-shaped card: one
   surface, no seam between them, and a curved inside corner where they meet.
-- The Microsoft walkthrough's "Skills demonstrated" footers now sit a clear step below each
-  slide's content instead of directly under it.
+- The Microsoft, Scientific QA and bird classification walkthroughs' "Skills demonstrated"
+  footers now sit a clear step below each slide's content instead of directly under it.
 - The hero tagline is now "Builder and Researcher" (was "Your friendly neighborhood AI
   Engineer"), and the intro under it is cut to one line: "I build AI systems with a strong
   software engineering backbone."

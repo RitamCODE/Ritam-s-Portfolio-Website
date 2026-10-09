@@ -1384,6 +1384,13 @@ footer {
   padding-top: 1.6rem;
 }
 
+/* In an adaptive-height deck a slide is only as tall as its content, so margin-top: auto
+   resolves to nothing; this restores a clear break between the slide body and the footer,
+   like the one equal-height decks such as AdaptMATH get from auto. */
+.walkthrough-track.is-adaptive .walkthrough-demonstrated {
+  margin-top: 1.6rem;
+}
+
 .walkthrough-demonstrated + .walkthrough-source {
   margin-top: 0;
 }
@@ -3322,13 +3329,6 @@ footer {
 
 .experience-walkthrough .walkthrough-clip {
   box-shadow: var(--shadow-sm);
-}
-
-/* The deck is adaptive-height, so a slide is only as tall as its content and the footer's
-   margin-top: auto resolves to nothing; this restores a clear break between the slide body and
-   "Skills demonstrated", like the one equal-height decks such as AdaptMATH get from auto. */
-.experience-walkthrough .walkthrough-demonstrated {
-  margin-top: 1.6rem;
 }
 
 /* --surface, not the inset tone the deck takes inside a project card: here it continues the
