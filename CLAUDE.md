@@ -91,8 +91,10 @@ Single global `src/styles.css` (~2900 lines). No CSS modules, no Tailwind.
 
 ## Theme
 
-`App.jsx` sets `data-theme` on `document.documentElement` and persists it under the
-localStorage key `portfolio-theme`, falling back to `prefers-color-scheme`.
+`App.jsx` sets `data-theme` on `document.documentElement` and keeps the `theme-color` meta
+in step with `--bg`. Light is the default regardless of `prefers-color-scheme`; only an explicit
+toggle is persisted, under the localStorage key `portfolio-theme-choice`. (The old key,
+`portfolio-theme`, was written on every visit, so it is deliberately ignored.)
 
 ## Navigation and scrolling
 

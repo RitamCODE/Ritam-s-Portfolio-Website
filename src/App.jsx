@@ -19,12 +19,14 @@ import {
   techStack
 } from './data/portfolioData';
 
+// Light is the default; only an explicit toggle is remembered. The key changed from
+// `portfolio-theme`, which used to be written on every visit and so holds the OS preference for
+// anyone who came by before, not a choice they made.
+const THEME_KEY = 'portfolio-theme-choice';
+
 function getInitialTheme() {
-  const stored = window.localStorage.getItem('portfolio-theme');
-  if (stored === 'light' || stored === 'dark') {
-    return stored;
-  }
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  const stored = window.localStorage.getItem(THEME_KEY);
+  return stored === 'dark' ? 'dark' : 'light';
 }
 
 function getInitialIntroState() {
@@ -58,7 +60,10 @@ function App() {
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    window.localStorage.setItem('portfolio-theme', theme);
+    // Browser chrome follows the page's theme, not the OS one.
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute('content', getComputedStyle(document.documentElement).getPropertyValue('--bg').trim());
   }, [theme]);
 
   useEffect(() => {
@@ -202,6 +207,7 @@ function App() {
 
   const toggleTheme = (event) => {
     const next = theme === 'dark' ? 'light' : 'dark';
+    window.localStorage.setItem(THEME_KEY, next);
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (!document.startViewTransition || reducedMotion) {

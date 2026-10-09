@@ -84,6 +84,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 - The hero tagline is now "Builder and Researcher" (was "Your friendly neighborhood AI
   Engineer"), and the intro under it is cut to one line: "I build AI systems with a strong
   software engineering backbone."
+- The site now opens in the light theme for everyone, instead of following the device's dark
+  mode setting. Choosing dark with the toggle is still remembered for return visits.
 - Rewrote the Microsoft internship bullets to match the walkthrough: dropped the claims of
   "seamless" deployment, tracing, logging and memory management, and AzureML UI integration;
   the entry now lists the retriever save/load proposal (an unmerged MLflow draft), the
