@@ -1,8 +1,8 @@
 export const profile = {
   name: 'Ritam Mukherjee',
-  role: 'Your friendly neighborhood AI Engineer🕸️',
+  role: 'Builder and Researcher',
   summary:
-    'I build production-ready AI systems with a strong software engineering backbone. My work focuses on RAG pipelines, document intelligence, and scalable ML deployment on cloud platforms.',
+    'I build AI systems with a strong software engineering backbone.',
   // Paragraphs. An array entry may itself be an array of parts, where { text, href }
   // renders as an inline link.
   about: [
