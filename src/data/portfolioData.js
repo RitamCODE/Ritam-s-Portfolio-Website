@@ -178,14 +178,6 @@ export const projectItems = [
     // Adds the "Inside the engineering" walkthrough under the card (see ProjectCard.jsx).
     walkthrough: 'birds',
     featured: true
-  },
-  {
-    title: 'Abelian Sandpile Simulation',
-    summary:
-      'Simulated the Abelian Sandpile model in Java using cellular automata with robust cascading-avalanche logic to study self-organized criticality.',
-    stack: ['Java', 'Cellular Automata'],
-    links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
-    featured: true
   }
 ];
 

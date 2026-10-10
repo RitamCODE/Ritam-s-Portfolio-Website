@@ -126,6 +126,7 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Removed
 
+- The Abelian Sandpile Simulation card is gone from the Projects section.
 - Dropped an unused duplicate set of the old purple icons that was still being
   deployed alongside the real ones.
 - Removed the "Featured Project" label from project cards.
