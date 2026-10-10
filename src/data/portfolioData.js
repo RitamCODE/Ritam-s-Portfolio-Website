@@ -85,7 +85,7 @@ export const education = [
     degree: 'Bachelor of Technology, Computer Science and Engineering',
     school: 'Kalinga Institute of Industrial Technology',
     duration: 'Jul 2020 - Jul 2024',
-    details: 'GPA: 3.7/4 | Coursework: DSA, Design and Analysis of Algorithms, Cloud Computing, DBMS'
+    details: 'Coursework: DSA, Design and Analysis of Algorithms, Cloud Computing, DBMS'
   }
 ];
 

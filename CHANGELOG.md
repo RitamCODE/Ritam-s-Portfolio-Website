@@ -127,6 +127,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 ### Removed
 
 - The Abelian Sandpile Simulation card is gone from the Projects section.
+- The GPA is no longer shown on the Bachelor of Technology entry in Education; its
+  coursework line is unchanged.
 - Dropped an unused duplicate set of the old purple icons that was still being
   deployed alongside the real ones.
 - Removed the "Featured Project" label from project cards.
