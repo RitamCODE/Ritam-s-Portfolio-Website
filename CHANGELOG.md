@@ -98,6 +98,22 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- The walkthrough footers ("Inside the engineering", "Explore my contribution") now carry a
+  centered "Expand to explore" cue with the chevron beside it, between the label and the slide
+  count. Once the walkthrough is open it reads "Collapse walkthrough" and the chevron flips.
+  The bar adapts to its own width rather than the screen's: where the three don't fit on one
+  line the count goes and the cue moves to the right edge, and on the narrowest bars (phones,
+  and the experience panel beside its tabs on mid-size screens) only the label and chevron
+  show. The bar stays 52px tall throughout.
+- The walkthrough footers no longer glow: the accent line and soft glow along the bottom edge
+  are gone, in every state. Hover, focus and press now only deepen the bar's flat lavender
+  tint (and nudge the chevron), and the flare that follows the experience panel's curve
+  matches.
+- The walkthrough footers now use the same pale lavender as the selected Experience tab, in
+  both themes, instead of a greyer mauve of their own, with a pale plum line along the top.
+  Hover, focus and press deepen it a little, staying light enough that the grey "Expand to
+  explore" and slide-count text keep readable contrast. An open walkthrough's footer now
+  keeps that same lavender rather than fading to a lighter shade.
 - The Research card is now "Confidence-Based Anomaly Analysis in AO-OCT Retinal Imaging",
   with a new summary, the tags Python, PyTorch, Semantic segmentation (SegFormer) and NumPy,
   and an "Advisor Dr. Rajiv Ramnath" line. Its "View Code" link is gone because the code is

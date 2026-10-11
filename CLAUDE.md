@@ -49,7 +49,7 @@ URL, so a card can point at a repo and a demo at the same time. `courseItems` an
 Every walkthrough is opened by the shared `walkthrough/WalkthroughFooter` (class
 `.walkthrough-trigger`; `.walkthrough-footer` already names the deck's dots-and-arrows row): a
 52px full-width bar flush with the bottom of its card. Its states only reassign custom
-properties (`--tint`, `--glow-*`, `--chev-*`), which one `background-color`/`box-shadow`/`transform`
+properties (`--tint`, `--chev-*`), which one `background-color`/`transform`
 declaration reads, so a later rule can't cancel the hover; keep new state rules to that pattern.
 A project opts into an expandable walkthrough with `walkthrough: '<key>'` in
 `projectItems`; `ProjectCard.jsx` maps the key to a component (`adaptmath`, `scientificqa`

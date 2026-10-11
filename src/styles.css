@@ -1330,9 +1330,9 @@ footer {
 /* The walkthrough trigger: a full-width footer attached to the bottom of its card. A host
    sets --footer-bleed-x/y to its own padding so the bar runs flush to the card's edges.
    Everything that changes between states is a custom property read by one declaration each
-   of background-color, box-shadow and transform below, so no later rule (a media query, a
+   of background-color and transform below, so no later rule (a media query, a
    modifier) can redeclare a property and silently cancel the hover. Nothing that affects
-   size changes in any state: only colour, shadow and transform animate. */
+   size changes in any state: only colour and transform animate. */
 .project-card {
   --footer-bleed-x: 2.2rem;
   --footer-bleed-y: 2.2rem;
@@ -1354,13 +1354,16 @@ footer {
 }
 
 .walkthrough-trigger {
-  --tint: 9%;
-  --glow-line: 55%;
-  --glow-soft: 30%;
+  /* The fill is --selected-bg, the lavender of the active experience tab; --tint deepens it
+     toward --accent on hover, focus and press. */
+  --tint: 0%;
   --chev-y: 0px;
   --chev-r: 0deg;
   --trigger-h: 5.2rem;
   --trigger-extra: 0px;
+  /* A size container, so the cells below adapt to the bar's own width: the experience bar
+     beside its tabs is far narrower than a project bar at the same viewport. */
+  container-type: inline-size;
   display: flex;
   align-items: center;
   gap: 0.9rem;
@@ -1368,12 +1371,9 @@ footer {
   min-height: calc(var(--trigger-h) + var(--trigger-extra));
   padding: 0.6rem 1.8rem calc(0.6rem + var(--trigger-extra));
   border: 0;
-  border-top: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-top: 1px solid color-mix(in srgb, var(--accent) 25%, var(--selected-bg));
   border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
-  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
-  box-shadow:
-    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
-    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
+  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--selected-bg));
   color: var(--selected-fg);
   font-family: inherit;
   font-size: 1.5rem;
@@ -1384,7 +1384,6 @@ footer {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
   transition: background-color var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard),
     border-radius 0s linear 0.35s;
 }
 
@@ -1397,7 +1396,7 @@ footer {
 
 /* Open, the panel's bottom border row is transparent (it hides the deck's top border), which
    would leave a 1px strip of panel surface between the footer and the deck. The footer
-   grows by that 1px and covers it, so its own bottom line sits flush on the deck. */
+   grows by that 1px and covers it, so it sits flush on the deck. */
 .experience-panel > .walkthrough-trigger[aria-expanded='true'] {
   --trigger-extra: 1px;
   margin-bottom: calc(var(--footer-bleed-y) * -1 - 1px);
@@ -1405,7 +1404,7 @@ footer {
 
 /* Open, the footer flares out along the panel's concave fillet (.experience-panel::after): a
    --radius-lg square left of the footer, cut to the same quarter circle, taking the footer's
-   own tint and bottom glow from the same variables so hover and focus brighten it in step. It
+   own tint from the same variable so hover and focus brighten it in step. It
    covers the panel's left border where the curve turns, and the fillet's grey arc is painted
    over it. Visibility follows the fillet's 0.35s close delay. */
 .experience-panel > .walkthrough-trigger {
@@ -1419,22 +1418,18 @@ footer {
   bottom: 0;
   width: var(--radius-lg);
   height: var(--radius-lg);
-  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
-  box-shadow:
-    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
-    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
+  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--selected-bg));
   -webkit-mask-image: radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), #000 calc(var(--radius-lg) - 1px));
   mask-image: radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), #000 calc(var(--radius-lg) - 1px));
   pointer-events: none;
   visibility: hidden;
   transition: background-color var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard),
     visibility 0s linear 0.35s;
 }
 
 .experience-panel > .walkthrough-trigger[aria-expanded='true']::before {
   visibility: visible;
-  transition-delay: 0s, 0s, 0s;
+  transition-delay: 0s, 0s;
 }
 
 .walkthrough-trigger-icon {
@@ -1442,14 +1437,38 @@ footer {
   color: var(--brand);
 }
 
-.walkthrough-trigger-label {
-  flex: 1 1 auto;
+/* Lead and count grow equally from zero, so the cue between them sits in the true center. */
+.walkthrough-trigger-lead {
+  flex: 1 1 0;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
   min-width: 0;
 }
 
-.walkthrough-trigger-count {
+.walkthrough-trigger-label {
+  min-width: 0;
+}
+
+/* The center cue: hint text in the count's muted type, with the chevron beside it. */
+.walkthrough-trigger-cue {
   flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  white-space: nowrap;
+}
+
+.walkthrough-trigger-hint {
   color: var(--muted);
+  font-size: 1.3rem;
+  font-weight: 500;
+}
+
+.walkthrough-trigger-count {
+  flex: 1 1 0;
+  color: var(--muted);
+  text-align: right;
   font-size: 1.3rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -1458,111 +1477,90 @@ footer {
 
 .walkthrough-chevron {
   flex: none;
-  margin-left: 0.4rem;
   font-size: 1.1rem;
   transform: translateY(var(--chev-y)) rotate(var(--chev-r));
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
-:root[data-theme='dark'] .walkthrough-trigger {
-  --tint: 20%;
-  --glow-line: 70%;
-  --glow-soft: 42%;
+/* Too narrow for three cells on one line: the count goes and the lead takes its room, so the
+   cue settles at the right edge. Narrower still, the cue's text goes and only the chevron
+   stays. The label is what keeps the room in both steps. */
+@container (max-width: 58rem) {
+  .walkthrough-trigger-count {
+    display: none;
+  }
+}
+
+@container (max-width: 36rem) {
+  .walkthrough-trigger-hint {
+    display: none;
+  }
 }
 
 /* Open: the deck takes over the bottom edge, so the corners square off at once (and round
-   again only after the deck has collapsed) and the glow settles. */
+   again only after the deck has collapsed). */
 .walkthrough-trigger[aria-expanded='true'] {
-  --tint: 6%;
-  --glow-line: 32%;
-  --glow-soft: 12%;
   --chev-r: 180deg;
   border-radius: 0;
-  transition-delay: 0s, 0s, 0s;
-}
-
-:root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true'] {
-  --tint: 14%;
-  --glow-line: 40%;
-  --glow-soft: 16%;
+  transition-delay: 0s, 0s;
 }
 
 /* Press feedback for touch, where hover never applies. */
 .walkthrough-trigger:active {
-  --tint: 15%;
-  --glow-line: 80%;
-  --glow-soft: 48%;
+  --tint: 4%;
 }
 
 /* Keyboard focus gets the hover emphasis plus a ring drawn inside the bar (the global
    offset ring would spill outside a flush edge). The radius is restated because the global
    button:focus-visible rule resets it. */
 .walkthrough-trigger:focus-visible {
-  --tint: 16%;
-  --glow-line: 90%;
-  --glow-soft: 55%;
+  --tint: 5%;
   --chev-y: 2px;
   outline: 2px solid var(--brand);
   outline-offset: -4px;
-  box-shadow:
-    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
-    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
+  box-shadow: none;
   border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
 }
 
 @media (hover: hover) {
   .walkthrough-trigger:hover {
-    --tint: 16%;
-    --glow-line: 90%;
-    --glow-soft: 55%;
+    --tint: 5%;
     --chev-y: 2px;
   }
 }
 
 :root[data-theme='dark'] .walkthrough-trigger:focus-visible,
 :root[data-theme='dark'] .walkthrough-trigger:active {
-  --tint: 30%;
-  --glow-line: 95%;
-  --glow-soft: 60%;
+  --tint: 15%;
 }
 
 @media (hover: hover) {
   :root[data-theme='dark'] .walkthrough-trigger:hover {
-    --tint: 30%;
-    --glow-line: 95%;
-    --glow-soft: 60%;
+    --tint: 15%;
   }
 }
 
 /* Open and hovered or focused: a modest bump from the softened state; the chevron points
    up, so it nudges up. */
 .walkthrough-trigger[aria-expanded='true']:focus-visible {
-  --tint: 10%;
-  --glow-line: 50%;
-  --glow-soft: 22%;
+  --tint: 3%;
   --chev-y: -2px;
   border-radius: 0;
 }
 
 @media (hover: hover) {
   .walkthrough-trigger[aria-expanded='true']:hover {
-    --tint: 10%;
-    --glow-line: 50%;
-    --glow-soft: 22%;
+    --tint: 3%;
     --chev-y: -2px;
   }
 
   :root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true']:hover {
-    --tint: 19%;
-    --glow-line: 55%;
-    --glow-soft: 26%;
+    --tint: 6%;
   }
 }
 
 :root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true']:focus-visible {
-  --tint: 19%;
-  --glow-line: 55%;
-  --glow-soft: 26%;
+  --tint: 6%;
 }
 
 /* Expand and collapse by animating the row from 0fr to 1fr, which needs no measured
@@ -4934,8 +4932,8 @@ footer {
     padding: 2.2rem 2rem;
   }
 
-  /* Root is 9px here: 5.78rem is the same 52px bar, 1.56rem the 14px label. The count goes,
-     so the label keeps the room. */
+  /* Root is 9px here: 5.78rem is the same 52px bar, 1.56rem the 14px label. Which cells show
+     follows the bar's own width (the @container rules after .walkthrough-chevron). */
   .project-card {
     --footer-bleed-x: 2.2rem;
   }
@@ -4949,10 +4947,6 @@ footer {
     --trigger-h: 5.78rem;
     padding-inline: 1.6rem;
     font-size: 1.56rem;
-  }
-
-  .walkthrough-trigger-count {
-    display: none;
   }
 
   .walkthrough-top {
