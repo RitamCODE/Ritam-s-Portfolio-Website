@@ -2,16 +2,19 @@ import { useId, useState } from 'react';
 import AdaptMathWalkthrough from './adaptmath/AdaptMathWalkthrough';
 import ScientificQaWalkthrough from './scientificqa/ScientificQaWalkthrough';
 import BirdWalkthrough from './birds/BirdWalkthrough';
+import AoOctWalkthrough from './aooct/AoOctWalkthrough';
 import WalkthroughFooter from './walkthrough/WalkthroughFooter';
 import { walkthroughSlides as adaptmathSlides } from '../data/adaptmathWalkthrough';
 import { walkthroughSlides as scientificQaSlides } from '../data/scientificQaWalkthrough';
 import { walkthroughSlides as birdSlides } from '../data/birdWalkthrough';
+import { walkthroughSlides as aoOctSlides } from '../data/aoOctWalkthrough';
 
 // A project opts in with `walkthrough: '<key>'` in portfolioData.js.
 const WALKTHROUGHS = {
   adaptmath: { Component: AdaptMathWalkthrough, slides: adaptmathSlides },
   scientificqa: { Component: ScientificQaWalkthrough, slides: scientificQaSlides },
-  birds: { Component: BirdWalkthrough, slides: birdSlides }
+  birds: { Component: BirdWalkthrough, slides: birdSlides },
+  aooct: { Component: AoOctWalkthrough, slides: aoOctSlides }
 };
 
 function ProjectCard({ project }) {
@@ -30,13 +33,21 @@ function ProjectCard({ project }) {
           <span key={tech}>{tech}</span>
         ))}
       </div>
-      <div className="project-links">
-        {project.links.map((link) => (
-          <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
-            {link.label} <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
-          </a>
-        ))}
-      </div>
+      {project.credit && (
+        <p className="project-credit">
+          <i className="fa-solid fa-user-graduate" aria-hidden="true" />
+          {project.credit}
+        </p>
+      )}
+      {project.links?.length > 0 && (
+        <div className="project-links">
+          {project.links.map((link) => (
+            <a key={link.href} href={link.href} target="_blank" rel="noopener noreferrer">
+              {link.label} <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
+            </a>
+          ))}
+        </div>
+      )}
       {walkthrough && (
         <div className="walkthrough-dock">
           <WalkthroughFooter

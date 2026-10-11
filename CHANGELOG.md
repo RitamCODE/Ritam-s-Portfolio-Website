@@ -7,6 +7,20 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- The AO-OCT research card now has its own "Inside the engineering" walkthrough: five
+  slides covering the question (can a healthy-trained segmentation model's changing behavior
+  point to abnormal tissue), why the shape of a confidence curve is the signal, the analysis
+  pipeline I built, the findings, and the lessons and limits. It uses the same deck as the
+  project walkthroughs: swipe, scroll, arrows, labelled dots and keyboard navigation, with
+  the next slide peeking in, and it opens on the first slide.
+- The walkthrough's two demos run locally: switch a schematic curve between a flat
+  baseline, an upward spike and a downward dip, and step through the pipeline (export
+  logits, softmax, 4-pixel strips, smoothing, alignment) to see a diagram and explanation
+  for each. All visuals are labelled conceptual schematics; no patient scans or measured
+  curves appear anywhere in the section. The findings slide charts segmentation mean F1
+  (0.9443 healthy reference, 0.6597 AMD without fine-tuning) and keeps that global
+  degradation separate from the qualitative spatial observation.
+
 - The engineering walkthrough footers show their slide count ("7 slides") beside the label,
   except on screens narrower than 520px, where the label gets the room.
 - The About card now has a photo of a coffee mug in front of a laptop beside the intro text,
@@ -83,6 +97,11 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
   Its walkthrough has no "Scroll or swipe" hint or caveat line under the slide controls.
 
 ### Changed
+
+- The Research card is now "Confidence-Based Anomaly Analysis in AO-OCT Retinal Imaging",
+  with a new summary, the tags Python, PyTorch, Semantic segmentation (SegFormer) and NumPy,
+  and an "Advisor Dr. Rajiv Ramnath" line. Its "View Code" link is gone because the code is
+  proprietary, and a card with no links no longer leaves an empty row.
 
 - The "Inside the engineering" and "Explore my contribution" buttons are now a full-width
   footer attached to the bottom of the AdaptMATH, Scientific QA, Bird Classification and

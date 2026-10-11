@@ -224,11 +224,16 @@ export const projectItems = [
 
 export const researchItems = [
   {
-    title: 'Disease Detection from AO-OCT Retinal Scans',
+    title: 'Confidence-Based Anomaly Analysis in AO-OCT Retinal Imaging',
     summary:
-      'Developing computational methods to analyze high-resolution retinal scans, with focus on segmentation and quantification of microscopic structures for early disease monitoring.',
-    stack: ['Python', 'PyTorch', 'AO-OCT', 'Medical Imaging'],
-    links: [{ label: 'View Code', href: 'https://github.com/RitamCODE' }],
+      'Applied ISOSNet, a retinal segmentation model trained on healthy eyes, to 47 scans from eyes with age-related macular degeneration (AMD), without fine-tuning. I built the logit export, strip-based confidence analysis, and aligned visualization pipeline. We observed confidence irregularities near visible structural abnormalities, suggesting a potential label-free signal for localizing abnormal tissue.',
+    stack: ['Python', 'PyTorch', 'Semantic segmentation (SegFormer)', 'NumPy'],
+    // Optional attribution line under the tags (see ProjectCard.jsx).
+    credit: 'Advisor Dr. Rajiv Ramnath',
+    // The code is proprietary, so the card carries no links.
+    links: [],
+    // Adds the "Inside the engineering" walkthrough under the card (see ProjectCard.jsx).
+    walkthrough: 'aooct',
     featured: true
   }
 ];

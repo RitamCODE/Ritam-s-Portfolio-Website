@@ -1286,6 +1286,21 @@ footer {
   gap: 1.8rem;
 }
 
+/* Attribution under a card's tags (research advisor). Outranks `.project-card > p`. */
+.project-card > p.project-credit {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: 1.4rem;
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
+.project-credit i {
+  color: var(--brand);
+}
+
 .project-tag {
   margin: 0 0 1rem;
   color: var(--brand);
@@ -3307,6 +3322,498 @@ footer {
   line-height: 1.55;
 }
 
+/* AO-OCT research walkthrough. Shares the deck, choice, card and next rules above; these are
+   the pieces only it uses. Every diagram is a schematic built from tokens, and the warm
+   signal colour borrows the warning token so both themes need no overrides. */
+.aooct-flow,
+.aooct-panel,
+.aooct-bar,
+.aooct-lessons {
+  --aooct-signal: var(--warning-fg);
+}
+
+.aooct-flow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr) 2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.4rem 0 1.8rem;
+}
+
+.aooct-flow-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: stretch;
+  gap: 0.4rem;
+  min-width: 0;
+  padding: 1.7rem 1rem 1.4rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+  text-align: center;
+}
+
+.aooct-flow-node.is-highlight {
+  background: var(--selected-bg);
+}
+
+.aooct-flow-node > i {
+  margin-bottom: 0.4rem;
+  color: var(--brand);
+  font-size: 2.2rem;
+}
+
+.aooct-flow-node strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.aooct-flow-node small {
+  color: var(--muted);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.aooct-flow-arrow {
+  color: var(--muted);
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.aooct-layers {
+  display: grid;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 10rem;
+  margin-top: auto;
+  padding: 1rem 0.5rem 0.2rem;
+}
+
+.aooct-layers b {
+  display: block;
+  height: 0.3rem;
+  border-radius: 0.8rem;
+  background: var(--brand);
+  opacity: 0.65;
+}
+
+.aooct-layers.is-disrupted b:nth-child(2) {
+  height: 0.8rem;
+  border-radius: 50%;
+  transform: rotate(-7deg);
+}
+
+.aooct-layers.is-disrupted b:nth-child(3) {
+  transform: rotate(4deg);
+}
+
+.aooct-spark {
+  display: block;
+  width: 100%;
+  max-width: 14rem;
+  height: 3.6rem;
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+
+.aooct-spark path {
+  fill: none;
+  stroke: var(--aooct-signal);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+.aooct-aside {
+  align-items: flex-start;
+  max-width: 70ch;
+  line-height: 1.55;
+}
+
+.aooct-aside i {
+  margin-top: 0.3rem;
+  color: var(--brand);
+}
+
+/* A labelled statement with a plum rule: the contribution on slide 1, the qualitative
+   finding on slide 4. */
+.aooct-callout {
+  display: grid;
+  gap: 0.3rem;
+  max-width: 70ch;
+  margin: 0.4rem 0 1rem;
+  padding-left: 1.2rem;
+  border-left: 0.3rem solid var(--brand);
+  color: var(--text-body);
+  font-size: 1.35rem;
+  line-height: 1.55;
+}
+
+.aooct-callout strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* A soft panel holding a schematic or chart. */
+.aooct-panel {
+  padding: 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+
+.aooct-panel-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.aooct-panel-head strong {
+  font-size: 1.4rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* The signal: the plot stretches to its container, so strokes do not scale with it. */
+.aooct-axis-y,
+.aooct-axis-x,
+.aooct-scale {
+  display: block;
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.aooct-axis-y {
+  margin-bottom: 0.4rem;
+}
+
+.aooct-axis-x {
+  margin-top: 0.6rem;
+  text-align: right;
+}
+
+.aooct-axis-x i {
+  margin-left: 0.3rem;
+  font-size: 1rem;
+}
+
+.aooct-plot {
+  display: block;
+  width: 100%;
+  height: 15rem;
+}
+
+.aooct-plot-grid,
+.aooct-plot-axis,
+.aooct-plot-baseline,
+.aooct-plot-line {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.aooct-plot-grid {
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.aooct-plot-axis {
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+
+.aooct-plot-baseline {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 4;
+  opacity: 0.5;
+}
+
+.aooct-plot-line {
+  stroke: var(--aooct-signal);
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+}
+
+.aooct-plot-region {
+  fill: color-mix(in srgb, var(--aooct-signal) 14%, transparent);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.aooct-plot-region.is-active {
+  opacity: 1;
+}
+
+.aooct-detail {
+  min-height: 2.4rem;
+  max-width: 70ch;
+  margin: 1.1rem 0 0.8rem;
+  color: var(--text-body);
+  font-size: 1.35rem;
+  line-height: 1.55;
+}
+
+/* My engineering: numbered steps and a diagram beside the step's explanation. */
+.aooct-step-number {
+  margin-right: 0.6rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.walkthrough-choice[aria-pressed='true'] .aooct-step-number {
+  color: inherit;
+}
+
+.aooct-step-detail {
+  display: grid;
+  grid-template-columns: 16rem minmax(0, 1fr);
+  align-items: center;
+  gap: 2rem;
+  min-height: 16rem;
+  margin-bottom: 1.4rem;
+  padding: 2rem;
+}
+
+.aooct-step-detail h5 {
+  margin: 0.5rem 0 0.7rem;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.aooct-step-detail p {
+  color: var(--text-body);
+  font-size: 1.35rem;
+  line-height: 1.6;
+}
+
+.aooct-step-diagram {
+  display: flex;
+  justify-content: center;
+  min-width: 0;
+}
+
+.aooct-tokens {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  color: var(--muted);
+}
+
+.aooct-tokens span {
+  padding: 0.6rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 0.6rem;
+  background: var(--surface-elevated);
+  color: var(--brand);
+  font-size: 1.2rem;
+  white-space: nowrap;
+}
+
+.aooct-tokens span.is-result {
+  border-color: var(--brand);
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  font-weight: 600;
+}
+
+.aooct-tokens i {
+  font-size: 1.1rem;
+}
+
+.aooct-strips {
+  display: grid;
+  gap: 0.6rem;
+  width: 100%;
+  text-align: center;
+}
+
+.aooct-strip-grid {
+  display: flex;
+  gap: 0.2rem;
+  height: 8rem;
+  padding: 0.3rem;
+  border-radius: 0.4rem;
+  background: var(--selected-bg);
+}
+
+.aooct-strip-grid b {
+  flex: 1;
+  border-radius: 0.2rem;
+  background: var(--brand);
+  opacity: 0.22;
+}
+
+.aooct-strip-grid b.is-active {
+  opacity: 0.75;
+}
+
+.aooct-strips small {
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.aooct-align {
+  position: relative;
+  display: grid;
+  gap: 0.8rem;
+  width: 100%;
+}
+
+.aooct-align span {
+  padding: 1.1rem 3.2rem 1.1rem 1rem;
+  border-left: 0.2rem solid var(--brand);
+  border-radius: 0 0.4rem 0.4rem 0;
+  background: var(--selected-bg);
+  color: var(--selected-fg);
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+/* A shared vertical guide through both views: one position, same place in each. */
+.aooct-align b {
+  position: absolute;
+  top: -0.4rem;
+  bottom: -0.4rem;
+  right: 1.6rem;
+  border-left: 1px dashed var(--aooct-signal);
+}
+
+/* The findings: directly labelled bars on one 0 to 1 scale. */
+.aooct-group-label {
+  margin: 0.2rem 0 0.8rem;
+}
+
+.aooct-bar {
+  margin: 1.4rem 0;
+}
+
+.aooct-bar-label {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+}
+
+.aooct-bar-label strong {
+  color: var(--text);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.aooct-bar-track {
+  height: 1.4rem;
+  border-radius: 0.3rem;
+  background: color-mix(in srgb, var(--muted) 14%, transparent);
+  overflow: hidden;
+}
+
+.aooct-bar-track span {
+  display: block;
+  height: 100%;
+  background: var(--brand);
+}
+
+.aooct-bar.is-amd .aooct-bar-track span {
+  background: var(--aooct-signal);
+}
+
+.aooct-bar-axis {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 1.15rem;
+}
+
+.aooct-stats {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin: 1.4rem 0 1.8rem;
+}
+
+.aooct-stats > div {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.aooct-stats dt {
+  color: var(--text);
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.aooct-stats dd {
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.25rem;
+}
+
+/* Learning and limits */
+.aooct-lessons {
+  display: grid;
+  gap: 1.4rem;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  list-style: none;
+}
+
+.aooct-lessons li {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.1rem;
+}
+
+.aooct-lessons i {
+  flex-shrink: 0;
+  width: 2rem;
+  margin-top: 0.3rem;
+  color: var(--brand);
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.aooct-lessons strong {
+  display: block;
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+.aooct-lessons p {
+  margin-top: 0.2rem;
+  color: var(--text-body);
+  font-size: 1.35rem;
+  line-height: 1.55;
+}
+
+.aooct-outlook {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin-bottom: 1.4rem;
+}
+
+.aooct-outlook .walkthrough-next {
+  margin-top: 0;
+}
+
+.aooct-limit-list {
+  display: grid;
+  gap: 0.3rem;
+  margin: 0.6rem 0 0;
+  padding-left: 1.6rem;
+  color: var(--text-body);
+  font-size: 1.3rem;
+  line-height: 1.5;
+}
+
 /* Footer: slide-position dots and arrows */
 .walkthrough-footer {
   display: flex;
@@ -4630,6 +5137,70 @@ footer {
     gap: 1rem;
   }
 
+  /* AO-OCT walkthrough: the flow stacks with turned arrows and drops its decorative glyphs;
+     every two-up becomes one column. */
+  .aooct-flow {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  .aooct-flow-arrow {
+    transform: rotate(90deg);
+  }
+
+  .aooct-flow-node {
+    display: grid;
+    grid-template-columns: 2.8rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.1rem 1rem;
+    padding: 1.2rem 1.3rem;
+    text-align: left;
+  }
+
+  .aooct-flow-node > i {
+    grid-row: span 2;
+    margin: 0;
+    text-align: center;
+  }
+
+  .aooct-layers,
+  .aooct-spark {
+    display: none;
+  }
+
+  .aooct-panel {
+    padding: 1.2rem;
+  }
+
+  .aooct-plot {
+    height: 12rem;
+  }
+
+  .aooct-detail {
+    min-height: 4.4rem;
+  }
+
+  .aooct-step-detail {
+    grid-template-columns: 1fr;
+    gap: 1.4rem;
+    padding: 1.4rem;
+  }
+
+  .aooct-step-diagram {
+    width: 100%;
+    max-width: 24rem;
+    margin: 0 auto;
+  }
+
+  .aooct-strip-grid {
+    height: 6rem;
+  }
+
+  .aooct-stats,
+  .aooct-outlook {
+    grid-template-columns: 1fr;
+  }
+
   .walkthrough-footer {
     flex-wrap: wrap;
     justify-content: center;
@@ -4714,6 +5285,7 @@ footer {
   .education-chevron,
   .education-collapse,
   .bird-branch,
+  .aooct-plot-region,
   .walkthrough-meter-fill,
   .walkthrough-dot::after,
   .walkthrough-notes summary::before,
