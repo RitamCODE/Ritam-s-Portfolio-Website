@@ -75,6 +75,9 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- The Microsoft internship entry now has three bullets covering the MLflow retriever
+  serialization fix, the Retrieval QA to Azure ML endpoint pipeline, and the Application
+  Insights callback exploration, replacing the earlier five.
 - Resume button and Download Resume now serve the updated, Typst-built resume.
 - The Microsoft "Explore my contribution" walkthrough now opens attached to the bottom of the
   experience panel and runs the full width of the tabs and panel together, instead of being

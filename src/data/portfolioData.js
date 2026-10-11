@@ -103,11 +103,9 @@ export const experienceItems = [
     walkthrough: 'microsoft',
     links: [{ label: 'My MLflow proposal (draft PR)', href: 'https://github.com/mlflow/mlflow/pull/8980' }],
     points: [
-      'Worked on packaging LangChain RetrievalQA applications as MLflow models for an AzureML deployment workflow.',
-      'Wrote a retriever save/load proposal, still an unmerged MLflow draft PR, that persists the retriever with the chain and supplies it on load.',
-      'Moved Azure Cognitive Search and OpenAI credentials from JSON configuration to environment variables.',
-      'Wrote a preliminary callback handler that printed queries, retrieved documents, and LLM output; Application Insights, MLIndex, and conversation-memory work stayed future directions.',
-      'With the team, tested feasibility with ChromaDB and then AzureSearch.'
+      "Diagnosed and fixed a serialization bug in MLflow that was blocking a whole class of LangChain applications (Retrieval QA chains) from being deployable, since their retriever component couldn't be reconstructed on load. Contributed the fix upstream to the open source mlflow project.",
+      'Built the pipeline to convert LangChain Retrieval QA chains, backed by Azure Cognitive Search, into MLflow models and deploy them as live Azure ML online endpoints, enabling a no-code deployment path for LLM applications on the platform.',
+      'Explored a callback-handler based approach to tracing and logging LangChain chain execution into Application Insights, laying groundwork for LLM observability on the platform.'
     ]
   },
   {
