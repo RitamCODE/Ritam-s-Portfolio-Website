@@ -2,11 +2,13 @@
 // self-contained explanation: the diagrams are conceptual, the terminal output is schematic,
 // and every interaction runs locally without a model or a network call.
 //
-// Status boundaries the copy keeps: the MLflow pull request is an unmerged draft; the
-// retriever save/load proposal, the environment-variable credential change and the callback
-// handler are my own work; ChromaDB-to-AzureSearch testing was done by the team; the callback
-// handler was preliminary; Application Insights, MLIndex and conversation-memory persistence
-// were future directions. No measurements or deployment results are claimed.
+// Status boundaries the copy keeps: the fix for the RetrievalQA retriever serialization bug was
+// submitted upstream as MLflow PR #8980, which is still an open, unmerged draft (checked on
+// GitHub); the retriever save/load fix, the RetrievalQA-to-Azure ML endpoint pipeline, the
+// environment-variable credential change and the callback exploration are my own work;
+// ChromaDB-to-AzureSearch testing was done by the team; the callback handler explored an
+// Application Insights tracing approach as groundwork, not a finished integration; MLIndex and
+// conversation-memory persistence were future directions. No measurements are claimed.
 
 export const MLFLOW_PR = 'https://github.com/mlflow/mlflow/pull/8980';
 export const MLFLOW_COMMIT =
@@ -29,9 +31,9 @@ export const walkthroughSlides = [
 export const purposeSlide = {
   kicker: '01 / The purpose',
   title: 'Making document Q&A easier to deploy',
-  lead: 'AzureML developers needed a way to package a document-based assistant without losing its ability to find relevant text. I worked on preserving that lookup when saving and loading the model.',
+  lead: 'AzureML developers needed a way to deploy a document-based assistant without losing its ability to find relevant text. I fixed the MLflow bug that blocked this and built the pipeline that turns these chains into live online endpoints.',
   diagramLabel:
-    'A working document assistant needs its document lookup preserved during packaging so it can be reloaded for deployment. My contribution addressed that packaging step.',
+    'A working document assistant needs its document lookup preserved during packaging so it can be reloaded for deployment. My contribution fixed that packaging step and built the path to an online endpoint.',
   nodes: [
     {
       id: 'assistant',
@@ -43,20 +45,20 @@ export const purposeSlide = {
       id: 'preserve',
       icon: 'fa-box',
       title: 'Preserve the lookup',
-      text: 'My save/load contribution',
+      text: 'My save/load fix',
       accent: true
     },
     {
       id: 'deploy',
       icon: 'fa-cloud',
-      title: 'Reload for deployment',
-      text: 'The AzureML workflow goal'
+      title: 'Deploy as an endpoint',
+      text: 'My pipeline to Azure ML'
     }
   ],
-  benefit: 'Intended benefit: less custom deployment setup for developers building document assistants.',
+  benefit: 'Benefit: a no-code deployment path for LLM applications on the platform.',
   notes: {
     summary: 'Project notes: purpose and scope',
-    text: 'The work focused on MLflow packaging for AzureML online endpoints and on preserving document lookup when reloading a RetrievalQA chain. The deployment benefit was a goal; validated endpoint results and usage metrics are not included here.'
+    text: 'The work covered two parts: fixing how MLflow saves and reloads a RetrievalQA chain backed by Azure Cognitive Search, and the pipeline that converts such a chain into an MLflow model and deploys it as an Azure ML online endpoint. Usage metrics and benchmarks are not included here.'
   }
 };
 
@@ -126,8 +128,8 @@ export const retrievalSlide = {
 
 export const saveLoadSlide = {
   kicker: '03 / My implementation',
-  title: 'A retriever save/load proposal',
-  lead: 'My MLflow proposal saved the retriever separately as retriever.pkl and supplied it when loading the RetrievalQA chain.',
+  title: 'Fixing retriever serialization',
+  lead: 'RetrievalQA chains could not be deployed because the retriever could not be reconstructed on load. My fix saves the retriever separately as retriever.pkl and supplies it when loading the chain.',
   choicesLabel: 'Inspect the save and load proposal',
   diagramLabel:
     'The proposed model artifact contains model.yaml and a separately pickled retriever. Loading supplies the retriever to reconstruct the chain.',
@@ -170,7 +172,7 @@ export const saveLoadSlide = {
     }
   ],
   chainFile: { name: 'model.yaml', detail: 'Saved chain configuration' },
-  status: 'PR #8980: implemented proposal, still an unmerged draft.',
+  status: 'Submitted upstream as MLflow PR #8980, still an open draft.',
   demonstrated: [
     {
       name: 'Python serialization',
@@ -182,8 +184,8 @@ export const saveLoadSlide = {
     }
   ],
   notes: {
-    summary: 'Project notes: my public MLflow draft',
-    text: 'A later commit in the draft replaced an earlier approach (an rdocs parameter) with pickling the retriever object directly. The draft derives the artifact directory by stripping a Windows-style model.yaml suffix, so path handling is not portable and the proposal was not hardened. This page does not include runtime validation results.',
+    summary: 'Project notes: my public MLflow fix',
+    text: 'I contributed the fix upstream to the open source MLflow project as a pull request. A later commit replaced an earlier approach (an rdocs parameter) with pickling the retriever object directly. The code derives the artifact directory by stripping a Windows-style model.yaml suffix, so path handling is not portable and the change was not hardened. The pull request has not been merged.',
     links: [
       { label: 'Read the save/load commit', href: MLFLOW_COMMIT },
       { label: 'PR status (draft)', href: MLFLOW_PR }
@@ -242,7 +244,7 @@ export const credentialSlide = {
 export const callbackSlide = {
   kicker: '05 / Callback prototype',
   title: 'Inspect the steps behind an answer',
-  lead: 'I implemented a preliminary callback handler that printed the query, retrieved documents, and LLM output. This explored how to observe RetrievalQA execution.',
+  lead: 'I explored a callback-handler approach to tracing and logging chain execution toward Application Insights. The prototype printed the query, retrieved documents, and LLM output, laying groundwork for LLM observability.',
   choicesLabel: 'Inspect the callback data',
   consoleLabel: 'Schematic terminal output, no model call',
   initialStage: 'query',
@@ -269,7 +271,7 @@ export const callbackSlide = {
       caption: 'Inspect the response produced by the language model.'
     }
   ],
-  planned: 'Application Insights integration remained planned.',
+  planned: 'The Application Insights integration itself was left as the next step.',
   demonstratedLabel: 'Skills demonstrated in a prototype',
   demonstrated: [
     {
@@ -283,20 +285,20 @@ export const callbackSlide = {
   ],
   notes: {
     summary: 'Project notes: callback prototype',
-    text: 'I implemented the preliminary handler to print query, retrieved-document and output data. The sample implementation was incomplete, and full Application Insights tracing and logging remained future work.'
+    text: 'I explored this callback-based approach by printing query, retrieved-document and output data. The sample implementation was incomplete, and the full Application Insights tracing and logging remained future work.'
   }
 };
 
 export const outcomesSlide = {
   kicker: '06 / Outcomes and scope',
   title: 'Implemented work and next steps',
-  lead: 'The work established a retriever-persistence approach and exposed integration constraints. The evidence supports the implementation and exploration below.',
+  lead: 'The work unblocked a class of LangChain applications and gave them a no-code route to Azure ML endpoints. The evidence supports the implementation and exploration below.',
   results: [
     {
       icon: 'fa-code',
       title: 'My implementations',
-      text: 'Retriever save/load proposal, environment-variable credential handling, and a preliminary callback handler.',
-      label: 'Public MLflow draft code and my internship work'
+      text: 'The retriever serialization fix, the RetrievalQA-to-Azure ML endpoint pipeline, environment-variable credential handling, and a callback-handler exploration for Application Insights.',
+      label: 'Public MLflow draft PR and my internship work'
     },
     {
       icon: 'fa-flask',
@@ -314,12 +316,12 @@ export const outcomesSlide = {
   demonstrated: [
     {
       name: 'Open-source contribution',
-      applied: 'Submitted my implementation as an MLflow draft PR.'
+      applied: 'Contributed my fix upstream as an MLflow pull request.'
     }
   ],
   notes: {
     summary: 'Project notes: public PR and scope',
-    text: 'My save/load proposal remains an unmerged draft. Credential handling and the callback prototype are described from my internship work. Production adoption, validated endpoint results and performance metrics are not established here.',
+    text: 'My fix was submitted upstream and the pull request is still an open, unmerged draft. The endpoint pipeline, credential handling and callback exploration are described from my internship work. Production adoption and performance metrics are not established here.',
     links: [{ label: 'MLflow PR #8980 (draft)', href: MLFLOW_PR }]
   }
 };
