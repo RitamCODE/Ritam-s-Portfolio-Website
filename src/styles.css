@@ -849,44 +849,164 @@ footer {
   margin-top: 0.8rem;
 }
 
-.education-list {
-  list-style: none;
-  padding: 0;
-  margin: var(--space-heading) 0 0;
+/* Education: one panel, university entries left (60%) and continuing education right (40%).
+   Every entry is a summary button over a collapsing region; the button text itself swaps to
+   the full names when open. */
+.education-grid {
+  margin-top: var(--space-heading);
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.8rem 2rem;
+  grid-template-columns: 3fr 2fr;
 }
 
-.education-list li {
-  border-left: 2px solid var(--brand);
-  padding-left: 1.2rem;
+.education-column {
+  min-width: 0;
 }
 
-.education-header {
-  display: flex;
-  justify-content: space-between;
-  gap: 1rem;
-  align-items: baseline;
+.education-continuing {
+  border-left: 1px solid var(--line);
+  padding-left: 1.6rem;
+  margin-left: 1.6rem;
 }
 
-.education-header h4 {
-  margin: 0;
-  font-size: 1.7rem;
+.education-subhead {
+  margin: 0 0 0.4rem 1.2rem;
+  font-size: 1.15rem;
   font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-panel);
 }
 
-.education-header span {
-  font-size: 1.25rem;
+.education-entry + .education-entry {
+  border-top: 1px solid var(--line);
+}
+
+.education-summary {
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'title chevron'
+    'school chevron'
+    'dates chevron';
+  column-gap: 1.2rem;
+  align-items: center;
+  padding: 1.2rem;
+  background: none;
+  border: none;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color var(--duration-fast) var(--ease-standard);
+}
+
+.education-summary:hover {
+  background: var(--surface-inset);
+}
+
+.education-summary:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+.education-title {
+  grid-area: title;
+  font-size: 1.7rem;
   font-weight: 500;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+/* Degree titles hold one line while collapsed. The winter school title is identical open
+   or closed, so it wraps (or not) the same way in both states. */
+.education-university .education-title {
+  white-space: nowrap;
+}
+
+.education-title strong {
+  font-weight: 700;
+  color: var(--brand);
+}
+
+.education-school {
+  grid-area: school;
+  margin-top: 0.3rem;
+  font-size: 1.4rem;
+  line-height: 1.45;
   color: var(--muted-panel);
 }
 
-.education-list p {
-  margin: 0.6rem 0 0;
+.education-dates {
+  grid-area: dates;
+  margin-top: 0.2rem;
+  font-size: 1.2rem;
   color: var(--muted-panel);
+  opacity: 0.85;
+}
+
+.education-chevron {
+  grid-area: chevron;
+  font-size: 1.2rem;
+  color: var(--muted-panel);
+  transition: transform var(--duration-fast) var(--ease-standard);
+}
+
+.education-entry.is-open .education-chevron {
+  transform: rotate(180deg);
+}
+
+/* Full names are longer than the nowrap title budget, so once open they may wrap. */
+.education-university .is-open .education-title {
+  white-space: normal;
+}
+
+/* Collapse via grid rows so the container grows to the content's natural height. Hidden
+   content is also visibility:hidden, which keeps its link out of the tab order. */
+.education-collapse {
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition:
+    grid-template-rows var(--duration-base) var(--ease-standard),
+    visibility 0s linear var(--duration-base);
+}
+
+.education-entry.is-open .education-collapse {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.education-collapse-inner {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.education-details {
+  padding: 0 1.2rem 1.4rem;
+}
+
+.education-details p {
+  margin: 0;
   font-size: 1.4rem;
   line-height: 1.6;
+  color: var(--text-body);
+}
+
+.education-label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted-panel);
+}
+
+.education-details .inline-link {
+  margin-top: 0.4rem;
 }
 
 .experience-layout {
@@ -3029,24 +3149,6 @@ footer {
   line-height: 1.5;
 }
 
-.education-subhead {
-  margin: 2.4rem 0 0;
-  /* Section-within-a-panel label: more air above than the panel heading needs. */
-  font-size: 1.25rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--muted-panel);
-}
-
-.education-extra {
-  margin-top: var(--space-heading);
-}
-
-.education-extra .education-header h4 {
-  font-size: 1.55rem;
-}
-
 .inline-link {
   margin-top: 0.8rem;
   display: inline-flex;
@@ -3947,8 +4049,19 @@ footer {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .education-list {
-    grid-template-columns: 1fr;
+  .education-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .education-continuing {
+    margin: 1.2rem 0 0;
+    padding: 1.6rem 0 0;
+    border-left: none;
+    border-top: 1px solid var(--line);
+  }
+
+  .education-university .education-title {
+    white-space: normal;
   }
 
   .patent-list {
@@ -4323,6 +4436,9 @@ footer {
   .walkthrough,
   .walkthrough-track.is-adaptive,
   .walkthrough-chevron,
+  .education-summary,
+  .education-chevron,
+  .education-collapse,
   .bird-branch,
   .walkthrough-meter-fill,
   .walkthrough-dot::after,

@@ -1,4 +1,5 @@
 import { Fragment, useState } from 'react';
+import EducationPanel from './EducationPanel';
 
 const TECH_PREVIEW_COUNT = 8;
 
@@ -79,46 +80,7 @@ function AboutSection({ about, techStack, education, courses, patents }) {
 
         <article className="panel about-education">
           <h3>Education</h3>
-          <ul className="education-list">
-            {education.map((item) => (
-              <li key={item.degree}>
-                <div className="education-header">
-                  <h4>{item.degree}</h4>
-                  <span>{item.duration}</span>
-                </div>
-                <p>{item.school}</p>
-                <p>{item.details}</p>
-              </li>
-            ))}
-          </ul>
-
-          {courses.length > 0 && (
-            <>
-              <h4 className="education-subhead">Continuing Education</h4>
-              <ul className="education-list education-extra">
-                {courses.map((course) => (
-                  <li key={course.title}>
-                    <div className="education-header">
-                      <h4>{course.title}</h4>
-                      <span>{course.duration}</span>
-                    </div>
-                    <p>{course.provider}</p>
-                    {course.certificate && (
-                      <a
-                        className="inline-link"
-                        href={course.certificate}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        View Certificate{' '}
-                        <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
-                      </a>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            </>
-          )}
+          <EducationPanel education={education} courses={courses} />
         </article>
 
         <article className="panel about-patents" id="patents">

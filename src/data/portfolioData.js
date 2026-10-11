@@ -76,16 +76,26 @@ export const techStack = [
 
 export const education = [
   {
-    degree: 'Master of Science, Computer Science and Engineering',
-    school: 'The Ohio State University',
+    id: 'ms',
+    level: 'MS',
+    levelFull: 'Master of Science',
+    school: 'Ohio State',
+    schoolFull: 'The Ohio State University',
+    subject: 'Computer Science & Engineering',
+    subjectFull: 'Computer Science and Engineering',
     duration: 'Aug 2024 - May 2026',
-    details: 'Coursework: Algorithms, Neural Networks, AI, Natural Language Processing'
+    coursework: ['Algorithms', 'Neural Networks', 'AI', 'Natural Language Processing']
   },
   {
-    degree: 'Bachelor of Technology, Computer Science and Engineering',
-    school: 'Kalinga Institute of Industrial Technology',
+    id: 'btech',
+    level: 'B.Tech',
+    levelFull: 'Bachelor of Technology',
+    school: 'KIIT',
+    schoolFull: 'Kalinga Institute of Industrial Technology',
+    subject: 'Computer Science & Engineering',
+    subjectFull: 'Computer Science and Engineering',
     duration: 'Jul 2020 - Jul 2024',
-    details: 'Coursework: DSA, Design and Analysis of Algorithms, Cloud Computing, DBMS'
+    coursework: ['DSA', 'Design and Analysis of Algorithms', 'Cloud Computing', 'DBMS']
   }
 ];
 
@@ -192,8 +202,9 @@ export const researchItems = [
 
 export const courseItems = [
   {
-    title: 'WSDL (Winter School on Deep Learning 2024)',
-    provider: 'Indian Statistical Institute, Kolkata',
+    title: 'Winter School on Deep Learning',
+    provider: 'ISI Kolkata',
+    providerFull: 'Indian Statistical Institute, Kolkata',
     duration: 'Jan 2024 - Mar 2024',
     certificate: '/assets/Certifcates/CoP_Ritam%20Mukherjee_WSDL24REGSTUIND0105.pdf',
     overview:

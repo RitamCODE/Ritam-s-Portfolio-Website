@@ -75,6 +75,14 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- Education in About is now one compact panel: the Master of Science and Bachelor of
+  Technology entries sit on the left (shown as "MS" and "B.Tech" with Ohio State and KIIT),
+  and continuing education on the right, stacking on small screens. Each entry opens on its
+  own, by click or keyboard, and the header itself swaps to the full degree and university
+  name, with coursework revealed below.
+- The winter school entry reads "Winter School on Deep Learning" (was "WSDL") with ISI Kolkata
+  as its provider, in the same purple as the MS and B.Tech labels; opening it shows the full
+  institute name and a "View certificate" link.
 - The Microsoft internship entry now has three bullets covering the MLflow retriever
   serialization fix, the Retrieval QA to Azure ML endpoint pipeline, and the Application
   Insights callback exploration, replacing the earlier five.
