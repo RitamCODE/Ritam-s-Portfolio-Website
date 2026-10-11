@@ -11,6 +11,11 @@ npm run preview  # serve the built dist/
 No tests, no linter, no typecheck. Verification is `npm run build` plus loading the
 page in the dev server.
 
+## Git
+
+- **Never create a new branch without asking first.** Work on the current branch
+  (normally `master`) unless told otherwise.
+
 ## Changelog
 
 `CHANGELOG.md` at the repo root is maintained by hand and must stay current.
