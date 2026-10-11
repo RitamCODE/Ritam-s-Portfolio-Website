@@ -7,6 +7,8 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- The engineering walkthrough footers show their slide count ("7 slides") beside the label,
+  except on screens narrower than 520px, where the label gets the room.
 - The About card now has a photo of a coffee mug in front of a laptop beside the intro text,
   filling the space that used to be empty on the right. Below 1280px wide, where the two
   columns would be cramped, the photo stacks under the text at a bounded width.
@@ -82,6 +84,16 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Changed
 
+- The "Inside the engineering" and "Explore my contribution" buttons are now a full-width
+  footer attached to the bottom of the AdaptMATH, Scientific QA, Bird Classification and
+  Microsoft cards, so the walkthroughs are easier to spot. The footer is 52px tall with a
+  lavender tint and a thin purple glow along its bottom edge, in both themes. Hover and
+  keyboard focus brighten the tint and glow over 200ms and nudge the chevron down 2px, without
+  changing the footer's size; reduced-motion visitors get the colour change with no movement,
+  and touch screens keep the resting glow. Open, the chevron points up, the glow softens and
+  the deck continues straight from the footer; on the Microsoft card the footer's lavender
+  flares out along the curved corner where the panel meets the deck. The footer grows rather than clips with larger
+  text.
 - Education in About is now one compact panel: the Master of Science and Bachelor of
   Technology entries sit on the left (shown as "MS" and "B.Tech" with Ohio State and KIIT),
   and continuing education on the right, stacking on small screens. Each entry opens on its

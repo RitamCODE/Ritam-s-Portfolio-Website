@@ -1312,41 +1312,242 @@ footer {
   box-shadow: var(--shadow-sm);
 }
 
-.walkthrough-toggle {
-  margin-left: auto;
-  display: inline-flex;
+/* The walkthrough trigger: a full-width footer attached to the bottom of its card. A host
+   sets --footer-bleed-x/y to its own padding so the bar runs flush to the card's edges.
+   Everything that changes between states is a custom property read by one declaration each
+   of background-color, box-shadow and transform below, so no later rule (a media query, a
+   modifier) can redeclare a property and silently cancel the hover. Nothing that affects
+   size changes in any state: only colour, shadow and transform animate. */
+.project-card {
+  --footer-bleed-x: 2.2rem;
+  --footer-bleed-y: 2.2rem;
+}
+
+.experience-panel {
+  --footer-bleed-x: 2.8rem;
+  --footer-bleed-y: 2.8rem;
+}
+
+/* Project cards: footer and deck travel together, so the deck opens directly under the bar
+   and the dock, not the footer, takes the bleed. */
+.walkthrough-dock {
+  margin: 2rem calc(var(--footer-bleed-x) * -1) calc(var(--footer-bleed-y) * -1);
+}
+
+.walkthrough-dock > .walkthrough {
+  margin: 0;
+}
+
+.walkthrough-trigger {
+  --tint: 9%;
+  --glow-line: 55%;
+  --glow-soft: 30%;
+  --chev-y: 0px;
+  --chev-r: 0deg;
+  --trigger-h: 5.2rem;
+  --trigger-extra: 0px;
+  display: flex;
   align-items: center;
-  gap: 0.8rem;
-  min-height: 3.8rem;
-  padding: 0 1.4rem;
-  border: 1px solid color-mix(in srgb, var(--brand) 25%, var(--line));
-  border-radius: var(--radius-md);
-  background: var(--selected-bg);
+  gap: 0.9rem;
+  width: 100%;
+  min-height: calc(var(--trigger-h) + var(--trigger-extra));
+  padding: 0.6rem 1.8rem calc(0.6rem + var(--trigger-extra));
+  border: 0;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line));
+  border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
+  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
+  box-shadow:
+    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
+    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
   color: var(--selected-fg);
   font-family: inherit;
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
   cursor: pointer;
   touch-action: manipulation;
-  transition: border-color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-fast) var(--ease-standard);
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    border-radius 0s linear 0.35s;
 }
 
-.walkthrough-toggle:hover {
-  border-color: var(--brand);
+/* In the experience panel the footer is a direct child, so it takes the bleed itself. */
+.experience-panel > .walkthrough-trigger {
+  /* A button never stretches to fill negative margins, so the bleed is added to its width. */
+  width: calc(100% + var(--footer-bleed-x) * 2);
+  margin: 2rem calc(var(--footer-bleed-x) * -1) calc(var(--footer-bleed-y) * -1);
 }
 
-.walkthrough-toggle:active {
-  transform: scale(0.97);
+/* Open, the panel's bottom border row is transparent (it hides the deck's top border), which
+   would leave a 1px strip of panel surface between the footer and the deck. The footer
+   grows by that 1px and covers it, so its own bottom line sits flush on the deck. */
+.experience-panel > .walkthrough-trigger[aria-expanded='true'] {
+  --trigger-extra: 1px;
+  margin-bottom: calc(var(--footer-bleed-y) * -1 - 1px);
+}
+
+/* Open, the footer flares out along the panel's concave fillet (.experience-panel::after): a
+   --radius-lg square left of the footer, cut to the same quarter circle, taking the footer's
+   own tint and bottom glow from the same variables so hover and focus brighten it in step. It
+   covers the panel's left border where the curve turns, and the fillet's grey arc is painted
+   over it. Visibility follows the fillet's 0.35s close delay. */
+.experience-panel > .walkthrough-trigger {
+  position: relative;
+}
+
+.experience-panel > .walkthrough-trigger::before {
+  content: '';
+  position: absolute;
+  right: 100%;
+  bottom: 0;
+  width: var(--radius-lg);
+  height: var(--radius-lg);
+  background-color: color-mix(in srgb, var(--accent) var(--tint), var(--surface));
+  box-shadow:
+    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
+    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
+  -webkit-mask-image: radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), #000 calc(var(--radius-lg) - 1px));
+  mask-image: radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), #000 calc(var(--radius-lg) - 1px));
+  pointer-events: none;
+  visibility: hidden;
+  transition: background-color var(--duration-base) var(--ease-standard),
+    box-shadow var(--duration-base) var(--ease-standard),
+    visibility 0s linear 0.35s;
+}
+
+.experience-panel > .walkthrough-trigger[aria-expanded='true']::before {
+  visibility: visible;
+  transition-delay: 0s, 0s, 0s;
+}
+
+.walkthrough-trigger-icon {
+  flex: none;
+  color: var(--brand);
+}
+
+.walkthrough-trigger-label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.walkthrough-trigger-count {
+  flex: none;
+  color: var(--muted);
+  font-size: 1.3rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .walkthrough-chevron {
+  flex: none;
+  margin-left: 0.4rem;
   font-size: 1.1rem;
+  transform: translateY(var(--chev-y)) rotate(var(--chev-r));
   transition: transform var(--duration-base) var(--ease-standard);
 }
 
-.walkthrough-toggle[aria-expanded='true'] .walkthrough-chevron {
-  transform: rotate(180deg);
+:root[data-theme='dark'] .walkthrough-trigger {
+  --tint: 20%;
+  --glow-line: 70%;
+  --glow-soft: 42%;
+}
+
+/* Open: the deck takes over the bottom edge, so the corners square off at once (and round
+   again only after the deck has collapsed) and the glow settles. */
+.walkthrough-trigger[aria-expanded='true'] {
+  --tint: 6%;
+  --glow-line: 32%;
+  --glow-soft: 12%;
+  --chev-r: 180deg;
+  border-radius: 0;
+  transition-delay: 0s, 0s, 0s;
+}
+
+:root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true'] {
+  --tint: 14%;
+  --glow-line: 40%;
+  --glow-soft: 16%;
+}
+
+/* Press feedback for touch, where hover never applies. */
+.walkthrough-trigger:active {
+  --tint: 15%;
+  --glow-line: 80%;
+  --glow-soft: 48%;
+}
+
+/* Keyboard focus gets the hover emphasis plus a ring drawn inside the bar (the global
+   offset ring would spill outside a flush edge). The radius is restated because the global
+   button:focus-visible rule resets it. */
+.walkthrough-trigger:focus-visible {
+  --tint: 16%;
+  --glow-line: 90%;
+  --glow-soft: 55%;
+  --chev-y: 2px;
+  outline: 2px solid var(--brand);
+  outline-offset: -4px;
+  box-shadow:
+    inset 0 -1px 0 color-mix(in srgb, var(--accent) var(--glow-line), transparent),
+    inset 0 -1.2rem 1.4rem -1.2rem color-mix(in srgb, var(--accent) var(--glow-soft), transparent);
+  border-radius: 0 0 calc(var(--radius-lg) - 1px) calc(var(--radius-lg) - 1px);
+}
+
+@media (hover: hover) {
+  .walkthrough-trigger:hover {
+    --tint: 16%;
+    --glow-line: 90%;
+    --glow-soft: 55%;
+    --chev-y: 2px;
+  }
+}
+
+:root[data-theme='dark'] .walkthrough-trigger:focus-visible,
+:root[data-theme='dark'] .walkthrough-trigger:active {
+  --tint: 30%;
+  --glow-line: 95%;
+  --glow-soft: 60%;
+}
+
+@media (hover: hover) {
+  :root[data-theme='dark'] .walkthrough-trigger:hover {
+    --tint: 30%;
+    --glow-line: 95%;
+    --glow-soft: 60%;
+  }
+}
+
+/* Open and hovered or focused: a modest bump from the softened state; the chevron points
+   up, so it nudges up. */
+.walkthrough-trigger[aria-expanded='true']:focus-visible {
+  --tint: 10%;
+  --glow-line: 50%;
+  --glow-soft: 22%;
+  --chev-y: -2px;
+  border-radius: 0;
+}
+
+@media (hover: hover) {
+  .walkthrough-trigger[aria-expanded='true']:hover {
+    --tint: 10%;
+    --glow-line: 50%;
+    --glow-soft: 22%;
+    --chev-y: -2px;
+  }
+
+  :root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true']:hover {
+    --tint: 19%;
+    --glow-line: 55%;
+    --glow-soft: 26%;
+  }
+}
+
+:root[data-theme='dark'] .walkthrough-trigger[aria-expanded='true']:focus-visible {
+  --tint: 19%;
+  --glow-line: 55%;
+  --glow-soft: 26%;
 }
 
 /* Expand and collapse by animating the row from 0fr to 1fr, which needs no measured
@@ -3505,11 +3706,12 @@ footer {
 }
 
 /* The concave fillet: a --radius-lg square just outside the panel's bottom-left corner,
-   filled with --surface beyond a quarter circle and stroked with --line along it. The stroke
-   is layered over the surface, the way a card's own border sits over its background, so the
-   translucent dark-theme line matches the straight edges either side. left: -radius puts the
-   arc's top end on the panel's left border; bottom: -1px puts its other end on the deck's top
-   border row. */
+   stroked with --line along a quarter circle. The fill beyond the arc is the footer's own
+   flare (.experience-panel > .walkthrough-trigger::before), so the lavender footer follows
+   the curve; this stroke is painted over it, the way a card's border sits over its background,
+   so the translucent dark-theme line matches the straight edges either side. left: -radius
+   puts the arc's top end on the panel's left border; bottom: -1px puts its other end on the
+   deck's top border row. */
 .experience-panel::after {
   content: '';
   position: absolute;
@@ -3517,15 +3719,13 @@ footer {
   bottom: -1px;
   width: var(--radius-lg);
   height: var(--radius-lg);
-  background:
-    radial-gradient(
-      circle at 0 0,
-      transparent calc(var(--radius-lg) - 1px),
-      var(--line) calc(var(--radius-lg) - 1px),
-      var(--line) var(--radius-lg),
-      transparent var(--radius-lg)
-    ),
-    radial-gradient(circle at 0 0, transparent calc(var(--radius-lg) - 1px), var(--surface) calc(var(--radius-lg) - 1px));
+  background: radial-gradient(
+    circle at 0 0,
+    transparent calc(var(--radius-lg) - 1px),
+    var(--line) calc(var(--radius-lg) - 1px),
+    var(--line) var(--radius-lg),
+    transparent var(--radius-lg)
+  );
   pointer-events: none;
   visibility: hidden;
   transition: visibility 0s linear 0.35s;
@@ -3544,7 +3744,8 @@ footer {
     border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   }
 
-  .experience-panel::after {
+  .experience-panel::after,
+  .experience-panel > .walkthrough-trigger::before {
     display: none;
   }
 }
@@ -4184,7 +4385,6 @@ footer {
   }
 
   /* Walkthrough controls stay touch-sized; px on purpose, as with the nav rows. */
-  .walkthrough-toggle,
   .walkthrough-choice,
   .walkthrough-skill,
   .walkthrough-text-button {
@@ -4227,10 +4427,25 @@ footer {
     padding: 2.2rem 2rem;
   }
 
-  .walkthrough-toggle {
-    width: 100%;
-    justify-content: center;
-    margin-left: 0;
+  /* Root is 9px here: 5.78rem is the same 52px bar, 1.56rem the 14px label. The count goes,
+     so the label keeps the room. */
+  .project-card {
+    --footer-bleed-x: 2.2rem;
+  }
+
+  .experience-panel {
+    --footer-bleed-x: 2rem;
+    --footer-bleed-y: 2.2rem;
+  }
+
+  .walkthrough-trigger {
+    --trigger-h: 5.78rem;
+    padding-inline: 1.6rem;
+    font-size: 1.56rem;
+  }
+
+  .walkthrough-trigger-count {
+    display: none;
   }
 
   .walkthrough-top {
@@ -4504,12 +4719,19 @@ footer {
   .walkthrough-notes summary::before,
   .msft-node,
   .msft-event,
-  .walkthrough-toggle {
+  .walkthrough-trigger,
+  .experience-panel > .walkthrough-trigger::before {
     transition: none;
   }
 
-  .walkthrough-toggle:active {
-    transform: none;
+  /* No movement: the chevron stays put on hover and focus (its open/closed rotation is state,
+     not motion, and stays). */
+  .walkthrough-trigger,
+  .walkthrough-trigger:hover,
+  .walkthrough-trigger:focus-visible,
+  .walkthrough-trigger[aria-expanded='true']:hover,
+  .walkthrough-trigger[aria-expanded='true']:focus-visible {
+    --chev-y: 0px;
   }
 
   .project-card:hover,

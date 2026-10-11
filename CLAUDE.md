@@ -41,6 +41,11 @@ section. Each entry carries `links: [{ label, href }]`, a list rather than a sin
 URL, so a card can point at a repo and a demo at the same time. `courseItems` and
 `patentItems` render inside `AboutSection`, not in sections of their own.
 
+Every walkthrough is opened by the shared `walkthrough/WalkthroughFooter` (class
+`.walkthrough-trigger`; `.walkthrough-footer` already names the deck's dots-and-arrows row): a
+52px full-width bar flush with the bottom of its card. Its states only reassign custom
+properties (`--tint`, `--glow-*`, `--chev-*`), which one `background-color`/`box-shadow`/`transform`
+declaration reads, so a later rule can't cancel the hover; keep new state rules to that pattern.
 A project opts into an expandable walkthrough with `walkthrough: '<key>'` in
 `projectItems`; `ProjectCard.jsx` maps the key to a component (`adaptmath`, `scientificqa`
 and `birds`, in `src/components/<name>/`, all built on the generic
@@ -50,14 +55,15 @@ engineering slide carries a `demonstrated` list (max two `{ name, applied }` pai
 rendered by `components/walkthrough/SkillsFooter` just above the
 source link; it is `demonstrated` because `skills` is taken by the curriculum picker.
 An `experienceItems` entry opts in the same way (`walkthrough: 'microsoft'` plus a `links` list),
-through `ExperienceWalkthrough.jsx`, which exports the "Explore my contribution" toggle
+through `ExperienceWalkthrough.jsx`, which exports the "Explore my contribution" trigger
 (`ExperienceWalkthroughActions`, rendered in the panel) and the deck host (default export, mounting
 `components/microsoft/MicrosoftWalkthrough`; copy in `data/microsoftWalkthrough.js`).
 `ExperienceSection` owns the open state and renders the deck as a direct child of the section,
 below the tabs + panel, so `.experience-walkthrough` spans the content column (tabs' left edge to
 the panel's right edge) and hangs flush off the panel. While it is open the panel takes
 `.has-open-walkthrough`, which raises it over the deck's top border, squares its bottom corners
-and shows the `::after` concave fillet, so the two read as one L-shaped card. Its slides close
+and shows the `::after` concave fillet (a grey arc only; the fill beyond it is the open footer's
+`::before` flare, so the lavender footer follows the curve), so the two read as one L-shaped card. Its slides close
 with `walkthrough/ProjectNotes` (expandable notes with public links) instead of `SourceLink`.
 Inside a project card the deck's full-bleed margins come from `--walkthrough-bleed-x/y`, which a
 host sets to its own padding; the experience deck is not full-bleed and sets its own margins.

@@ -2,18 +2,22 @@ import { useId, useState } from 'react';
 import AdaptMathWalkthrough from './adaptmath/AdaptMathWalkthrough';
 import ScientificQaWalkthrough from './scientificqa/ScientificQaWalkthrough';
 import BirdWalkthrough from './birds/BirdWalkthrough';
+import WalkthroughFooter from './walkthrough/WalkthroughFooter';
+import { walkthroughSlides as adaptmathSlides } from '../data/adaptmathWalkthrough';
+import { walkthroughSlides as scientificQaSlides } from '../data/scientificQaWalkthrough';
+import { walkthroughSlides as birdSlides } from '../data/birdWalkthrough';
 
 // A project opts in with `walkthrough: '<key>'` in portfolioData.js.
 const WALKTHROUGHS = {
-  adaptmath: AdaptMathWalkthrough,
-  scientificqa: ScientificQaWalkthrough,
-  birds: BirdWalkthrough
+  adaptmath: { Component: AdaptMathWalkthrough, slides: adaptmathSlides },
+  scientificqa: { Component: ScientificQaWalkthrough, slides: scientificQaSlides },
+  birds: { Component: BirdWalkthrough, slides: birdSlides }
 };
 
 function ProjectCard({ project }) {
   const [expanded, setExpanded] = useState(false);
   const walkthroughId = useId();
-  const Walkthrough = project.walkthrough ? WALKTHROUGHS[project.walkthrough] : null;
+  const walkthrough = project.walkthrough ? WALKTHROUGHS[project.walkthrough] : null;
 
   return (
     <article
@@ -32,21 +36,19 @@ function ProjectCard({ project }) {
             {link.label} <i className="fa-solid fa-arrow-up-right-from-square" aria-hidden="true" />
           </a>
         ))}
-        {Walkthrough && (
-          <button
-            type="button"
-            className="walkthrough-toggle"
-            aria-expanded={expanded}
-            aria-controls={walkthroughId}
-            onClick={() => setExpanded((open) => !open)}
-          >
-            <i className="fa-solid fa-diagram-project" aria-hidden="true" />
-            Inside the engineering
-            <i className="fa-solid fa-chevron-down walkthrough-chevron" aria-hidden="true" />
-          </button>
-        )}
       </div>
-      {Walkthrough && <Walkthrough id={walkthroughId} expanded={expanded} />}
+      {walkthrough && (
+        <div className="walkthrough-dock">
+          <WalkthroughFooter
+            label="Inside the engineering"
+            count={walkthrough.slides.length}
+            expanded={expanded}
+            controls={walkthroughId}
+            onToggle={() => setExpanded((open) => !open)}
+          />
+          <walkthrough.Component id={walkthroughId} expanded={expanded} />
+        </div>
+      )}
     </article>
   );
 }
