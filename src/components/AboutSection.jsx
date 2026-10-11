@@ -3,26 +3,48 @@ import EducationPanel from './EducationPanel';
 
 const TECH_PREVIEW_COUNT = 8;
 
-// A paragraph is a string, or a list of parts where { text, href } is an inline link.
+function AboutPart({ part }) {
+  if (typeof part === 'string') return part;
+
+  if (part.emoji) {
+    // The leading no-break space ties the emoji to the word before it, so it can never wrap
+    // onto a line of its own. It sits inside the hidden span so assistive tech skips both.
+    return (
+      <span className="about-emoji" aria-hidden="true">
+        {' '}
+        {part.emoji}
+      </span>
+    );
+  }
+
+  if (part.strong) {
+    return <strong className={part.accent ? 'about-strong about-accent' : 'about-strong'}>{part.text}</strong>;
+  }
+
+  return (
+    <a href={part.href} target="_blank" rel="noopener noreferrer">
+      {part.text}
+    </a>
+  );
+}
+
+// A paragraph is a string, or a list of parts: plain strings, { text, href } links,
+// { text, strong, accent } emphasis, and { emoji } decorations.
 function AboutParagraph({ content }) {
   const parts = Array.isArray(content) ? content : [content];
 
   return (
     <p>
-      {parts.map((part, index) =>
-        typeof part === 'string' ? (
-          <Fragment key={index}>{part}</Fragment>
-        ) : (
-          <a key={index} href={part.href} target="_blank" rel="noopener noreferrer">
-            {part.text}
-          </a>
-        )
-      )}
+      {parts.map((part, index) => (
+        <Fragment key={index}>
+          <AboutPart part={part} />
+        </Fragment>
+      ))}
     </p>
   );
 }
 
-function AboutSection({ about, techStack, education, courses, patents }) {
+function AboutSection({ about, photo, techStack, education, courses, patents }) {
   const [techExpanded, setTechExpanded] = useState(false);
 
   const allSkills = techStack.flatMap((group) => group.items);
@@ -34,9 +56,14 @@ function AboutSection({ about, techStack, education, courses, patents }) {
       <h2 className="section-title">About Me</h2>
       <div className="about-layout">
         <article className="about-card">
-          {about.map((paragraph, index) => (
-            <AboutParagraph key={index} content={paragraph} />
-          ))}
+          <div className="about-text">
+            {about.map((paragraph, index) => (
+              <AboutParagraph key={index} content={paragraph} />
+            ))}
+          </div>
+          <figure className="about-photo">
+            <img src={photo.src} alt={photo.alt} loading="lazy" decoding="async" />
+          </figure>
         </article>
 
         <article className="panel about-tech">

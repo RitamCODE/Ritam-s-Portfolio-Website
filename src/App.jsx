@@ -274,6 +274,7 @@ function App() {
         <Hero profile={profile} />
         <AboutSection
           about={profile.about}
+          photo={profile.aboutPhoto}
           techStack={techStack}
           education={education}
           courses={courseItems}

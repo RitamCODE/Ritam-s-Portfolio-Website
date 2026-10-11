@@ -770,21 +770,65 @@ footer {
 }
 
 .about-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(28rem, 38%, 36rem);
+  gap: 3rem;
+  align-items: stretch;
   padding: 3rem;
+}
+
+/* The photo is absolutely positioned inside its figure, so the text alone sets the card's
+   height and the image just fills whatever that turns out to be. */
+.about-photo {
+  position: relative;
+  margin: 0;
+  min-height: 24rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.about-photo img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% 65%;
 }
 
 /* The content column is far wider than the old strip, so the measure is capped here.
    Without this the paragraphs would run to ~1000px and undo the readability pass. */
 .about-card p {
   margin: 0;
-  max-width: 68ch;
+  max-width: 62ch;
   font-size: 1.6rem;
   line-height: 1.8;
   color: var(--text-body);
 }
 
 .about-card p + p {
-  margin-top: 1.6rem;
+  margin-top: 2rem;
+}
+
+/* Inter ships 400–800, so emphasis is just a heavier weight of the same face. Foreground
+   colour rather than body colour, so it also lifts slightly in dark mode. */
+.about-card .about-strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* The site's own plum (pink in dark), so the two highlighted phrases read as part of the
+   theme. 5.8:1 on the light panel, 6.6:1 on the dark one. */
+.about-card .about-accent {
+  color: var(--brand);
+}
+
+/* Same size as the prose; line-height 1 keeps the glyph from stretching its line box. */
+.about-emoji {
+  font-size: 1em;
+  line-height: 1;
+  font-weight: 400;
 }
 
 /* Global `a` is color: inherit / no underline, so state both here. */
@@ -3996,6 +4040,21 @@ footer {
   margin-top: 0.6rem;
   text-transform: none;
   letter-spacing: 0.02em;
+}
+
+/* The rail leaves the card too narrow for two columns well before the usual breakpoint
+   (at 1000px it was a 240px text column beside a 160px photo), so it stacks earlier. The
+   photo keeps close to its own proportions and a bounded width, so the mug stays whole. */
+@media (max-width: 1280px) {
+  .about-card {
+    grid-template-columns: 1fr;
+  }
+
+  .about-photo {
+    min-height: 0;
+    width: min(100%, 36rem);
+    aspect-ratio: 9 / 10;
+  }
 }
 
 @media (max-width: 980px) {

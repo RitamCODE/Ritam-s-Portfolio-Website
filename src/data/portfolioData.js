@@ -3,13 +3,46 @@ export const profile = {
   role: 'Builder and Researcher',
   summary:
     'I build AI systems with a strong software engineering backbone.',
-  // Paragraphs. An array entry may itself be an array of parts, where { text, href }
-  // renders as an inline link.
+  // Paragraphs. An array entry may itself be an array of parts: a plain string, { text, href }
+  // for an inline link, { text, strong: true } for bold, { text, strong: true, accent: true }
+  // for bold in the About accent colour, or { emoji } for a decorative emoji that stays glued
+  // to the word before it and is hidden from screen readers.
   about: [
-    "I build things, and I like owning all of it: designing the product, architecting the system, writing the backend and the interface, wiring in the models, and getting it deployed. Most of my best work started as a side project I couldn't put down, and a day only counts for me if something got made by the end of it.",
-    "What drives me right now is NLP and agentic AI: systems that reason, use tools, and coordinate with each other. I'm stubborn about proving they work. I keep models out of decisions they can't be trusted with, and I test against baselines instead of trusting a good demo.",
-    "Currently going deeper on multi-agent systems in LangGraph and doing applied AI research in medical imaging at OSU."
+    [
+      'I build things, and I like ',
+      { text: 'owning all of it', strong: true },
+      ': designing the product, architecting the system, writing the backend and the interface, wiring in the models',
+      { emoji: '🧠' },
+      ', and getting it deployed',
+      { emoji: '🚀' },
+      '.'
+    ],
+    [
+      "Most of my best work started as a side project I couldn't put down, and a day only counts for me if ",
+      { text: 'something got made', strong: true },
+      { emoji: '🛠️' },
+      ' by the end of it.'
+    ],
+    [
+      'What drives me right now is ',
+      { text: 'NLP and agentic AI', strong: true, accent: true },
+      { emoji: '🤖' },
+      ": systems that reason, use tools, and coordinate with each other. I'm stubborn about ",
+      { text: 'proving they work', strong: true },
+      ". I keep models out of decisions they can't be trusted with, and I test against baselines instead of trusting a good demo."
+    ],
+    [
+      'Currently going deeper',
+      { emoji: '🤿' },
+      ' on multi-agent systems in ',
+      { text: 'LangGraph', strong: true, accent: true },
+      ' and doing applied AI research in medical imaging at OSU.'
+    ]
   ],
+  aboutPhoto: {
+    src: '/assets/my_pics/coffee-mug.jpg',
+    alt: 'A hand holding a white coffee mug in front of a laptop showing code'
+  },
   image: '/assets/my_pics/RM_floral_final.png',
   resume: '/assets/Resume/RM_Resume_2026.pdf',
   email: 'mukherjee.ritam27@gmail.com',

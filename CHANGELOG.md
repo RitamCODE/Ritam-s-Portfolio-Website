@@ -7,6 +7,13 @@ Format loosely follows [Keep a Changelog](https://keepachangelog.com/).
 
 ### Added
 
+- The About card now has a photo of a coffee mug in front of a laptop beside the intro text,
+  filling the space that used to be empty on the right. Below 1280px wide, where the two
+  columns would be cramped, the photo stacks under the text at a bounded width.
+- The About copy is now four short paragraphs with a few phrases in bolder type, a handful of
+  small inline emoji, and the site's plum on "NLP and agentic AI" and "LangGraph" (the lighter
+  pink in dark mode). Each emoji stays attached to the word before it when lines
+  wrap, and screen readers skip them.
 - The AdaptMATH project card now has an "Inside the engineering" button that expands a
   seven-slide walkthrough directly under the card: what the tutor is for, its system
   architecture, how each answer is routed, Bayesian mastery tracking, the curriculum and
